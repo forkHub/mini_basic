@@ -1,24 +1,25 @@
-import { BaseComponent } from "./BaseComponent.js";
-
-class Loading extends BaseComponent {
-	constructor() {
-		super();
-		this._template = `
-			<div class='loading'>
-				<div class='box'>
-					<img src='/gbr/loading.gif'/>
-					<p>Memuat</p> 
+namespace ha.comp {
+	class Loading extends BaseComponent {
+		constructor() {
+			super();
+			this._template = `
+				<div class='loading'>
+					<div class='box'>
+						<img src=''/>
+						<p>Memuat</p> 
+					</div>
 				</div>
-			</div>
-		`;
-		this.build();
+			`;
+			this.build();
+		}
+
+		tampil(): void {
+			console.log('loading tampil');
+			this.attach(document.body);
+		}
+
 	}
 
-	tampil(): void {
-		console.log('loading tampil');
-		this.attach(document.body);
-	}
-
+	export var loading: Loading = new Loading();
+	console.log('exporting loading: ' + loading);
 }
-
-export var loading: Loading = new Loading();

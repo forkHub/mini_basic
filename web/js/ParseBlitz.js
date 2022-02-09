@@ -1,25 +1,22 @@
+"use strict";
 // import { Util } from "./comp/Util.js";
-
 /*
-//After, And, Before, Case, Const, Data, Default, Delete, Dim, Each, 
+//After, And, Before, Case, Const, Data, Default, Delete, Dim, Each,
 Else, ElseIf, End, EndIf, Exit, False, Field, First, Float, For,
     Forever, Function, Global, Gosub, Goto, If, Insert, Int, Last, Local,
     Mod, New, Next, Not, Null, Or, Pi, Read, Repeat, Restore, Return,
     Sar, Select, Shl, Shr, Step, Str, Then, To, True, Type, Until, Wend,
     While, Xor, Include
     */
-
 class ParseBlitz {
-    private dataStr: string = '';
-
-    private kataKunci: string[] = [
+    dataStr = '';
+    kataKunci = [
         "After", "And", "Before", "Case", "Const", "Data", "Default", "Delete", "Dim", "Each", "Else",
         "ElseIf", "End", "EndIf", "Exit", "False", "Field", "First", "Float", "For",
         "Forever", "Function", "Global", "Gosub", "Goto", "If", "Insert", "Int", "Last", "Local",
         "Mod", "New", "Next", "Not", "Null", "Or", "Pi", "Read", "Repeat", "Restore", "Return",
         "Sar", "Select", "Shl", "Shr", "Step", "Str", "Then", "To", "True", "Type", "Until", "Wend",
         "While", "Xor", "Include",
-
         //operator
         "=",
         "+",
@@ -32,7 +29,6 @@ class ParseBlitz {
         ">",
         "<",
         "!=",
-
         //symbol
         '"',
         "'",
@@ -47,11 +43,9 @@ class ParseBlitz {
         ")",
         ":",
         "\\",
-
         //ignore
         " "
     ];
-
     // private opr: string[] = [
     //     "=",
     //     "+",
@@ -65,30 +59,23 @@ class ParseBlitz {
     //     "<",
     //     "!="
     // ];
-
-    async load(file: string): Promise<string> {
-        let hasil: string = await ha.comp.util.Ajax2('get', file, '');
+    async load(file) {
+        let hasil = await ha.comp.util.Ajax2('get', file, '');
         return hasil;
     }
-
-    async mulai(file: string): Promise<void> {
+    async mulai(file) {
         console.log('load file: ' + file);
         this.dataStr = await this.load(file);
-
         console.log("lexer2");
         this.lexer2();
         // this.parse(baris);
     }
-
     // parse(str: string): void {
     //     let baris: string = str;
-
     //     baris = baris.trim();
     //     baris += String.fromCharCode(10);
-
     //     while (baris.length > 0) {
     //         let baris2: string = this.lexer(baris);
-
     //         if (baris == baris2) {
     //             console.debug("=======================");
     //             console.debug(baris.charCodeAt(0));
@@ -104,16 +91,13 @@ class ParseBlitz {
     //         }
     //     }
     // }
-
     // sisa(str: string): void {
     //     console.debug(str);
     // }
-
-    lexer2(): void {
+    lexer2() {
         // let baris2: string;
         // let baris: string = str;
         // let ulang: boolean = true;
-
         while (this.dataStr.length > 0) {
             if (this.getKeyword()) { }
             else if (this.getKata()) { }
@@ -127,73 +111,57 @@ class ParseBlitz {
             }
         }
         console.log("ok");
-
     }
-
-    getNumber(): boolean {
-        let id: RegExp = /^[0-9][0-9.]*/;
-        let hsl: RegExpMatchArray = (this.dataStr.match(id));
-
+    getNumber() {
+        let id = /^[0-9][0-9.]*/;
+        let hsl = (this.dataStr.match(id));
         if (hsl) {
             this.dataStr = this.dataStr.slice(hsl[0].length);
             console.debug('no: ' + hsl);
             // this.sisa(str);
             return true;
         }
-
         return false;
     }
-
-    getKeyword(): boolean {
-
-        for (let i: number = 0; i < this.kataKunci.length; i++) {
-            let kata: string = this.kataKunci[i];
-
+    getKeyword() {
+        for (let i = 0; i < this.kataKunci.length; i++) {
+            let kata = this.kataKunci[i];
             if (this.dataStr.slice(0, kata.length) == kata) {
                 console.debug('keyword: ' + kata);
                 this.dataStr = this.dataStr.slice(kata.length);
                 return true;
             }
         }
-
         return false;
     }
-
-    getKata(): boolean {
-        let id: RegExp = /^[a-zA-Z_][a-zA-Z0-9_$%#]*/;
-        let hsl: RegExpMatchArray = (this.dataStr.match(id));
-
+    getKata() {
+        let id = /^[a-zA-Z_][a-zA-Z0-9_$%#]*/;
+        let hsl = (this.dataStr.match(id));
         if (hsl) {
             this.dataStr = this.dataStr.slice(hsl[0].length);
             console.debug('kata: ' + hsl);
             return true;
         }
-
         return false;
     }
-
-    getLineNumb(): boolean {
+    getLineNumb() {
         if (this.dataStr.charCodeAt(0) == 13) {
             console.log('ln');
             this.dataStr = this.dataStr.slice(1, this.dataStr.length);
             return true;
         }
-
         if (this.dataStr.charCodeAt(0) == 10) {
             console.log('ln');
             this.dataStr = this.dataStr.slice(1, this.dataStr.length);
             return true;
         }
-
         if (this.dataStr.charCodeAt(0) == 9) {
             console.log('ln');
             this.dataStr = this.dataStr.slice(1, this.dataStr.length);
             return true;
         }
-
         return false;
     }
 }
-
-let p: ParseBlitz = new ParseBlitz();
+let p = new ParseBlitz();
 p.mulai('./data/aristoids.bb');
