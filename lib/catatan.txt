@@ -1,0 +1,10 @@
+perintah tidak berlu buat if
+
+[ref] barisObj ditaruh di data
+dialog error
+    per baris 
+tambahin async buat function declaration
+tambahin await untuk panggil fungsi
+line break buat :
+tambahkan ; pada akhir perintah
+tambahkan oper double ++/--

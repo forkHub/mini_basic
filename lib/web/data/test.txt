@@ -1,0 +1,49 @@
+;"Dim",
+;"If", "Else", "ElseIf", "EndIf", "Then",
+;"For", "Next", "To",
+;"Function", "end function", "Return",
+;"While", "Wend",
+;Const
+;"false", "true", "null"
+
+if (a == 2) Then test
+
+If a==1 Then						;//test If
+	console.Log("test 1");
+ElseIf a == 2 Then				;//test Else If
+	console.Log("test 2");
+Else
+	console.Log("test 3");	;//test console.log
+EndIf
+
+For i= 0 To 10 
+For i= 5 To 10+4
+For i= 0 To -10 
+	console.Log(i);
+Next
+	console.log()
+Next
+console.log()
+Next
+
+Function foo() 
+	Return True 
+End Function
+
+While (True)
+Wend
+
+While True
+Wend
+
+While 1==0
+Wend
+
+While (1>0)
+Wend
+
+Const a=1
+
+a-1
+a+-1
+(2)-1
