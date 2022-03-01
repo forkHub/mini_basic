@@ -77,7 +77,7 @@ class Edit2 {
 			}
 
 			console.log('loading: ' + ha.comp.loading);
-			ha.comp.Util.Ajax2('get', "./datajs/" + ar[1] + ".js", '').then((value: string) => {
+			ha.comp.Util.Ajax2('get', "./datajs/" + ar[1] + ".bb", '').then((value: string) => {
 				this.myCodeMirror.setValue(value);
 				// this.compile();
 			}).catch((e) => {
@@ -110,17 +110,19 @@ class Edit2 {
 
 		ha.parse.parse.parse(code).then((hsl: string) => {
 
-			hal2 = hal2.replace('{{script}}', hsl);
-			let iframe: HTMLIFrameElement = document.createElement('iframe') as HTMLIFrameElement;
-			let iframeCont: HTMLDivElement = document.body.querySelector('div.kontainer-2 div.web') as HTMLDivElement;
+			let win: Window = window.open('about:blank', '_blank');
 
-			iframeCont.innerHTML = '';
-			iframeCont.appendChild(iframe);
+			hal2 = hal2.replace('{{script}}', hsl);
+			//let iframe: HTMLIFrameElement = document.createElement('iframe') as HTMLIFrameElement;
+			//let iframeCont: HTMLDivElement = document.body.querySelector('div.kontainer-2 div.web') as HTMLDivElement;
+
+			// iframeCont.innerHTML = '';
+			// iframeCont.appendChild(iframe);
 
 			setTimeout(() => {
-				iframe.contentWindow.document.open();
-				iframe.contentWindow.document.write(hal2);
-				iframe.contentWindow.document.close();
+				win.document.open();
+				win.document.write(hal2);
+				win.document.close();
 			}, 10);
 
 			// console.log

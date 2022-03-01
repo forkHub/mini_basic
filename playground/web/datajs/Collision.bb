@@ -41,7 +41,7 @@ Function Loop()
 
         DrawImage img, box.x, box.y
     
-    EndIf
+    Next
 
     rot = ((rot + 5) mod 360)
     RotateImage imgBig, rot
