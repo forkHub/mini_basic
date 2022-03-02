@@ -155,7 +155,7 @@ let hal: string = `
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,
 			target-densityDpi=device-dpi">
 
-		<title>Blitz</title>
+		<title>Mini Basic</title>
 
 		<style>
 			html,
@@ -205,7 +205,7 @@ let hal: string = `
 		<div class='debug' style="z-index:1; position:relative"></div>
 
 		<script src="./js/halib.js?r=${Math.floor(Math.random() * 1000)}"></script>
-		<script src="./js/blitzjs.js?r=${Math.floor(Math.random() * 1000)}"></script>
+		<script src="./js/blijs.js?r=${Math.floor(Math.random() * 1000)}"></script>
 		<script>{{script}}</script>
 	</body>
 
