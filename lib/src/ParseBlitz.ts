@@ -1,11 +1,6 @@
 namespace ha.parse {
 	class Blitz {
 
-		// async load(file: string): Promise<string> {
-		//     let hasil: string = await ha.comp.util.Ajax2('get', file, '');
-		//     return hasil;
-		// }
-
 		async parse(str: string): Promise<string> {
 			data.dataStr = str;
 			data.dataStr += ";;";
@@ -59,48 +54,6 @@ namespace ha.parse {
 
 			return ha.parse.parse.blijs();
 		}
-
-		// async mulai(file: string): Promise<void> {
-		//     console.log('load file: ' + file);
-		//     data.dataStr = await this.load(file);
-		//     data.dataStr += ";;";
-		//     data.dataStr += "\r\n";
-
-		//     console.log("data str length " + data.dataStr.length);
-
-		//     lexer.lexer();
-
-		//     baris.lines();
-
-		//     console.log('baris ar length: ' + data.barisAr.length);
-
-		//     console.group("grammar");
-		//     for (let i: number = 0; i < data.barisAr.length; i++) {
-		//         let barisObj: IBarisObj = data.barisAr[i];
-
-		//         grammar.barisObj = barisObj;
-
-		//         baris.renderLines(barisObj.token);
-
-		//         grammar.grammar();
-		//         barisObj.terjemah = terj.terjemah(barisObj.token[0]);
-
-		//         console.log("hasil:");
-		//         console.log(barisObj.terjemah);
-		//         console.log("");
-		//     }
-		//     console.groupEnd();
-
-		//     console.group("hasil:");
-		//     for (let i: number = 0; i < data.barisAr.length; i++) {
-		//         // console.log(data.barisAr[i].baris);
-		//         console.log(data.barisAr[i].terjemah);
-		//         // console.log("");
-		//     }
-		//     console.groupEnd();
-
-		//     console.log("finish");
-		// }
 
 		blijs(): string {
 			let hsl: string = '';
@@ -181,16 +134,6 @@ namespace ha.parse {
 
 	}
 
-	// export var baris: Baris = new Baris();
 	export var ar: Arr = new Arr();
 	export var parse: Blitz = new Blitz();
 }
-
-// ha.parse.parse.mulai('./data/aristoids.bb');
-// ha.parse.parse.mulai('./data/test.txt');
-// ha.parse.parse.mulai('./data/test2.txt').then(() => {
-//     return ha.parse.parse.blijs();
-// }).then((hsl: string) => {
-//     console.log(hsl);
-// })
-
