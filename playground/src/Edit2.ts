@@ -104,6 +104,7 @@ class Edit2 {
 
 		console.log('compile:');
 		console.log(code);
+
 		if (true) {
 			// return;
 		}
@@ -113,11 +114,6 @@ class Edit2 {
 			let win: Window = window.open('about:blank', '_blank');
 
 			hal2 = hal2.replace('{{script}}', hsl);
-			//let iframe: HTMLIFrameElement = document.createElement('iframe') as HTMLIFrameElement;
-			//let iframeCont: HTMLDivElement = document.body.querySelector('div.kontainer-2 div.web') as HTMLDivElement;
-
-			// iframeCont.innerHTML = '';
-			// iframeCont.appendChild(iframe);
 
 			setTimeout(() => {
 				win.document.open();

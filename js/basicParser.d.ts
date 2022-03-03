@@ -138,7 +138,7 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Blitz {
         parse(str: string): Promise<string>;
-        blijs(): Promise<string>;
+        blijs(): string;
         getToken(idx: number, token: Itoken[]): Itoken;
     }
     class Arr {
