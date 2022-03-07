@@ -1,0 +1,18 @@
+cls() error double ()()
+error saat parsing di catch dan ada popup
+dim dihapus dari reserved word
+fungsi murni dari kata
+support \
+implementasi list (blijs)
+implementasi data (blijs)
+implementasi fungsi yang depecreated (blijs)
+
+translation lebih generic, format
+optimisation translation gak balik ke awal
+
+playground dipindah ke folder sendiri
+    implementasi compile pakai if
+
+belum ada loader buat load image
+
+playground pencet run gak ganti tab, diganti tombol biasa
