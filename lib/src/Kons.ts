@@ -24,6 +24,7 @@ namespace ha.parse {
         static readonly TY_FUNC: number = 900;
         static readonly TY_KOTAK: number = 1000;
         static readonly TY_ARRAY: number = 1100;
+        static readonly TY_RETURN: number = 1200;
 
     }
 }

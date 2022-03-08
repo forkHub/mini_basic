@@ -1,6 +1,5 @@
 namespace ha.parse {
     class Exp {
-        // private _ar: Arr = new Arr();
 
         isExp(token: Itoken): boolean {
             if (!token) return false;
@@ -356,6 +355,53 @@ namespace ha.parse {
             return false;
         }
 
+        //[if, while, until] exp = exp
+        binopIf(): boolean {
+
+            function check(t0: Itoken, t1: Itoken, t2: Itoken, t3: Itoken): boolean {
+                if (!t0) return false;
+                if (!t1) return false;
+                if (!t2) return false;
+                if (!t3) return false;
+
+                let ar: string[] = ['if', 'while', 'until'];
+                if (ar.indexOf(t0.valueLowerCase) < 0) return false;
+                if (exp.isExp(t1) == false) return false;
+                if (t2.valueLowerCase != '=') return false;
+                if (exp.isExp(t3) == false) return false;
+
+                return true;
+            }
+
+            let ada: boolean = false;
+
+            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+
+                let token0: Itoken = parse.getToken(i - 1, grammar.barisObj.token);
+                let token1: Itoken = parse.getToken(i + 0, grammar.barisObj.token);
+                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
+                let token3: Itoken = parse.getToken(i + 2, grammar.barisObj.token);
+
+                let tokenBaru: Itoken;
+
+                if (check(token0, token1, token2, token3)) {
+                    tokenBaru = {
+                        type: Kons.TY_BINOP,
+                        token: [token1, token2, token3]
+                    }
+
+                    console.log("binop if/until/while:");
+                    console.log(tokenBaru);
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+
+                    ada = true;
+                }
+            }
+
+            return ada;
+        }
+
         binop(): boolean {
             let ada: boolean = false;
 
@@ -415,35 +461,43 @@ namespace ha.parse {
             return ada;
         }
 
-        // binopMin(): boolean {
+        not(): boolean {
+            let ada: boolean = false;
 
-        //     for (let i: number = 0; i <= grammar.barisObj.token.length - 2; i++) {
+            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
 
-        //         let token1: Itoken = grammar.barisObj.token[i];
-        //         let token2: Itoken = grammar.barisObj.token[i + 1];
-        //         let tokenBaru: Itoken;
+                let token1: Itoken = grammar.barisObj.token[i];
+                let token2: Itoken = grammar.barisObj.token[i + 1];
+                let tokenBaru: Itoken;
 
-        //         if (this.isExp(token1)) {
-        //             if (token2.type == Kons.TY_MIN) {
+                if (check(token1, token2)) {
+                    tokenBaru = {
+                        type: Kons.TY_BINOP,
+                        token: [token1, token2]
+                    }
 
-        //                 tokenBaru = {
-        //                     type: Kons.TY_BINOP,
-        //                     token: [token1, token2]
-        //                 }
+                    console.log("binop not:");
+                    console.log(tokenBaru);
 
-        //                 console.log("binop Min:");
-        //                 console.log(tokenBaru);
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 1, tokenBaru);
 
-        //                 grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 1, tokenBaru);
+                    ada = true;
+                }
+            }
 
-        //                 return true;
-        //             }
-        //         }
+            return ada;
 
-        //     }
+            //not exp
+            function check(t1: Itoken, t2: Itoken): boolean {
+                if (!t1) return false;
+                if (!t2) return false;
+                if (t1.type != Kons.TY_OP) return false;
+                if (t1.value.toLowerCase() != "not") return false;
+                if (!exp.isExp(t2)) return false;
+                return true;
+            }
 
-        //     return false;
-        // }
+        }
 
         min(): boolean {
 
@@ -508,37 +562,6 @@ namespace ha.parse {
             return false;
         }
 
-        // argument(): boolean {
-
-        //     for (let i: number = 0; i <= grammar.barisObj.token.length - 3; i++) {
-
-        //         let token1: Itoken = grammar.barisObj.token[i];
-        //         let token2: Itoken = grammar.barisObj.token[i + 1];
-        //         let token3: Itoken = grammar.barisObj.token[i + 2];
-
-        //         if (exp.isExp(token1)) {
-        //             if (token2.token.toString() == ",") {
-        //                 if (exp.isExp(token3)) {
-
-        //                     let tokenBaru: Itoken = {
-        //                         token: [token1, token2, token3],
-        //                         type: Kons.TY_ARGUMENT
-        //                     }
-        //                     console.log("arg:");
-        //                     console.log(tokenBaru);
-
-        //                     grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 2, tokenBaru);
-
-        //                     return true;
-        //                 }
-        //             }
-
-        //         }
-        //     }
-
-        //     return false;
-        // }
-
         checkArgument(tokenAr: Itoken[]): boolean {
             if (!tokenAr[1]) return false;
             if (!tokenAr[2]) return false;
@@ -592,30 +615,26 @@ namespace ha.parse {
             return false;
         }
 
-        // argument2(token: Itoken[]): boolean {
-
-        // }
-
         //2
         checkPanggilFungsi(token0: Itoken): boolean {
-            console.log('check panggil fungsi');
+            // console.log('check panggil fungsi');
             if (token0) {
                 if (token0.value == '.') {
-                    console.log('false, didahului dot');
+                    // console.log('false, didahului dot');
                     return false;
                 } else if (token0.type == Kons.TY_KATA_DOT) {
-                    console.log('false, didahulu kata dot');
+                    // console.log('false, didahulu kata dot');
                     return false;
                 }
                 else {
                     // console.log('ok, type: ' + token.type);
-                    console.log(token0);
+                    // console.log(token0);
                     return true;
                 }
             }
             else {
                 // console.log('ok, token null');
-                console.log(token0);
+                // console.log(token0);
                 return true;
             }
         }
@@ -623,7 +642,7 @@ namespace ha.parse {
         checkPanggilFungsi1(token1: Itoken): boolean {
             if (token1.value) {
                 if (token1.value.toLowerCase() == 'if') {
-                    console.log('check fungsi gagal, if tidak boleh: ' + token1.value);
+                    // console.log('check fungsi gagal, if tidak boleh: ' + token1.value);
                     return false;
                 }
                 else if (token1.value.toLowerCase() == 'elseif') {

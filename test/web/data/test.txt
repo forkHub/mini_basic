@@ -64,3 +64,9 @@ If (InputDrag() && imgDrag) Then
 
 -Math.floor(100)
 boxAr[i].x = -Math.floor(Math.random() * 320)
+
+Not true
+
+if (not true) Then
+while (not false)
+while (not foo())

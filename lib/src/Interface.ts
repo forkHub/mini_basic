@@ -2,6 +2,7 @@ interface Itoken {
     type: number,
     token?: Itoken[]
     value?: string;
+    valueLowerCase?: string;
 }
 
 interface IBarisObj {

@@ -1,6 +1,8 @@
 namespace ha.parse {
     class Test {
         private files: string[] = [
+            ".\\data\\test2.txt",
+            ".\\data\\test.txt",
             "C:\\Program Files (x86)\\Blitz3D\\samples\\mak\\anim\\anim.bb",
             "C:\\Program Files (x86)\\Blitz3D\\tutorials\\GCUK_Tuts\\animation.bb",
             "C:\\Program Files (x86)\\Blitz3D\\tutorials\\basic_tuts\\array.bb",
@@ -141,12 +143,12 @@ namespace ha.parse {
             // console.log(hsl);
             // console.groupEnd();
 
-            ha.parse.parse.parse(hsl);
+            await ha.parse.parse.parse(hsl);
         }
 
         async load2(): Promise<void> {
             let l: number = this.files.length;
-            l = 5;
+            // l = 5;
             for (let i: number = 0; i < l; i++) {
                 let file: string = this.files[i];
                 console.log("File: " + file);
@@ -154,6 +156,7 @@ namespace ha.parse {
                     await this.parse(file);
                 }
                 catch (e) {
+                    console.log('file: ' + file);
                     console.error(e);
                     break;
                 }

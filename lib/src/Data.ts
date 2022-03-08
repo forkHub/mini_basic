@@ -14,24 +14,19 @@ namespace ha.parse {
         }
 
         private _kataKunci2: string[] = [
-            "Dim",
-
             "If", "ElseIf", "EndIf", "Else", "Then",
 
             "For", "Next", "To",
 
-            "Function", "end function", "Return",
+            "Function", "end function",
 
             "While", "Wend",
 
             //const
-            "false", "true", "null", "mod",
+            //"false", "true", "null", "mod",
 
             //
             "//",
-
-            //BBCommand
-            "Cls"
         ];
 
         private _op: string[] = [
@@ -48,7 +43,8 @@ namespace ha.parse {
             "!=",
             ";",
             "&&",
-            "||"
+            "||",
+            "not"
         ];
 
         private _symbol: string[] = [

@@ -58,7 +58,9 @@ namespace ha.parse {
                 else if (exp.kurungIsi()) { }
                 else if (exp.panggilfungsi()) { }
                 else if (exp.min()) { }
+                else if (exp.binopIf()) { }
                 else if (exp.binop()) { }
+                else if (exp.not()) { }
                 else if (exp.argument(this._barisObj.token)) { }
                 else if (exp.kotak()) { }
                 else if (exp.kotak2()) { }
@@ -68,16 +70,19 @@ namespace ha.parse {
                 //EXP
 
                 //STMT
+                else if (stmt.return1()) { }
+                else if (stmt.return2()) { }
                 else if (stmt.new2()) { }
                 else if (stmt.for2()) { }
                 else if (stmt.varAssign()) { }
                 else if (stmt.modifier()) { }
-                else if (stmt.ifPerintah()) { }
-                else if (stmt.if2()) { }
+                else if (stmt.ifPendek()) { }
+                else if (stmt.ifPendekThen()) { }
+                else if (stmt.ifPendekPerintah()) { }
                 else if (stmt.elseIf()) { }
                 else if (stmt.funcDec()) { }
-                else if (stmt.perintah()) { }
-                // else if (stmt.perintah2()) { }
+                else if (stmt.while2()) { }
+                else if (stmt.perintah2()) { }
 
                 else {
                     console.log("error:");

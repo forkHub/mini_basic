@@ -6,22 +6,17 @@ namespace ha.parse {
 			data.dataStr += ";;";
 			data.dataStr += "\r\n";
 
-			console.log('str: ' + str);
-
 			while (data.barisAr.length > 0) {
 				data.barisAr.pop();
 			}
+
 			while (data.token.length > 0) {
 				data.token.pop();
 			}
 
-			console.log('baris ar length: ' + data.barisAr.length);
-
 			lexer.lexer();
 
 			baris.lines();
-
-			console.log('baris ar length: ' + data.barisAr.length);
 
 			console.group("grammar");
 			for (let i: number = 0; i < data.barisAr.length; i++) {

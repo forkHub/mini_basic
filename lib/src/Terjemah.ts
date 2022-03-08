@@ -205,6 +205,18 @@ namespace ha.parse {
             else if (token.type == Kons.TY_ARRAY) {
                 return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
             }
+            else if (token.type == Kons.TY_RETURN) {
+                if (token.token.length == 1) {
+                    return "return";
+                }
+                else if (token.token.length == 2) {
+                    return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]);
+                }
+                else {
+                    throw Error();
+                }
+            }
+
             else {
                 throw Error();
             }

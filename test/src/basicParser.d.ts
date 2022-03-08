@@ -56,7 +56,9 @@ declare namespace ha.parse {
         arrayDot(): boolean;
         kurungKosong(): boolean;
         kurungIsi(): boolean;
+        binopIf(): boolean;
         binop(): boolean;
+        not(): boolean;
         min(): boolean;
         checkArgument(tokenAr: Itoken[]): boolean;
         argument(token: Itoken[]): boolean;
@@ -85,6 +87,7 @@ interface Itoken {
     type: number;
     token?: Itoken[];
     value?: string;
+    valueLowerCase?: string;
 }
 interface IBarisObj {
     n?: number;
@@ -118,6 +121,7 @@ declare namespace ha.parse {
         static readonly TY_FUNC: number;
         static readonly TY_KOTAK: number;
         static readonly TY_ARRAY: number;
+        static readonly TY_RETURN: number;
     }
 }
 declare namespace ha.parse {
@@ -138,7 +142,7 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Blitz {
         parse(str: string): Promise<string>;
-        blijs(): Promise<string>;
+        blijs(): string;
         getToken(idx: number, token: Itoken[]): Itoken;
     }
     class Arr {
@@ -155,16 +159,19 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Stmt {
         for2(): boolean;
-        if2(): boolean;
+        return2(): boolean;
+        return1(): boolean;
+        while2(): boolean;
+        ifPendekPerintah(): boolean;
+        ifPendekThen(): boolean;
+        ifPendek(): boolean;
         funcDec(): boolean;
         elseIf(): boolean;
-        ifPerintah(): boolean;
         Baru(): boolean;
         varAssign(): boolean;
         new2(): boolean;
         modifier(): boolean;
-        perintah(): boolean;
-        perintahSingle(): boolean;
+        perintah2(): boolean;
     }
     export var stmt: Stmt;
     export {};

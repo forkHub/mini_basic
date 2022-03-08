@@ -4,13 +4,27 @@ namespace ha.parse {
             console.group('lexer start');
 
             while (data.dataStr.length > 0) {
-                if (this.getKeyword2()) { }
-                else if (this.getOp()) { }
-                else if (this.getSymbol()) { }
-                else if (this.getCmd()) { }
-                else if (this.getId()) { }
-                else if (this.getLineBreak()) { }
-                else if (this.getNumber()) { }
+                if (this.getKeyword2()) {
+                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
+                }
+                else if (this.getOp()) {
+                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
+                }
+                else if (this.getCmd()) {
+                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
+                }
+                else if (this.getId()) {
+                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
+                }
+                else if (this.getLineBreak()) {
+                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
+                }
+                else if (this.getNumber()) {
+                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
+                }
+                else if (this.getSymbol()) {
+                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
+                }
                 else {
                     console.group('found unknown character');
                     console.log(data.dataStr.slice(0, 10));
@@ -22,6 +36,14 @@ namespace ha.parse {
                 }
             }
 
+            //
+            data.token.forEach((token: Itoken) => {
+                token.valueLowerCase = '';
+                if (token.value) {
+                    token.valueLowerCase = token.value.toLocaleLowerCase();
+                }
+            })
+
             console.groupEnd();
             // console.log(data.token);
         }
@@ -30,7 +52,7 @@ namespace ha.parse {
             for (let i: number = 0; i < data.op.length; i++) {
                 let kata: string = data.op[i];
 
-                if (data.dataStr.slice(0, kata.length) == kata) {
+                if (data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
                     data.token.push({
                         // token: kata,
                         value: kata,
@@ -63,19 +85,34 @@ namespace ha.parse {
         }
 
         getNumber(): boolean {
-            let id: RegExp = /^[0-9][0-9.]*/;
+            let id: RegExp = /^([0-9]+\.?[0-9]*|\.[0-9]+)/;
             let hsl: RegExpMatchArray = (data.dataStr.match(id));
+            let value: string;
 
             if (hsl) {
-                data.dataStr = data.dataStr.slice(hsl[0].length);
+                value = hsl + '';
+                console.log('get number ' + value);
+                console.log(hsl);
+
+                // console.log(hsl.groups.length);
+                // console.log(hsl);
+                // console.log(hsl[0]);
+                // console.log(hsl.groups[0].length);
+                data.dataStr = data.dataStr.slice(value.length);
                 // console.debug('no: ' + hsl);
                 // this.sisa(str);
                 // parse.kataAr.push(hsl + '');
-                data.token.push({
-                    // token: hsl + '',
-                    value: hsl + '',
+
+                let token: Itoken = {
+                    value: value + '',
                     type: Kons.TY_ANGKA
-                });
+                }
+                data.token.push(token);
+                // console.log('get number: ' + JSON.stringify(token));
+                // console.log(hsl);
+                // console.log(hsl[0]);
+
+                // console.log(data.token);
                 return true;
             }
 
