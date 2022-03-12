@@ -175,7 +175,7 @@ namespace ha.parse {
             else if (token.type == Kons.TY_ELSEIF) {
                 return "} else if " + " (" + this.terjemah(token.token[1]) + ") " + " { ";
             }
-            else if (token.type == Kons.TY_FUNC) {
+            else if (token.type == Kons.TY_FUNC_DEC) {
                 let hsl: string = '';
                 let st: boolean = data.config.awaitFl;
 

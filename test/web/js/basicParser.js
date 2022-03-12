@@ -186,6 +186,8 @@ var ha;
             isExp(token) {
                 if (!token)
                     return false;
+                if (token.type == parse.Kons.TY_EXP)
+                    return true;
                 if (token.type == parse.Kons.TY_ANGKA)
                     return true;
                 if (token.type == parse.Kons.TY_MIN)
@@ -209,6 +211,69 @@ var ha;
                 if (token.value && token.value.toLowerCase() == "false")
                     return true;
                 return false;
+            }
+            exp2() {
+                function check(t0, t1, t2) {
+                    if (!t1)
+                        return false;
+                    let ar = [
+                        parse.Kons.TY_ANGKA,
+                        parse.Kons.TY_BINOP,
+                        parse.Kons.TY_TEKS,
+                        parse.Kons.TY_KATA,
+                        parse.Kons.TY_MIN,
+                        parse.Kons.TY_PANGGIL_FUNGSI,
+                        parse.Kons.TY_KURUNG_SINGLE
+                    ];
+                    if (ar.indexOf(t1.type) < 0)
+                        return false;
+                    if (t1.type == parse.Kons.TY_KATA) {
+                        if (t2) {
+                            if (t2.valueLowerCase == '(') {
+                                return false;
+                            }
+                            if (t2.type == parse.Kons.TY_KURUNG_ARG)
+                                return false;
+                            if (t2.type == parse.Kons.TY_KURUNG_ARG2)
+                                return false;
+                            if (t2.type == parse.Kons.TY_KURUNG_ISI)
+                                return false;
+                            if (t2.type == parse.Kons.TY_KURUNG_KOSONG)
+                                return false;
+                            if (t2.type == parse.Kons.TY_KURUNG_SINGLE)
+                                return false;
+                        }
+                    }
+                    if (t1.type == parse.Kons.TY_KURUNG_ISI) {
+                        if (t0 && t0.type == parse.Kons.TY_KATA) {
+                            return false;
+                        }
+                    }
+                    if (t1.type == parse.Kons.TY_KATA) {
+                        if (t2 && ("." == t2.valueLowerCase)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                let ada = false;
+                for (let i = 0; i < parse.grammar.barisObj.token.length; i++) {
+                    let token0 = parse.parse.getToken(i - 1, parse.grammar.barisObj.token);
+                    let token1 = parse.parse.getToken(i + 0, parse.grammar.barisObj.token);
+                    let token2 = parse.parse.getToken(i + 1, parse.grammar.barisObj.token);
+                    let tokenBaru;
+                    if (check(token0, token1, token2)) {
+                        tokenBaru = {
+                            type: parse.Kons.TY_EXP,
+                            token: [token1]
+                        };
+                        console.log("exp");
+                        console.log(parse.parse.tokenToAr(tokenBaru));
+                        parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                        ada = true;
+                    }
+                }
+                return ada;
             }
             isOp(token) {
                 if (token.value == "+")
@@ -420,27 +485,40 @@ var ha;
                 }
                 return false;
             }
-            kurungIsi() {
-                for (let i = 0; i <= parse.grammar.barisObj.token.length - 3; i++) {
-                    let token1 = parse.grammar.barisObj.token[i];
-                    let token2 = parse.grammar.barisObj.token[i + 1];
-                    let token3 = parse.grammar.barisObj.token[i + 2];
-                    if (token1.value == "(") {
-                        if (token2.type == parse.Kons.TY_ARGUMENT || this.isExp(token2)) {
-                            if (token3.value == ")") {
-                                let tokenBaru = {
-                                    token: [token1, token2, token3],
-                                    type: parse.Kons.TY_KURUNG_ISI
-                                };
-                                console.log("kurung isi:");
-                                console.log(tokenBaru);
-                                parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + 2, tokenBaru);
-                                return true;
-                            }
-                        }
+            kurungSingle() {
+                let ada = false;
+                function check(t1, t2, t3) {
+                    if (!t1)
+                        return false;
+                    if (!t2)
+                        return false;
+                    if (!t3)
+                        return false;
+                    if (t1.valueLowerCase != '(')
+                        return false;
+                    if (t3.valueLowerCase != ')')
+                        return false;
+                    if (t2.type != parse.Kons.TY_EXP)
+                        return false;
+                    return true;
+                }
+                for (let i = 0; i < parse.grammar.barisObj.token.length; i++) {
+                    let token1 = parse.parse.getToken(i + 0, parse.grammar.barisObj.token);
+                    let token2 = parse.parse.getToken(i + 1, parse.grammar.barisObj.token);
+                    let token3 = parse.parse.getToken(i + 2, parse.grammar.barisObj.token);
+                    if (check(token1, token2, token3)) {
+                        ada = true;
+                        let tokenBaru = {
+                            token: [token1, token2, token3],
+                            type: parse.Kons.TY_KURUNG_SINGLE
+                        };
+                        console.log("kurung single:");
+                        console.log(parse.parse.tokenToAr(tokenBaru));
+                        parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                        i--;
                     }
                 }
-                return false;
+                return ada;
             }
             binopIf() {
                 function check(t0, t1, t2, t3) {
@@ -561,7 +639,7 @@ var ha;
                         if (token3 && token3.value == "(") {
                             ok = false;
                         }
-                        if (token3 && token3.type == parse.Kons.TY_KURUNG_ISI) {
+                        if (token3 && token3.type == parse.Kons.TY_KURUNG_KOSONG) {
                             ok = false;
                         }
                         if (token3 && token3.type == parse.Kons.TY_KURUNG_ISI) {
@@ -636,64 +714,59 @@ var ha;
                 }
                 return false;
             }
-            checkPanggilFungsi(token0) {
-                if (token0) {
-                    if (token0.value == '.') {
-                        return false;
-                    }
-                    else if (token0.type == parse.Kons.TY_KATA_DOT) {
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-                }
-                else {
-                    return true;
-                }
-            }
-            checkPanggilFungsi1(token1) {
-                if (token1.value) {
-                    if (token1.value.toLowerCase() == 'if') {
-                        return false;
-                    }
-                    else if (token1.value.toLowerCase() == 'elseif') {
-                        return false;
-                    }
-                    else {
-                        return true;
-                    }
-                }
-                else {
-                    return true;
-                }
-            }
             panggilfungsi() {
-                for (let i = 0; i <= parse.grammar.barisObj.token.length - 2; i++) {
-                    let token0 = parse.parse.getToken(i - 1, parse.grammar.barisObj.token);
-                    let token1 = parse.grammar.barisObj.token[i];
-                    let token2 = parse.grammar.barisObj.token[i + 1];
-                    if (token1.type == parse.Kons.TY_KATA || token1.type == parse.Kons.TY_RES_WORD) {
-                        if (token2.type == parse.Kons.TY_KURUNG_KOSONG || token2.type == parse.Kons.TY_KURUNG_ISI) {
-                            if (this.checkPanggilFungsi(token0)) {
-                                if (this.checkPanggilFungsi1(token1)) {
-                                    let tokenBaru = {
-                                        token: [token1, token2],
-                                        type: parse.Kons.TY_PANGGIL_FUNGSI
-                                    };
-                                    if (token1.value && token1.value.toLowerCase() == 'while') {
-                                        tokenBaru.type = parse.Kons.TY_WEND;
-                                    }
-                                    console.log('panggil fungsi:');
-                                    console.log(tokenBaru);
-                                    parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + 1, tokenBaru);
-                                    return true;
-                                }
+                let ada = false;
+                function check(t0, t1, t2, t3) {
+                    if (!t1)
+                        return false;
+                    if (!t2)
+                        return false;
+                    if (t1.type != parse.Kons.TY_KATA)
+                        return false;
+                    if ('dim' == t1.valueLowerCase)
+                        return false;
+                    if (t3) {
+                        if (t3.valueLowerCase == '=') {
+                            let ifAr = [
+                                'if', 'while', 'until'
+                            ];
+                            if (t0 && ifAr.indexOf(t0.valueLowerCase) < 0) {
+                                return false;
                             }
                         }
                     }
+                    let kurung = [
+                        parse.Kons.TY_KURUNG_ARG,
+                        parse.Kons.TY_KURUNG_ARG2,
+                        parse.Kons.TY_KURUNG_ISI,
+                        parse.Kons.TY_KURUNG_KOSONG,
+                        parse.Kons.TY_KURUNG_SINGLE
+                    ];
+                    if (kurung.indexOf(t2.type) < 0)
+                        return false;
+                    return true;
                 }
-                return false;
+                for (let i = 0; i < parse.grammar.barisObj.token.length; i++) {
+                    let token0 = parse.parse.getToken(i - 1, parse.grammar.barisObj.token);
+                    let token1 = parse.parse.getToken(i + 0, parse.grammar.barisObj.token);
+                    let token2 = parse.parse.getToken(i + 1, parse.grammar.barisObj.token);
+                    let token3 = parse.parse.getToken(i + 2, parse.grammar.barisObj.token);
+                    if (check(token0, token1, token2, token3)) {
+                        ada = true;
+                        let tokenBaru = {
+                            token: [token1, token2],
+                            type: parse.Kons.TY_PANGGIL_FUNGSI
+                        };
+                        console.log("fungsi exp:");
+                        console.log(tokenBaru);
+                        parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                        i--;
+                    }
+                }
+                if (ada) {
+                    parse.exp.exp2();
+                }
+                return ada;
             }
             getQuote2(idx) {
                 for (let i = idx; i < parse.grammar.barisObj.token.length; i++) {
@@ -772,12 +845,13 @@ var ha;
                     if (false) { }
                     else if (parse.exp.teks()) { }
                     else if (this.hapusSpace()) { }
+                    else if (parse.exp.exp2()) { }
                     else if (parse.exp.kataDotFinal()) { }
                     else if (parse.exp.kataDot()) { }
                     else if (parse.exp.arrayDot()) { }
                     else if (parse.exp.kataDotChain()) { }
                     else if (parse.exp.kurungKosong()) { }
-                    else if (parse.exp.kurungIsi()) { }
+                    else if (parse.exp.kurungSingle()) { }
                     else if (parse.exp.panggilfungsi()) { }
                     else if (parse.exp.min()) { }
                     else if (parse.exp.binopIf()) { }
@@ -791,7 +865,7 @@ var ha;
                     else if (parse.stmt.return1()) { }
                     else if (parse.stmt.return2()) { }
                     else if (parse.stmt.new2()) { }
-                    else if (parse.stmt.for2()) { }
+                    else if (parse.stmt.forPendek()) { }
                     else if (parse.stmt.varAssign()) { }
                     else if (parse.stmt.modifier()) { }
                     else if (parse.stmt.ifPendek()) { }
@@ -801,6 +875,7 @@ var ha;
                     else if (parse.stmt.funcDec()) { }
                     else if (parse.stmt.while2()) { }
                     else if (parse.stmt.perintah2()) { }
+                    else if (parse.stmt.dimAssign()) { }
                     else {
                         console.log("error:");
                         console.log(this._barisObj.token);
@@ -821,28 +896,35 @@ var ha;
             static TY_ANGKA = 1;
             static TY_KATA = 2;
             static TY_BARIS = 3;
-            static TY_BINOP = 4;
-            static TY_TEKS = 5;
-            static TY_RES_WORD = 6;
-            static Ty_VAR_ASSIGNMENT = 7;
-            static TY_PERINTAH = 8;
-            static TY_ARGUMENT = 9;
-            static TY_KURUNG_KOSONG = 10;
-            static TY_PANGGIL_FUNGSI = 11;
-            static TY_OP = 100;
+            static TY_TEKS = 4;
+            static TY_RES_WORD = 5;
+            static TY_OP = 6;
+            static TY_SYMBOL = 7;
+            static TY_ARGUMENT = 100;
+            static TY_ARGUMENT2 = 101;
+            static TY_MIN = 102;
+            static TY_KURUNG_KOSONG = 103;
+            static TY_KURUNG_ISI = 104;
+            static TY_KURUNG_SINGLE = 105;
+            static TY_KURUNG_ARG = 106;
+            static TY_KURUNG_ARG2 = 107;
             static TY_KATA_DOT = 200;
-            static TY_KURUNG_ISI = 300;
-            static TY_IF = 400;
-            static TY_IFP = 425;
-            static TY_ELSEIF = 450;
-            static TY_MIN = 500;
-            static TY_FOR = 600;
-            static TY_WEND = 700;
-            static TY_SYMBOL = 800;
-            static TY_FUNC = 900;
-            static TY_KOTAK = 1000;
-            static TY_ARRAY = 1100;
-            static TY_RETURN = 1200;
+            static TY_BINOP = 201;
+            static TY_PANGGIL_FUNGSI = 202;
+            static TY_EXP = 203;
+            static TY_KOTAK = 203;
+            static TY_ARRAY = 204;
+            static Ty_VAR_ASSIGNMENT = 300;
+            static TY_PERINTAH = 301;
+            static TY_IF = 302;
+            static TY_IFP = 303;
+            static TY_ELSEIF = 304;
+            static TY_FOR = 305;
+            static TY_WEND = 306;
+            static TY_FUNC_DEC = 307;
+            static TY_RETURN = 308;
+            static TY_DIM_ASSINMENT = 309;
+            static TY_DIM_DEC = 310;
         }
         parse.Kons = Kons;
     })(parse = ha.parse || (ha.parse = {}));
@@ -915,12 +997,13 @@ var ha;
                 return false;
             }
             getNumber() {
-                let id = /^([0-9]+\.?[0-9]*|\.[0-9]+)/;
+                let id = /^[0-9]*\.?[0-9]+/;
                 let hsl = (parse.data.dataStr.match(id));
                 let value;
                 if (hsl) {
                     value = hsl + '';
-                    console.log('get number ' + value);
+                    console.log('get number, value: ' + value + '|');
+                    console.log('hsl');
                     console.log(hsl);
                     parse.data.dataStr = parse.data.dataStr.slice(value.length);
                     let token = {
@@ -1039,12 +1122,6 @@ var ha;
                     parse_1.grammar.barisObj = barisObj;
                     parse_1.baris.renderLines(barisObj.token);
                     parse_1.grammar.grammar();
-                    console.group('terjemah:');
-                    barisObj.terjemah = parse_1.terj.terjemah(barisObj.token[0]);
-                    console.groupEnd();
-                    console.log("hasil:");
-                    console.log(barisObj.terjemah);
-                    console.log("");
                 }
                 console.groupEnd();
                 console.group("hasil:");
@@ -1080,6 +1157,18 @@ var ha;
                 if (idx >= token.length)
                     return null;
                 return token[idx];
+            }
+            tokenToAr(token) {
+                let ar = [];
+                if (token.value) {
+                    ar.push(token.valueLowerCase);
+                }
+                else if (token.token) {
+                    token.token.forEach((token2) => {
+                        ar.push(this.tokenToAr(token2));
+                    });
+                }
+                return ar;
             }
         }
         class Arr {
@@ -1117,43 +1206,69 @@ var ha;
     var parse;
     (function (parse) {
         class Stmt {
-            for2() {
-                for (let i = 0; i <= parse.grammar.barisObj.token.length - 6; i++) {
-                    let token1 = parse.grammar.barisObj.token[i + 0];
-                    let token2 = parse.grammar.barisObj.token[i + 1];
-                    let token3 = parse.grammar.barisObj.token[i + 2];
-                    let token4 = parse.grammar.barisObj.token[i + 3];
-                    let token5 = parse.grammar.barisObj.token[i + 4];
-                    let token6 = parse.grammar.barisObj.token[i + 5];
-                    if (token1.value && token1.value.toLowerCase() == "for") {
-                        if (token2.type == parse.Kons.TY_KATA) {
-                            if (token3.value == "=") {
-                                if (parse.exp.isExp(token4)) {
-                                    if (token5.value && token5.value.toLowerCase() == "to") {
-                                        if (parse.exp.isExp(token6)) {
-                                            let tokenBaru = {
-                                                token: [
-                                                    token1,
-                                                    token2,
-                                                    token3,
-                                                    token4,
-                                                    token5,
-                                                    token6
-                                                ],
-                                                type: parse.Kons.TY_FOR
-                                            };
-                                            console.log('for: ');
-                                            console.log(tokenBaru);
-                                            parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + 5, tokenBaru);
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            forPendek() {
+                let ada = false;
+                function check(t1, t2, t3, t4, t5, t6) {
+                    console.debug('null check:');
+                    if (!t1)
+                        return false;
+                    if (!t2)
+                        return false;
+                    if (!t3)
+                        return false;
+                    if (!t4)
+                        return false;
+                    if (!t5)
+                        return false;
+                    if (!t6)
+                        return false;
+                    console.log(t6);
+                    console.log('check for');
+                    if ("for" != t1.valueLowerCase)
+                        return false;
+                    if (parse.Kons.TY_EXP != t2.type)
+                        return false;
+                    console.log('check =');
+                    if ("=" != t3.valueLowerCase)
+                        return false;
+                    console.log('check t4');
+                    if (parse.Kons.TY_EXP != t4.type)
+                        return false;
+                    if ("to" != t5.valueLowerCase)
+                        return false;
+                    console.log('check t6');
+                    if (parse.Kons.TY_EXP != t6.type)
+                        return false;
+                    return true;
                 }
-                return false;
+                for (let i = 0; i <= parse.grammar.barisObj.token.length; i++) {
+                    let token1 = parse.parse.getToken(i + 0, parse.grammar.barisObj.token);
+                    let token2 = parse.parse.getToken(i + 1, parse.grammar.barisObj.token);
+                    let token3 = parse.parse.getToken(i + 2, parse.grammar.barisObj.token);
+                    let token4 = parse.parse.getToken(i + 3, parse.grammar.barisObj.token);
+                    let token5 = parse.parse.getToken(i + 4, parse.grammar.barisObj.token);
+                    let token6 = parse.parse.getToken(i + 5, parse.grammar.barisObj.token);
+                    console.group('for');
+                    if (check(token1, token2, token3, token4, token5, token6)) {
+                        let tokenBaru = {
+                            token: [
+                                token1,
+                                token2,
+                                token3,
+                                token4,
+                                token5,
+                                token6
+                            ],
+                            type: parse.Kons.TY_FOR
+                        };
+                        console.log('for: ');
+                        console.log(parse.parse.tokenToAr(tokenBaru));
+                        parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
+                        ada = true;
+                    }
+                    console.groupEnd();
+                }
+                return ada;
             }
             return2() {
                 function check(t1, t2, t3) {
@@ -1330,6 +1445,30 @@ var ha;
             }
             ifPendek() {
                 let ada = false;
+                function check(t1, t2, t3) {
+                    console.debug('check if');
+                    if (!t1)
+                        return false;
+                    if (!t2)
+                        return false;
+                    if (!t1.value)
+                        return false;
+                    if (t1.value.toLowerCase() != "if")
+                        return false;
+                    if (t2.type != parse.Kons.TY_EXP)
+                        return false;
+                    t3;
+                    if (t3) {
+                        if (t3.valueLowerCase == '=')
+                            return false;
+                        console.log('t3 value lolos: ' + t3.valueLowerCase);
+                        console.log(t3);
+                    }
+                    else {
+                        console.debug('t3 null');
+                    }
+                    return true;
+                }
                 for (let i = 0; i < parse.grammar.barisObj.token.length; i++) {
                     let token1 = parse.parse.getToken(i + 0, parse.grammar.barisObj.token);
                     let token2 = parse.parse.getToken(i + 1, parse.grammar.barisObj.token);
@@ -1348,23 +1487,6 @@ var ha;
                     }
                 }
                 return ada;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t1.value)
-                        return false;
-                    if (t1.value.toLowerCase() != "if")
-                        return false;
-                    t3;
-                    if (!parse.exp.isExp(t2)) {
-                        if (t2.type != parse.Kons.TY_KURUNG_ISI) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
             }
             funcDec() {
                 for (let i = 0; i <= parse.grammar.barisObj.token.length; i++) {
@@ -1377,7 +1499,7 @@ var ha;
                                     token1,
                                     token2
                                 ],
-                                type: parse.Kons.TY_FUNC
+                                type: parse.Kons.TY_FUNC_DEC
                             };
                             console.log('func dec: ');
                             console.log(tokenBaru);
@@ -1496,6 +1618,47 @@ var ha;
                     }
                 }
                 return false;
+            }
+            dimAssign() {
+                function check(t0, t1, t2, t3) {
+                    if (!t0)
+                        return false;
+                    if (!t1)
+                        return false;
+                    if (!t2)
+                        return false;
+                    if (!t3)
+                        return false;
+                    let ar = ['if', 'while', 'until'];
+                    if (ar.indexOf(t0.valueLowerCase) < 0)
+                        return false;
+                    if (parse.exp.isExp(t1) == false)
+                        return false;
+                    if (t2.valueLowerCase != '=')
+                        return false;
+                    if (parse.exp.isExp(t3) == false)
+                        return false;
+                    return true;
+                }
+                let ada = false;
+                for (let i = 0; i < parse.grammar.barisObj.token.length; i++) {
+                    let token0 = parse.parse.getToken(i - 1, parse.grammar.barisObj.token);
+                    let token1 = parse.parse.getToken(i + 0, parse.grammar.barisObj.token);
+                    let token2 = parse.parse.getToken(i + 1, parse.grammar.barisObj.token);
+                    let token3 = parse.parse.getToken(i + 2, parse.grammar.barisObj.token);
+                    let tokenBaru;
+                    if (check(token0, token1, token2, token3)) {
+                        tokenBaru = {
+                            type: parse.Kons.TY_BINOP,
+                            token: [token1, token2, token3]
+                        };
+                        console.log("binop if/until/while:");
+                        console.log(tokenBaru);
+                        parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                        ada = true;
+                    }
+                }
+                return ada;
             }
             perintah2() {
                 let ada = false;
@@ -1703,7 +1866,7 @@ var ha;
                 else if (token.type == parse.Kons.TY_ELSEIF) {
                     return "} else if " + " (" + this.terjemah(token.token[1]) + ") " + " { ";
                 }
-                else if (token.type == parse.Kons.TY_FUNC) {
+                else if (token.type == parse.Kons.TY_FUNC_DEC) {
                     let hsl = '';
                     let st = parse.data.config.awaitFl;
                     parse.data.config.awaitFl = false;

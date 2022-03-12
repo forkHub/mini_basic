@@ -1,7 +1,39 @@
+[perubahan]
+dim declaration 
+    dim => dim ( single )
+    dim => dim ( arg2 )
+    ar_dec => kata = dim
+    ar_dec => global ar_dec
+    dim bukan fungsi umum dihandle terpisah
+        type dim
 
-[ref] barisObj ditaruh di data
+argument
+    arg2 => exp koma exp
+    arg => arg2 koma exp
+    arg => exp koma arg2
+    arg => arg koma arg
+
+array get = panggil_fungsi
+
+exp token buat mempermudah
+    kurung diawali kata bukan exp
+
+kurung
+    kosong
+    kosong single => kurung_buka exp kurung_tutup
+    kosong arg2
+    kosong arg
+
+[ref]
+barisObj ditaruh di data
 dialog error
     per baris 
 line break buat :
-tambahkan ; pada akhir perintah
+tambahkan ; pada akhir perintah saat terjemah
+
+[next]
 tambahkan oper double ++/--
+comment support //
+plugin vscode
+linter
+blitzplus

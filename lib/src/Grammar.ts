@@ -44,18 +44,24 @@ namespace ha.parse {
         grammar(): void {
             console.group('grammar');
 
+            //TODO: else if diganti
+            /*
+                buat optimisasi
+            */
             while (this._barisObj.token.length > 1) {
                 if (false) { }
 
                 //BASIC
                 else if (exp.teks()) { }
                 else if (this.hapusSpace()) { }
+                else if (exp.exp2()) { }
                 else if (exp.kataDotFinal()) { }
                 else if (exp.kataDot()) { }
                 else if (exp.arrayDot()) { }
                 else if (exp.kataDotChain()) { }
                 else if (exp.kurungKosong()) { }
-                else if (exp.kurungIsi()) { }
+                else if (exp.kurungSingle()) { }
+                // else if (exp.kurungIsi()) { }
                 else if (exp.panggilfungsi()) { }
                 else if (exp.min()) { }
                 else if (exp.binopIf()) { }
@@ -73,7 +79,7 @@ namespace ha.parse {
                 else if (stmt.return1()) { }
                 else if (stmt.return2()) { }
                 else if (stmt.new2()) { }
-                else if (stmt.for2()) { }
+                else if (stmt.forPendek()) { }
                 else if (stmt.varAssign()) { }
                 else if (stmt.modifier()) { }
                 else if (stmt.ifPendek()) { }
@@ -83,7 +89,7 @@ namespace ha.parse {
                 else if (stmt.funcDec()) { }
                 else if (stmt.while2()) { }
                 else if (stmt.perintah2()) { }
-
+                else if (stmt.dimAssign()) { }
                 else {
                     console.log("error:");
                     console.log(this._barisObj.token);

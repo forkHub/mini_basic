@@ -85,13 +85,14 @@ namespace ha.parse {
         }
 
         getNumber(): boolean {
-            let id: RegExp = /^([0-9]+\.?[0-9]*|\.[0-9]+)/;
+            let id: RegExp = /^[0-9]*\.?[0-9]+/;
             let hsl: RegExpMatchArray = (data.dataStr.match(id));
             let value: string;
 
             if (hsl) {
                 value = hsl + '';
-                console.log('get number ' + value);
+                console.log('get number, value: ' + value + '|');
+                console.log('hsl');
                 console.log(hsl);
 
                 // console.log(hsl.groups.length);

@@ -27,13 +27,13 @@ namespace ha.parse {
 				baris.renderLines(barisObj.token);
 				grammar.grammar();
 
-				console.group('terjemah:')
-				barisObj.terjemah = terj.terjemah(barisObj.token[0]);
-				console.groupEnd();
+				// console.group('terjemah:')
+				// barisObj.terjemah = terj.terjemah(barisObj.token[0]);
+				// console.groupEnd();
 
-				console.log("hasil:");
-				console.log(barisObj.terjemah);
-				console.log("");
+				// console.log("hasil:");
+				// console.log(barisObj.terjemah);
+				// console.log("");
 			}
 			console.groupEnd();
 
@@ -77,6 +77,21 @@ namespace ha.parse {
 			if (idx < 0) return null;
 			if (idx >= token.length) return null;
 			return token[idx];
+		}
+
+		tokenToAr(token: Itoken): any[] {
+			let ar: any[] = [];
+
+			if (token.value) {
+				ar.push(token.valueLowerCase);
+			}
+			else if (token.token) {
+				token.token.forEach((token2: Itoken) => {
+					ar.push(this.tokenToAr(token2));
+				});
+			}
+
+			return ar;
 		}
 
 	}

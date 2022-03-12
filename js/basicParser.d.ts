@@ -44,6 +44,7 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Exp {
         isExp(token: Itoken): boolean;
+        exp2(): boolean;
         isOp(token: Itoken): boolean;
         kataDot(): boolean;
         kataDotChain(): boolean;
@@ -55,15 +56,13 @@ declare namespace ha.parse {
         array2(): boolean;
         arrayDot(): boolean;
         kurungKosong(): boolean;
-        kurungIsi(): boolean;
+        kurungSingle(): boolean;
         binopIf(): boolean;
         binop(): boolean;
         not(): boolean;
         min(): boolean;
         checkArgument(tokenAr: Itoken[]): boolean;
         argument(token: Itoken[]): boolean;
-        checkPanggilFungsi(token0: Itoken): boolean;
-        checkPanggilFungsi1(token1: Itoken): boolean;
         panggilfungsi(): boolean;
         getQuote2(idx: number): number;
         teks(): boolean;
@@ -100,28 +99,35 @@ declare namespace ha.parse {
         static readonly TY_ANGKA: number;
         static readonly TY_KATA: number;
         static readonly TY_BARIS: number;
-        static readonly TY_BINOP: number;
         static readonly TY_TEKS: number;
         static readonly TY_RES_WORD: number;
+        static readonly TY_OP: number;
+        static readonly TY_SYMBOL: number;
+        static readonly TY_ARGUMENT: number;
+        static readonly TY_ARGUMENT2: number;
+        static readonly TY_MIN: number;
+        static readonly TY_KURUNG_KOSONG: number;
+        static readonly TY_KURUNG_ISI: number;
+        static readonly TY_KURUNG_SINGLE: number;
+        static readonly TY_KURUNG_ARG: number;
+        static readonly TY_KURUNG_ARG2: number;
+        static readonly TY_KATA_DOT: number;
+        static readonly TY_BINOP: number;
+        static readonly TY_PANGGIL_FUNGSI: number;
+        static readonly TY_EXP: number;
+        static readonly TY_KOTAK: number;
+        static readonly TY_ARRAY: number;
         static readonly Ty_VAR_ASSIGNMENT: number;
         static readonly TY_PERINTAH: number;
-        static readonly TY_ARGUMENT: number;
-        static readonly TY_KURUNG_KOSONG: number;
-        static readonly TY_PANGGIL_FUNGSI: number;
-        static readonly TY_OP: number;
-        static readonly TY_KATA_DOT: number;
-        static readonly TY_KURUNG_ISI: number;
         static readonly TY_IF: number;
         static readonly TY_IFP: number;
         static readonly TY_ELSEIF: number;
-        static readonly TY_MIN: number;
         static readonly TY_FOR: number;
         static readonly TY_WEND: number;
-        static readonly TY_SYMBOL: number;
-        static readonly TY_FUNC: number;
-        static readonly TY_KOTAK: number;
-        static readonly TY_ARRAY: number;
+        static readonly TY_FUNC_DEC: number;
         static readonly TY_RETURN: number;
+        static readonly TY_DIM_ASSINMENT: number;
+        static readonly TY_DIM_DEC: number;
     }
 }
 declare namespace ha.parse {
@@ -144,6 +150,7 @@ declare namespace ha.parse {
         parse(str: string): Promise<string>;
         blijs(): string;
         getToken(idx: number, token: Itoken[]): Itoken;
+        tokenToAr(token: Itoken): any[];
     }
     class Arr {
         kiri(token: Itoken[], idx: number): Itoken[];
@@ -158,7 +165,7 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Stmt {
-        for2(): boolean;
+        forPendek(): boolean;
         return2(): boolean;
         return1(): boolean;
         while2(): boolean;
@@ -171,6 +178,7 @@ declare namespace ha.parse {
         varAssign(): boolean;
         new2(): boolean;
         modifier(): boolean;
+        dimAssign(): boolean;
         perintah2(): boolean;
     }
     export var stmt: Stmt;
