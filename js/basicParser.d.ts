@@ -166,6 +166,7 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Stmt {
         forPendek(): boolean;
+        forStep(): boolean;
         return2(): boolean;
         return1(): boolean;
         while2(): boolean;

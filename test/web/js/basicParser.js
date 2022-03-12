@@ -93,6 +93,7 @@ var ha;
                 "For", "Next", "To",
                 "Function", "end function",
                 "While", "Wend",
+                "const",
                 "//",
             ];
             _op = [
@@ -744,6 +745,9 @@ var ha;
                     ];
                     if (kurung.indexOf(t2.type) < 0)
                         return false;
+                    if (t0 && 'function' == t0.valueLowerCase) {
+                        return false;
+                    }
                     return true;
                 }
                 for (let i = 0; i < parse.grammar.barisObj.token.length; i++) {
@@ -1209,7 +1213,6 @@ var ha;
             forPendek() {
                 let ada = false;
                 function check(t1, t2, t3, t4, t5, t6) {
-                    console.debug('null check:');
                     if (!t1)
                         return false;
                     if (!t2)
@@ -1222,21 +1225,16 @@ var ha;
                         return false;
                     if (!t6)
                         return false;
-                    console.log(t6);
-                    console.log('check for');
                     if ("for" != t1.valueLowerCase)
                         return false;
                     if (parse.Kons.TY_EXP != t2.type)
                         return false;
-                    console.log('check =');
                     if ("=" != t3.valueLowerCase)
                         return false;
-                    console.log('check t4');
                     if (parse.Kons.TY_EXP != t4.type)
                         return false;
                     if ("to" != t5.valueLowerCase)
                         return false;
-                    console.log('check t6');
                     if (parse.Kons.TY_EXP != t6.type)
                         return false;
                     return true;
@@ -1248,7 +1246,6 @@ var ha;
                     let token4 = parse.parse.getToken(i + 3, parse.grammar.barisObj.token);
                     let token5 = parse.parse.getToken(i + 4, parse.grammar.barisObj.token);
                     let token6 = parse.parse.getToken(i + 5, parse.grammar.barisObj.token);
-                    console.group('for');
                     if (check(token1, token2, token3, token4, token5, token6)) {
                         let tokenBaru = {
                             token: [
@@ -1266,9 +1263,11 @@ var ha;
                         parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
                         ada = true;
                     }
-                    console.groupEnd();
                 }
                 return ada;
+            }
+            forStep() {
+                return true;
             }
             return2() {
                 function check(t1, t2, t3) {
@@ -1489,30 +1488,48 @@ var ha;
                 return ada;
             }
             funcDec() {
+                function check(t1, t2, t3) {
+                    if (!t1)
+                        return false;
+                    if (!t2)
+                        return false;
+                    if (!t3)
+                        return false;
+                    if (t1.valueLowerCase != 'function')
+                        return false;
+                    if (t2.type != parse.Kons.TY_KATA)
+                        return false;
+                    let kurungAr = [
+                        parse.Kons.TY_KURUNG_ARG,
+                        parse.Kons.TY_KURUNG_ARG2,
+                        parse.Kons.TY_KURUNG_SINGLE,
+                        parse.Kons.TY_KURUNG_KOSONG
+                    ];
+                    if (kurungAr.indexOf(t3.type) < 0)
+                        return false;
+                    return true;
+                }
+                let ada = false;
                 for (let i = 0; i <= parse.grammar.barisObj.token.length; i++) {
-                    let token1 = parse.grammar.barisObj.token[i];
+                    let token1 = parse.parse.getToken(i + 0, parse.grammar.barisObj.token);
                     let token2 = parse.parse.getToken(i + 1, parse.grammar.barisObj.token);
-                    if (token1 && token1.value && token1.value.toLowerCase() == "function") {
-                        if (token2 && token2.type == parse.Kons.TY_PANGGIL_FUNGSI) {
-                            let tokenBaru = {
-                                token: [
-                                    token1,
-                                    token2
-                                ],
-                                type: parse.Kons.TY_FUNC_DEC
-                            };
-                            console.log('func dec: ');
-                            console.log(tokenBaru);
-                            parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + 1, tokenBaru);
-                            return true;
-                        }
-                        else {
-                        }
-                    }
-                    else {
+                    let token3 = parse.parse.getToken(i + 2, parse.grammar.barisObj.token);
+                    if (check(token1, token2, token3)) {
+                        let tokenBaru = {
+                            token: [
+                                token1,
+                                token2,
+                                token3
+                            ],
+                            type: parse.Kons.TY_FUNC_DEC
+                        };
+                        console.log('func dec: ');
+                        console.log(tokenBaru);
+                        parse.grammar.barisObj.token = parse.ar.ganti(parse.grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                        ada = true;
                     }
                 }
-                return false;
+                return ada;
             }
             elseIf() {
                 for (let i = 0; i <= parse.grammar.barisObj.token.length; i++) {

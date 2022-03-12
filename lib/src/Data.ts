@@ -22,6 +22,8 @@ namespace ha.parse {
 
             "While", "Wend",
 
+            "const",
+
             //const
             //"false", "true", "null", "mod",
 

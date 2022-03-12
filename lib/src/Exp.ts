@@ -324,7 +324,7 @@ namespace ha.parse {
             return false;
         }
 
-        //TODO: gak dipakai
+        //TODO: [ref] dihapus gak dipakai
         arrayDot(): boolean {
             //array dot = kata dot
             //test[1].
@@ -755,7 +755,9 @@ namespace ha.parse {
                 if (kurung.indexOf(t2.type) < 0) return false;
 
                 //tidak boleh didahului function
-                //TODO: belum selesai
+                if (t0 && 'function' == t0.valueLowerCase) {
+                    return false;
+                }
 
                 //ok
 
