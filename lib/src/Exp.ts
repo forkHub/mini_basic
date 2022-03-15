@@ -52,7 +52,7 @@ namespace ha.parse {
                 }
 
                 //kurung single tidak diikuti kata boleh dijadikan expresion
-                if (t1.type == Kons.TY_KURUNG_ISI) {
+                if (t1.type == Kons.TY_KURUNG_SINGLE) {
                     if (t0 && t0.type == Kons.TY_KATA) {
                         return false;
                     }
@@ -63,6 +63,27 @@ namespace ha.parse {
                     if (t2 && ("." == t2.valueLowerCase)) {
                         return false;
                     }
+                }
+
+                //gak boleh return
+                if ("return" == t1.valueLowerCase) return false;
+
+                //gak boleh diikuti =
+                if (t2 && t2.valueLowerCase == '=') return false;
+
+                //gak boleh diikuti kata/string/number  
+                let ar2: number[] = [
+                    Kons.TY_KATA,
+                    Kons.TY_TEKS,
+                    Kons.TY_EXP,
+                    Kons.TY_ARGUMENT,
+                    Kons.TY_ARGUMENT2,
+                    Kons.TY_ANGKA,
+                    Kons.TY_PANGGIL_FUNGSI
+                ]
+
+                if (t2) {
+                    if (ar2.indexOf(t2.type) >= 0) return false;
                 }
 
                 return true;
@@ -86,7 +107,7 @@ namespace ha.parse {
                     }
 
                     console.log("exp");
-                    console.log(parse.tokenToAr(tokenBaru));
+                    console.log((tokenBaru));
 
                     grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -95,6 +116,11 @@ namespace ha.parse {
             }
 
             return ada;
+        }
+
+        //( var_assign )
+        exp3(): boolean {
+            return true;
         }
 
         isOp(token: Itoken): boolean {
@@ -449,6 +475,7 @@ namespace ha.parse {
         }
 
         //v2
+        //TODO: diganti karena gak perlu
         binopIf(): boolean {
 
             //[if, while, until] exp = exp
@@ -713,19 +740,13 @@ namespace ha.parse {
         panggilfungsi(): boolean {
             let ada: boolean = false;
 
-            //kata kurung [=]
+            //kata kurung
             function check(t0: Itoken, t1: Itoken, t2: Itoken, t3: Itoken): boolean {
-                // console.debug('check fungsi exp');
-                // console.log(t1);
-                // console.log(t2);
-                // console.log(t3);
 
-                // console.debug('check null');
                 //tidak boleh null
                 if (!t1) return false;
                 if (!t2) return false;
 
-                // console.debug('check t1 kata');
                 //t1 harus kata
                 if (t1.type != Kons.TY_KATA) return false;
 
@@ -741,6 +762,7 @@ namespace ha.parse {
                         if (t0 && ifAr.indexOf(t0.valueLowerCase) < 0) {
                             return false;
                         }
+                        if (!t0) return false;
                     }
                 }
 
@@ -756,6 +778,11 @@ namespace ha.parse {
 
                 //tidak boleh didahului function
                 if (t0 && 'function' == t0.valueLowerCase) {
+                    return false;
+                }
+
+                //tidak boleh didahuli dim
+                if (t0 && 'dim' == t0.valueLowerCase) {
                     return false;
                 }
 

@@ -16,6 +16,8 @@ Else
 	console.Log("test 3");	;//test console.log
 EndIf
 
+i=0
+
 For i= 0 To 10 
 For i= 5 To 10+4
 For i= 0 To -10 

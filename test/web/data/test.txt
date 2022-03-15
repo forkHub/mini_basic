@@ -1,3 +1,9 @@
+LoadAnimSeq mesh_3ds,"makbot\mak_running.3ds"
+a=1
+day(0)=1
+
+include "teks"
+
 ;"Dim",
 ;"If", "Else", "ElseIf", "EndIf", "Then",
 ;"For", "Next", "To",
@@ -48,22 +54,13 @@ a-1
 a+-1
 (2)-1
 
-[][]
-[abcd][134]
-test[abcd]
-test[abcd][abcd]
-test.test[abcd]
-a = test[100]
-
 ;==============
 Return false
-If (snow.y >= 159) Then Return false
 
 ElseIf (moveLeft(item)) Then 
 If (InputDrag() && imgDrag) Then
 
 -Math.floor(100)
-boxAr[i].x = -Math.floor(Math.random() * 320)
 
 Not true
 

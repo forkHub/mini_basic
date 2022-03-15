@@ -91,9 +91,9 @@ namespace ha.parse {
 
             if (hsl) {
                 value = hsl + '';
-                console.log('get number, value: ' + value + '|');
-                console.log('hsl');
-                console.log(hsl);
+                // console.log('get number, value: ' + value + '|');
+                // console.log('hsl');
+                // console.log(hsl);
 
                 // console.log(hsl.groups.length);
                 // console.log(hsl);
@@ -172,7 +172,7 @@ namespace ha.parse {
         }
 
         getId(): boolean {
-            let id: RegExp = /^[a-zA-Z_][a-zA-Z0-9_$%#]*/;
+            let id: RegExp = /^[a-zA-Z_][a-zA-Z0-9_$%#@]*/;
             let hsl: RegExpMatchArray = (data.dataStr.match(id));
             let value: string = '';
 

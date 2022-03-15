@@ -10,7 +10,7 @@ namespace ha.parse {
         }
 
         isStmt(token: Itoken): boolean {
-            if (token.type == Kons.Ty_VAR_ASSIGNMENT) return true;
+            if (token.type == Kons.TY_VAR_ASSIGNMENT) return true;
             return false;
         }
 
@@ -57,7 +57,7 @@ namespace ha.parse {
                 else if (exp.exp2()) { }
                 else if (exp.kataDotFinal()) { }
                 else if (exp.kataDot()) { }
-                else if (exp.arrayDot()) { }
+                // else if (exp.arrayDot()) { }
                 else if (exp.kataDotChain()) { }
                 else if (exp.kurungKosong()) { }
                 else if (exp.kurungSingle()) { }
@@ -68,20 +68,21 @@ namespace ha.parse {
                 else if (exp.binop()) { }
                 else if (exp.not()) { }
                 else if (exp.argument(this._barisObj.token)) { }
-                else if (exp.kotak()) { }
-                else if (exp.kotak2()) { }
-                else if (exp.kotak3()) { }
-                else if (exp.array2()) { }
+                // else if (exp.kotak()) { }
+                // else if (exp.kotak2()) { }
+                // else if (exp.kotak3()) { }
+                // else if (exp.array2()) { }
 
                 //EXP
 
                 //STMT
+                else if (stmt.modifier()) { }
                 else if (stmt.return1()) { }
                 else if (stmt.return2()) { }
                 else if (stmt.new2()) { }
                 else if (stmt.forPendek()) { }
+                else if (stmt.forStep()) { }
                 else if (stmt.varAssign()) { }
-                else if (stmt.modifier()) { }
                 else if (stmt.ifPendek()) { }
                 else if (stmt.ifPendekThen()) { }
                 else if (stmt.ifPendekPerintah()) { }
@@ -89,6 +90,7 @@ namespace ha.parse {
                 else if (stmt.funcDec()) { }
                 else if (stmt.while2()) { }
                 else if (stmt.perintah2()) { }
+                else if (stmt.dimDec()) { }
                 else if (stmt.dimAssign()) { }
                 else {
                     console.log("error:");

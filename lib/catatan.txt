@@ -7,6 +7,38 @@ dim declaration
     dim bukan fungsi umum dihandle terpisah
         type dim
 
+Type:
+    Type MyType
+        Field x,y
+    End Type
+
+    Global mine.MyType 
+    Dim all_mine.MyType( 100 )
+
+    mine.MyType=New MyType
+    Delete mine
+
+    mine.MyType=First MyType
+    mine.MyType=First MyType ;mine=first object in the type list
+
+    mine=After( mine ) ;mine=second object
+    mine=After( mine ) ;mine=third object
+    mine=Before( mine ) ;mine=second object
+    mine=Before( mine ) ;mine=first again!
+
+    mine.MyType=Last MyType ;mine=last object
+    mine=After( mine ) ;object after last does not exist!
+
+    mine1.MyType=New MyType
+    mine2.MyType=New MyType
+    Insert mine2 Before mine1
+
+    For mine.MyType=Each MyType
+    Next
+
+    Delete Each MyType
+
+
 argument
     arg2 => exp koma exp
     arg => arg2 koma exp

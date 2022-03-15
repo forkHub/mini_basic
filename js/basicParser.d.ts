@@ -45,6 +45,7 @@ declare namespace ha.parse {
     class Exp {
         isExp(token: Itoken): boolean;
         exp2(): boolean;
+        exp3(): boolean;
         isOp(token: Itoken): boolean;
         kataDot(): boolean;
         kataDotChain(): boolean;
@@ -117,7 +118,7 @@ declare namespace ha.parse {
         static readonly TY_EXP: number;
         static readonly TY_KOTAK: number;
         static readonly TY_ARRAY: number;
-        static readonly Ty_VAR_ASSIGNMENT: number;
+        static readonly TY_VAR_ASSIGNMENT: number;
         static readonly TY_PERINTAH: number;
         static readonly TY_IF: number;
         static readonly TY_IFP: number;
@@ -126,8 +127,10 @@ declare namespace ha.parse {
         static readonly TY_WEND: number;
         static readonly TY_FUNC_DEC: number;
         static readonly TY_RETURN: number;
+        static readonly TY_MOD: number;
         static readonly TY_DIM_ASSINMENT: number;
         static readonly TY_DIM_DEC: number;
+        static readonly TY_DIM_DEC_VAR: number;
     }
 }
 declare namespace ha.parse {
@@ -165,22 +168,23 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Stmt {
+        Baru(): boolean;
+        dimAssign(): boolean;
+        dimDec(): boolean;
         forPendek(): boolean;
         forStep(): boolean;
-        return2(): boolean;
-        return1(): boolean;
-        while2(): boolean;
+        funcDec(): boolean;
+        elseIf(): boolean;
         ifPendekPerintah(): boolean;
         ifPendekThen(): boolean;
         ifPendek(): boolean;
-        funcDec(): boolean;
-        elseIf(): boolean;
-        Baru(): boolean;
-        varAssign(): boolean;
-        new2(): boolean;
         modifier(): boolean;
-        dimAssign(): boolean;
+        new2(): boolean;
         perintah2(): boolean;
+        return2(): boolean;
+        return1(): boolean;
+        varAssign(): boolean;
+        while2(): boolean;
     }
     export var stmt: Stmt;
     export {};

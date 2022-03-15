@@ -9,7 +9,7 @@ namespace ha.parse {
             if (false) {
                 return '';
             }
-            else if (token.type == Kons.Ty_VAR_ASSIGNMENT) {
+            else if (token.type == Kons.TY_VAR_ASSIGNMENT) {
                 return this.varAssign(token);
             }
             else if (token.type == Kons.TY_ANGKA) {

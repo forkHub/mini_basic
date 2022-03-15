@@ -16,13 +16,16 @@ namespace ha.parse {
         private _kataKunci2: string[] = [
             "If", "ElseIf", "EndIf", "Else", "Then",
 
-            "For", "Next", "To",
+            "For", "Next", "To", "step",
 
             "Function", "end function",
 
             "While", "Wend",
 
-            "const",
+            "const", "global", "local",
+
+            "type", "field", "end type", "new",
+            "delete", "before", "after", "each", "last",
 
             //const
             //"false", "true", "null", "mod",
