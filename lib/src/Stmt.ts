@@ -395,6 +395,56 @@ namespace ha.parse {
             return false;
         }
 
+        //TODO:
+        IfPendekPerintah2(): boolean {
+            let ada: boolean = false;
+
+            //ifperintah perintah
+            function check(t1: Itoken, t2: Itoken, t3: Itoken): boolean {
+                if (!t1) return false;
+                if (!t2) return false;
+                if (t3) return false;
+
+                if (t1.type != Kons.TY_IF) return false;
+                if (t2.type != Kons.TY_PERINTAH) {
+                    if (exp.isExp(t2) == false) {
+                        if (t2.value && (t2.value.toLowerCase()) != "return") {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+
+            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+
+                let token1: Itoken = parse.getToken(i + 0, grammar.barisObj.token);
+                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
+                let token3: Itoken = parse.getToken(i + 2, grammar.barisObj.token);
+
+                let tokenBaru: Itoken;
+
+                if (check(token1, token2, token3)) {
+                    tokenBaru = {
+                        type: Kons.TY_IF,
+                        token: [token1, token2]
+                    }
+
+                    console.log("if pendek + perintah:");
+                    console.log(tokenBaru);
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 1, tokenBaru);
+
+                    ada = true;
+                    i--;
+                }
+            }
+
+            return ada;
+
+        }
+
         ifPendekPerintah(): boolean {
             let ada: boolean = false;
 
@@ -424,7 +474,7 @@ namespace ha.parse {
 
             return ada;
 
-            //if perintah [kosong]
+            //if perintah
             function check(t1: Itoken, t2: Itoken, t3: Itoken): boolean {
                 if (!t1) return false;
                 if (!t2) return false;
@@ -638,7 +688,9 @@ namespace ha.parse {
 
                 if (!exp.isExp(t2)) {
                     if (t2.type != Kons.TY_ARGUMENT) {
-                        return false;
+                        if (t2.type != Kons.TY_ARGUMENT2) {
+                            return false;
+                        }
                     }
                 }
 

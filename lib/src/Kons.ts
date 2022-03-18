@@ -33,8 +33,11 @@ namespace ha.parse {
         static readonly TY_VAR_ASSIGNMENT: number = 300;
         static readonly TY_PERINTAH: number = 301;
         static readonly TY_IF: number = 302;
-        static readonly TY_IFP: number = 303;
-        static readonly TY_ELSEIF: number = 304;
+        static readonly TY_IFTHEN: number = 303;
+        static readonly TY_IFP: number = 304;
+        static readonly TY_IFP2: number = 305;
+        static readonly TY_ELSEIF: number = 306;
+
         static readonly TY_FOR: number = 305;
         static readonly TY_WEND: number = 306;
         static readonly TY_FUNC_DEC: number = 307;

@@ -67,7 +67,13 @@ namespace ha.parse {
                 else if (exp.binopIf()) { }
                 else if (exp.binop()) { }
                 else if (exp.not()) { }
-                else if (exp.argument(this._barisObj.token)) { }
+                else if (exp.argument2()) { }
+                else if (exp.argument3(this._barisObj.token)) { }
+                else if (exp.argument4(this._barisObj.token)) { }
+                else if (exp.argument5(this._barisObj.token)) { }
+                else if (exp.argument6(this._barisObj.token)) { }
+                else if (exp.kurungArg2()) { }
+                else if (exp.kurungArg()) { }
                 // else if (exp.kotak()) { }
                 // else if (exp.kotak2()) { }
                 // else if (exp.kotak3()) { }

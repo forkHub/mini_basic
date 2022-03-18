@@ -79,11 +79,19 @@ namespace ha.parse {
                     Kons.TY_ARGUMENT,
                     Kons.TY_ARGUMENT2,
                     Kons.TY_ANGKA,
-                    Kons.TY_PANGGIL_FUNGSI
+                    Kons.TY_PANGGIL_FUNGSI,
+                    Kons.TY_BINOP
                 ]
 
                 if (t2) {
                     if (ar2.indexOf(t2.type) >= 0) return false;
+                }
+
+                //gak boleh didahlui modifier
+                if (t0) {
+                    if (t0.valueLowerCase == 'global') return false;
+                    if (t0.valueLowerCase == 'local') return false;
+                    if (t0.valueLowerCase == 'const') return false;
                 }
 
                 return true;
@@ -125,12 +133,12 @@ namespace ha.parse {
 
         isOp(token: Itoken): boolean {
             // if (token.token == "=") return true;
-            if (token.value == "+") return true;
-            if (token.value == "-") return true;
-            if (token.value == "*") return true;
-            if (token.value == "/") return true;
-            if (token.value == "%") return true;
-            if (token.value && token.value.toLowerCase() == "mod") return true;
+            if (token.valueLowerCase == "+") return true;
+            if (token.valueLowerCase == "-") return true;
+            if (token.valueLowerCase == "*") return true;
+            if (token.valueLowerCase == "/") return true;
+            if (token.valueLowerCase == "%") return true;
+            if (token.valueLowerCase && token.value.toLowerCase() == "mod") return true;
             if (token.type == Kons.TY_OP) return true;
             return false;
         }
@@ -231,98 +239,6 @@ namespace ha.parse {
             return false;
         }
 
-        kotak(): boolean {
-
-            for (let i: number = 0; i <= grammar.barisObj.token.length; i++) {
-
-                let token1: Itoken = grammar.barisObj.token[i];
-                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
-
-                if (token1 && token1.value == "[") {
-                    if (token2 && token2.value == "]") {
-
-                        let tokenBaru: Itoken = {
-                            token: [token1, token2],
-                            type: Kons.TY_KOTAK
-                        }
-
-                        console.log("kotak:");
-                        console.log(tokenBaru);
-
-                        grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 1, tokenBaru);
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        kotak2(): boolean {
-            //kotak ditambah kotak
-            //[][]
-
-            for (let i: number = 0; i <= grammar.barisObj.token.length; i++) {
-
-                let token1: Itoken = grammar.barisObj.token[i];
-                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
-
-                if (token1 && token1.type == Kons.TY_KOTAK) {
-                    if (token2 && token2.type == Kons.TY_KOTAK) {
-
-                        let tokenBaru: Itoken = {
-                            token: [token1, token2],
-                            type: Kons.TY_KOTAK
-                        }
-
-                        console.log("kotak 2:");
-                        console.log(tokenBaru);
-
-                        grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 1, tokenBaru);
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        kotak3(): boolean {
-            //kotak isi
-            //[***]
-
-            for (let i: number = 0; i <= grammar.barisObj.token.length; i++) {
-
-                let token1: Itoken = grammar.barisObj.token[i];
-                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
-                let token3: Itoken = parse.getToken(i + 2, grammar.barisObj.token);
-
-                if (token1 && token1.value == "[") {
-                    if (exp.isExp(token2)) {
-                        if (token3 && token3.value == "]") {
-
-                            let tokenBaru: Itoken = {
-                                token: [token1, token2, token3],
-                                type: Kons.TY_KOTAK
-                            }
-
-                            console.log("kotak isi:");
-                            console.log(tokenBaru);
-
-                            grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 2, tokenBaru);
-
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-
-        }
-
         array2(): boolean {
             for (let i: number = 0; i <= grammar.barisObj.token.length; i++) {
 
@@ -343,40 +259,6 @@ namespace ha.parse {
                         grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 1, tokenBaru);
 
                         return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        //TODO: [ref] dihapus gak dipakai
-        arrayDot(): boolean {
-            //array dot = kata dot
-            //test[1].
-
-            for (let i: number = 0; i <= grammar.barisObj.token.length; i++) {
-
-                let token1: Itoken = grammar.barisObj.token[i];
-                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
-                // let token3: Itoken = parse.getToken(i + 2, grammar.barisObj.token);
-
-                if (token1 && token1.type == Kons.TY_ARRAY) {
-                    if (token2 && token2.value == ".") {
-                        // if (token3 && token3.type == Kons.TY_KATA) {
-
-                        let tokenBaru: Itoken = {
-                            token: [token1, token2],
-                            type: Kons.TY_KATA_DOT
-                        }
-
-                        console.log("array:");
-                        console.log(tokenBaru);
-
-                        grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 1, tokenBaru);
-
-                        return true;
-                        // }
                     }
                 }
             }
@@ -465,6 +347,94 @@ namespace ha.parse {
                     }
                     console.log("kurung single:");
                     console.log(parse.tokenToAr(tokenBaru));
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    i--;
+                }
+            }
+
+            return ada;
+        }
+
+        kurungArg2(): boolean {
+            let ada: boolean = false;
+
+            //( exp )
+            function check(t1: Itoken, t2: Itoken, t3: Itoken): boolean {
+                //strict
+                if (!t1) return false;
+                if (!t2) return false;
+                if (!t3) return false;
+
+                if (t1.valueLowerCase != '(') return false;
+                if (t3.valueLowerCase != ')') return false;
+                if (t2.type != Kons.TY_ARGUMENT2) return false;
+
+                //optional
+
+                //ok
+
+                return true;
+            }
+
+            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+                let token1: Itoken = parse.getToken(i + 0, grammar.barisObj.token);
+                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
+                let token3: Itoken = parse.getToken(i + 2, grammar.barisObj.token);
+
+                if (check(token1, token2, token3)) {
+                    ada = true;
+
+                    let tokenBaru: Itoken = {
+                        token: [token1, token2, token3],
+                        type: Kons.TY_KURUNG_ARG2
+                    }
+                    console.log("kurung arg 2:");
+                    console.log(parse.tokenToAr(tokenBaru));
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    i--;
+                }
+            }
+
+            return ada;
+        }
+
+        kurungArg(): boolean {
+            let ada: boolean = false;
+
+            //( arg )
+            function check(t1: Itoken, t2: Itoken, t3: Itoken): boolean {
+                //strict
+                if (!t1) return false;
+                if (!t2) return false;
+                if (!t3) return false;
+
+                if (t1.valueLowerCase != '(') return false;
+                if (t3.valueLowerCase != ')') return false;
+                if (t2.type != Kons.TY_ARGUMENT) return false;
+
+                //optional
+
+                //ok
+
+                return true;
+            }
+
+            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+                let token1: Itoken = parse.getToken(i + 0, grammar.barisObj.token);
+                let token2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
+                let token3: Itoken = parse.getToken(i + 2, grammar.barisObj.token);
+
+                if (check(token1, token2, token3)) {
+                    ada = true;
+
+                    let tokenBaru: Itoken = {
+                        token: [token1, token2, token3],
+                        type: Kons.TY_KURUNG_ARG
+                    }
+                    console.log("kurung arg:");
+                    console.log(tokenBaru);
 
                     grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                     i--;
@@ -683,31 +653,66 @@ namespace ha.parse {
             return false;
         }
 
-        checkArgument(tokenAr: Itoken[]): boolean {
-            if (!tokenAr[1]) return false;
-            if (!tokenAr[2]) return false;
-            if (!tokenAr[3]) return false;
+        //TODO:
+        argument2(): boolean {
+            function check(t1: Itoken, t2: Itoken, t3: Itoken): boolean {
+                if (!t1) return false;
+                if (!t2) return false;
+                if (!t3) return false;
 
-            if (this.isExp(tokenAr[1]) == false) {
-                if (tokenAr[1].type != Kons.TY_ARGUMENT) {
-                    return false;
+                if (t1.type != Kons.TY_EXP) return false;
+                if (t2.valueLowerCase != ',') return false;
+                if (t3.type != Kons.TY_EXP) return false;
+
+                return true;
+            }
+
+            let ada: boolean = false;
+
+            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+
+                // let token0: Itoken = parse.getToken(i - 1, grammar.barisObj.token);
+                let t1: Itoken = parse.getToken(i + 0, grammar.barisObj.token);
+                let t2: Itoken = parse.getToken(i + 1, grammar.barisObj.token);
+                let t3: Itoken = parse.getToken(i + 2, grammar.barisObj.token);
+
+                let tokenBaru: Itoken;
+
+                if (check(t1, t2, t3)) {
+                    tokenBaru = {
+                        type: Kons.TY_ARGUMENT2,
+                        token: [t1, t2, t3]
+                    }
+
+                    console.log("argument2:");
+                    console.log(tokenBaru);
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+
+                    ada = true;
                 }
             }
 
-            if (!(tokenAr[2].value == ',')) return false;
-            if (this.isExp(tokenAr[3]) == false) return false;
-
-            if (tokenAr[4] && tokenAr[4].value == "(") return false;
-
-            return true;
+            return ada;
         }
 
-        argument(token: Itoken[]): boolean {
+        //arg2 , exp
+        argument3(token: Itoken[]): boolean {
+            function checkArgument(tokenAr: Itoken[]): boolean {
+                if (!tokenAr[1]) return false;
+                if (!tokenAr[2]) return false;
+                if (!tokenAr[3]) return false;
+
+                if (tokenAr[1].type != Kons.TY_ARGUMENT2) return false;
+                if (tokenAr[2].value != ',') return false;
+                if (tokenAr[3].type != Kons.TY_EXP) return false;
+
+                return true;
+            }
+
             for (let i: number = 0; i < token.length; i++) {
 
-                // console.log("argument " + i);
-
-                if (this.checkArgument([
+                if (checkArgument([
                     parse.getToken(i - 1, token),
                     parse.getToken(i + 0, token),
                     parse.getToken(i + 1, token),
@@ -723,10 +728,149 @@ namespace ha.parse {
                         type: Kons.TY_ARGUMENT
                     }
 
-                    console.log("arg2:");
+                    console.log("arg:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + 2, tokenBaru);
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+
+                    return true;
+                };
+
+            }
+
+            return false;
+        }
+
+        //exp , arg2
+        argument4(token: Itoken[]): boolean {
+            function checkArgument(tokenAr: Itoken[]): boolean {
+                if (!tokenAr[1]) return false;
+                if (!tokenAr[2]) return false;
+                if (!tokenAr[3]) return false;
+
+                if (tokenAr[1].type != Kons.TY_EXP) return false;
+                if (tokenAr[2].value != ',') return false;
+                if (tokenAr[3].type != Kons.TY_ARGUMENT2) return false;
+
+                return true;
+            }
+
+            for (let i: number = 0; i < token.length; i++) {
+
+                if (checkArgument([
+                    parse.getToken(i - 1, token),
+                    parse.getToken(i + 0, token),
+                    parse.getToken(i + 1, token),
+                    parse.getToken(i + 2, token),
+                    parse.getToken(i + 3, token),
+                ])) {
+
+                    let tokenBaru: Itoken = {
+                        token: [
+                            parse.getToken(i, token),
+                            parse.getToken(i + 1, token),
+                            parse.getToken(i + 2, token)],
+                        type: Kons.TY_ARGUMENT
+                    }
+
+                    console.log("arg:");
+                    console.log(tokenBaru);
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+
+                    return true;
+                };
+
+            }
+
+            return false;
+        }
+
+        //arg2 , arg2
+        argument5(token: Itoken[]): boolean {
+            function checkArgument(tokenAr: Itoken[]): boolean {
+                if (!tokenAr[1]) return false;
+                if (!tokenAr[2]) return false;
+                if (!tokenAr[3]) return false;
+
+                if (tokenAr[1].type != Kons.TY_ARGUMENT2) return false;
+                if (tokenAr[2].value != ',') return false;
+                if (tokenAr[3].type != Kons.TY_ARGUMENT2) return false;
+
+                return true;
+            }
+
+            for (let i: number = 0; i < token.length; i++) {
+
+                if (checkArgument([
+                    parse.getToken(i - 1, token),
+                    parse.getToken(i + 0, token),
+                    parse.getToken(i + 1, token),
+                    parse.getToken(i + 2, token),
+                    parse.getToken(i + 3, token),
+                ])) {
+
+                    let tokenBaru: Itoken = {
+                        token: [
+                            parse.getToken(i, token),
+                            parse.getToken(i + 1, token),
+                            parse.getToken(i + 2, token)],
+                        type: Kons.TY_ARGUMENT
+                    }
+
+                    console.log("arg:");
+                    console.log(tokenBaru);
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+
+                    return true;
+                };
+
+            }
+
+            return false;
+        }
+
+        //arg , arg
+        //arg2
+        //exp
+        argument6(token: Itoken[]): boolean {
+            function checkArgument(tokenAr: Itoken[]): boolean {
+                if (!tokenAr[1]) return false;
+                if (!tokenAr[2]) return false;
+                if (!tokenAr[3]) return false;
+
+                let ar: number[] = [Kons.TY_EXP, Kons.TY_ARGUMENT, Kons.TY_ARGUMENT2]
+
+                if (ar.indexOf(tokenAr[1].type) < 0) return false;
+                if (tokenAr[2].value != ',') return false;
+                if (ar.indexOf(tokenAr[3].type) < 0) return false;
+
+                return true;
+            }
+
+            for (let i: number = 0; i < token.length; i++) {
+
+                if (checkArgument([
+                    parse.getToken(i - 1, token),
+                    parse.getToken(i + 0, token),
+                    parse.getToken(i + 1, token),
+                    parse.getToken(i + 2, token),
+                    parse.getToken(i + 3, token),
+                ])) {
+
+                    let tokenBaru: Itoken = {
+                        token: [
+                            parse.getToken(i, token),
+                            parse.getToken(i + 1, token),
+                            parse.getToken(i + 2, token)],
+                        type: Kons.TY_ARGUMENT
+                    }
+
+                    console.log("arg:");
+                    console.log(tokenBaru);
+
+                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     return true;
                 };
@@ -902,5 +1046,6 @@ namespace ha.parse {
         }
 
     }
+
     export var exp: Exp = new Exp();
 }

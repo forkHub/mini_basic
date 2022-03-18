@@ -49,7 +49,9 @@ namespace ha.parse {
             ";",
             "&&",
             "||",
-            "not"
+            "not",
+            "and",
+            "or"
         ];
 
         private _symbol: string[] = [

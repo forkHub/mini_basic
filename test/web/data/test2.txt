@@ -1,3 +1,10 @@
+If inc>3 Then inc=inc+.12 Else inc=inc+.14
+If os>0 And go=0 And stm2<MilliSecs()
+global sky1
+1,1
+1,1,1,1
+1,1,1
+(1,2)
 Dim day(7,7)
 For loop=0 To 6 Step 2
 day(0)=1
