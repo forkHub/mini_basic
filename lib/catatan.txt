@@ -10,6 +10,7 @@ dim declaration
 Type:
     Type MyType
         Field x,y
+        Field x
     End Type
 
     Global mine.MyType 

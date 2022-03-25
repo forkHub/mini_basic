@@ -76,11 +76,11 @@ namespace ha.parse {
                 hasil += ' ' + this.terjemah(token.token[1]) + '++) {'
                 return hasil;
             }
-            else if (token.type == Kons.TY_IF) {
+            else if (token.type == Kons.TY_IF_DEC) {
                 //if binop then => if binop {
                 return 'if (' + this.terjemah(token.token[1]) + ") {";
             }
-            else if (token.type == Kons.TY_IFP) {
+            else if (token.type == Kons.TY_IF_DEC_P) {
                 //if perintah
                 //0  1
                 return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]) + " }";
@@ -172,7 +172,7 @@ namespace ha.parse {
                 if (token.value == ".") return token.value;
                 return token.value + " ";
             }
-            else if (token.type == Kons.TY_ELSEIF) {
+            else if (token.type == Kons.TY_ELSEIF_DEC) {
                 return "} else if " + " (" + this.terjemah(token.token[1]) + ") " + " { ";
             }
             else if (token.type == Kons.TY_FUNC_DEC) {

@@ -32,11 +32,7 @@ namespace ha.parse {
         //stmt
         static readonly TY_VAR_ASSIGNMENT: number = 300;
         static readonly TY_PERINTAH: number = 301;
-        static readonly TY_IF: number = 302;
-        static readonly TY_IFTHEN: number = 303;
-        static readonly TY_IFP: number = 304;
-        static readonly TY_IFP2: number = 305;
-        static readonly TY_ELSEIF: number = 306;
+
 
         static readonly TY_FOR: number = 305;
         static readonly TY_WEND: number = 306;
@@ -47,5 +43,15 @@ namespace ha.parse {
         static readonly TY_DIM_ASSINMENT: number = 400;
         static readonly TY_DIM_DEC: number = 401;       //deklarasi dim() tanpa assign ke var
         static readonly TY_DIM_DEC_VAR: number = 402;   //assign dim ke var
+
+        static readonly TY_TYPE_DEF: number = 500;
+        static readonly TY_FIELD_DEF: number = 501;
+        static readonly TY_TYPE: number = 502;
+        static readonly TY_FIELD: number = 503;
+        static readonly TY_ENDTYPE: number = 504;
+
+        static readonly TY_IF_DEC: number = 602;
+        static readonly TY_IF_DEC_P: number = 604;
+        static readonly TY_ELSEIF_DEC: number = 606;
     }
 }

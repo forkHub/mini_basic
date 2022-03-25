@@ -135,13 +135,26 @@ namespace ha.parse {
                 let kata: string = data.kataKunci2[i];
 
                 if (data.dataStr.slice(0, kata.length).toLowerCase() == kata.toLowerCase()) {
-                    // console.debug('keyword: ' + kata);
-                    // parse.kataAr.push(kata);
-                    data.token.push({
-                        // token: kata,
+
+                    //filter keyword
+                    let token: Itoken = {
                         value: kata,
-                        type: Kons.TY_RES_WORD
-                    });
+                        type: Kons.TY_RES_WORD,
+                        valueLowerCase: kata.toLowerCase()
+                    }
+
+                    let lc: string = kata.toLowerCase();
+                    if ("type" == lc) {
+                        token.type = Kons.TY_TYPE;
+                    }
+                    else if ("end type" == lc) {
+                        token.type = Kons.TY_ENDTYPE;
+                    }
+                    else if ("each" == lc) {
+                        //TODO:
+                    }
+
+                    data.token.push(token);
                     data.dataStr = data.dataStr.slice(kata.length);
                     return true;
                 }

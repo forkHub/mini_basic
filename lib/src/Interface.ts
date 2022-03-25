@@ -11,3 +11,10 @@ interface IBarisObj {
     baris?: string,
     terjemah?: string
 }
+
+interface IGrammar {
+    type: number
+    tokens: number[],
+    setelah?: number,
+    sebelum?: number
+}

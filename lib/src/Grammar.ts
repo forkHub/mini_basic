@@ -91,8 +91,9 @@ namespace ha.parse {
                 else if (stmt.varAssign()) { }
                 else if (stmt.ifPendek()) { }
                 else if (stmt.ifPendekThen()) { }
-                else if (stmt.ifPendekPerintah()) { }
-                else if (stmt.elseIf()) { }
+                else if (stmt.ifPerintah()) { }
+                else if (stmt.elseIfThen()) { }
+                else if (stmt.ifElseP()) { }
                 else if (stmt.funcDec()) { }
                 else if (stmt.while2()) { }
                 else if (stmt.perintah2()) { }
