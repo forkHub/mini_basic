@@ -1,13 +1,13 @@
-interface Itoken {
+interface IToken {
     type: number,
-    token?: Itoken[]
+    token?: IToken[]
     value?: string;
     valueLowerCase?: string;
 }
 
 interface IBarisObj {
     n?: number,
-    token?: Itoken[],
+    token?: IToken[],
     baris?: string,
     terjemah?: string
 }

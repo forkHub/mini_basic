@@ -1,0 +1,26 @@
+SELECT EXP
+CASE EXP
+END SELECT
+
+Select r
+    Case 1
+        evil$="No, really. Filename: "
+    Case 2
+        evil$="Try again. Filename: "
+    Case 3
+        evil$="Not too good at this, are you? Filename: "
+    Case 4
+        evil$="You think this is funny, don't you? Filename: "
+    Case 5
+        evil$="Aren't you bored yet? Filename: "
+    Case 6
+        Print "Enter a valid filename or I'll terminate myself."
+        Delay 1500
+        Cls
+        Locate 0,0
+        Print "I'm serious, you know."
+        Delay 1500
+        Cls
+        Locate 0,0
+        evil$="Filename: "
+End Select

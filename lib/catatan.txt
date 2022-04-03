@@ -1,4 +1,6 @@
 [perubahan]
+argument dibetulin agar dihitung dari belakang
+
 dim declaration 
     dim => dim ( single )
     dim => dim ( arg2 )
@@ -7,9 +9,33 @@ dim declaration
     dim bukan fungsi umum dihandle terpisah
         type dim
 
+TYPE_DEC    => type [KATA]
+FIELD_DEC   => Field [ARG]
+            => Field [ARG2]
+END_TYPE_DEC => end type
+
+TYPE_VAR_DEC    => [MOD] [KATA_DOT]
+TYPE_DIM_DEC    => dim [KATA_DOT] [KURUNG_SINGLE]
+                => dim [KATA_DOT] [KURUNG_ARG2]
+TYPE_NEW_DEC    => [KATA_DOT] = new [KATA]
+                => [TYPE_VAR_DEC] = new [KATA]
+TYPE_DELETE     => delete [KATA] 
+TYPE_FIRST      => [KATA_DOT] = first [KATA]
+TYPE_AFTER      => [KATA_DOT] = after [KATA]
+TYPE_BEFORE     => [KATA_DOT] = before [KATA]
+TYPE_LAST       => [KATA_DOT] = last [KATA]
+TYPE_INSERT     => insert [KATA] after [KATA]
+                => insert [KATA] before [KATA]
+TYPE_FOR        => for [KATA_DOT] = each [KATA]
+TYPE_DELETE_EACH    => delete each [KATA]
+TYPE_AKSES          => kata\kata
+
 Type:
     Type MyType
+    type [KATA]
+
         Field x,y
+
         Field x
     End Type
 
@@ -20,7 +46,6 @@ Type:
     Delete mine
 
     mine.MyType=First MyType
-    mine.MyType=First MyType ;mine=first object in the type list
 
     mine=After( mine ) ;mine=second object
     mine=After( mine ) ;mine=third object
@@ -38,7 +63,6 @@ Type:
     Next
 
     Delete Each MyType
-
 
 argument
     arg2 => exp koma exp

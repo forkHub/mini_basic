@@ -1,12 +1,21 @@
 declare namespace ha.parse {
     class Baris {
-        lines(): void;
-        bersih(tokenAr: Itoken[]): Itoken[];
-        valid(token: Itoken[]): boolean;
-        renderLines(token: Itoken[]): string;
+        pecahBaris(): void;
+        bersih(tokenAr: IToken[]): IToken[];
+        hapusComment(tokenAr: IToken[]): IToken[];
+        valid(token: IToken[]): boolean;
+        getLine(token: IToken[]): string;
         getLineBreak(idx: number): number;
     }
     export var baris: Baris;
+    export {};
+}
+declare namespace ha.parse {
+    class CaseStmt {
+        caseDec(): boolean;
+        selectDec(): boolean;
+    }
+    export var caseStmt: CaseStmt;
     export {};
 }
 declare namespace ha.parse {
@@ -20,12 +29,14 @@ declare namespace ha.parse {
         set barisObj(value: IBarisObj);
         private _kataKunci2;
         private _op;
+        private _op2;
         private _symbol;
         private _cmd;
+        get op2(): string[];
         get symbol(): string[];
         get dataStr(): string;
         set dataStr(value: string);
-        get token(): Itoken[];
+        get token(): IToken[];
         get barisAr(): IBarisObj[];
         get kataKunci2(): string[];
         get op(): string[];
@@ -43,28 +54,26 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Exp {
-        isExp(token: Itoken): boolean;
-        exp2(): boolean;
+        isExpBinopLogic(type: number): boolean;
+        isExp(token: IToken): boolean;
+        expKata(): boolean;
+        expKurungSingle(): boolean;
+        exp(): boolean;
         exp3(): boolean;
-        isOp(token: Itoken): boolean;
+        isOp(token: IToken): boolean;
         kataDot(): boolean;
-        kataDotChain(): boolean;
-        checkKataDotFinal(token: Itoken): boolean;
-        kataDotFinal(): boolean;
-        array2(): boolean;
         kurungKosong(): boolean;
         kurungSingle(): boolean;
         kurungArg2(): boolean;
         kurungArg(): boolean;
-        binopIf(): boolean;
         binop(): boolean;
+        binopEq(): boolean;
+        binopLogic(): boolean;
         not(): boolean;
         min(): boolean;
-        argument2(): boolean;
-        argument3(token: Itoken[]): boolean;
-        argument4(token: Itoken[]): boolean;
-        argument5(token: Itoken[]): boolean;
-        argument6(token: Itoken[]): boolean;
+        arg2(): boolean;
+        args(token: IToken[]): boolean;
+        panggilfungsiArg(): boolean;
         panggilfungsi(): boolean;
         getQuote2(idx: number): number;
         teks(): boolean;
@@ -77,24 +86,51 @@ declare namespace ha.parse {
         private _barisObj;
         get barisObj(): IBarisObj;
         set barisObj(value: IBarisObj);
-        isStmt(token: Itoken): boolean;
         hapusSpace(): boolean;
         grammar(): void;
     }
     export var grammar: Grammar;
     export {};
 }
-interface Itoken {
+declare namespace ha.parse {
+    class Grammar2 {
+    }
+    export var grammar2: Grammar2;
+    export {};
+}
+declare namespace ha.parse {
+    class IfStmt {
+        isPerintah(type: number): boolean;
+        ifExp(): boolean;
+        ifExpP(): boolean;
+        ifExpP2(): boolean;
+        ifThen(): boolean;
+        ifThenP(): boolean;
+        ifThenP2(): boolean;
+        ifElseThenP(): boolean;
+        ifElseThenP2(): boolean;
+        elseIfThen(): boolean;
+    }
+    export var ifStmt: IfStmt;
+    export {};
+}
+interface IToken {
     type: number;
-    token?: Itoken[];
+    token?: IToken[];
     value?: string;
     valueLowerCase?: string;
 }
 interface IBarisObj {
     n?: number;
-    token?: Itoken[];
+    token?: IToken[];
     baris?: string;
     terjemah?: string;
+}
+interface IGrammar {
+    type: number;
+    tokens: number[];
+    setelah?: number;
+    sebelum?: number;
 }
 declare namespace ha.parse {
     class Kons {
@@ -104,7 +140,12 @@ declare namespace ha.parse {
         static readonly TY_TEKS: number;
         static readonly TY_RES_WORD: number;
         static readonly TY_OP: number;
+        static readonly TY_OP2: number;
         static readonly TY_SYMBOL: number;
+        static readonly TY_TRUE: number;
+        static readonly TY_FALSE: number;
+        static readonly TY_NULL: number;
+        static readonly TY_COLON: number;
         static readonly TY_ARGUMENT: number;
         static readonly TY_ARGUMENT2: number;
         static readonly TY_MIN: number;
@@ -115,35 +156,71 @@ declare namespace ha.parse {
         static readonly TY_KURUNG_ARG2: number;
         static readonly TY_KATA_DOT: number;
         static readonly TY_BINOP: number;
+        static readonly TY_BINOP_EQ: number;
         static readonly TY_PANGGIL_FUNGSI: number;
         static readonly TY_EXP: number;
-        static readonly TY_KOTAK: number;
-        static readonly TY_ARRAY: number;
-        static readonly TY_VAR_ASSIGNMENT: number;
+        static readonly TY_STMT: number;
+        static readonly TY_STMT_COLON: number;
+        static readonly TY_STMT_M: number;
         static readonly TY_PERINTAH: number;
-        static readonly TY_IF: number;
-        static readonly TY_IFP: number;
-        static readonly TY_ELSEIF: number;
         static readonly TY_FOR: number;
+        static readonly TY_FOR_STEP: number;
         static readonly TY_WEND: number;
         static readonly TY_FUNC_DEC: number;
-        static readonly TY_RETURN: number;
         static readonly TY_MOD: number;
+        static readonly TY_RETURN: number;
+        static readonly TY_RETURN_EXP: number;
         static readonly TY_DIM_ASSINMENT: number;
         static readonly TY_DIM_DEC: number;
         static readonly TY_DIM_DEC_VAR: number;
+        static readonly TY_TYPE_DEC: number;
+        static readonly TY_FIELD_DEF: number;
+        static readonly TY_TYPE: number;
+        static readonly TY_FIELD: number;
+        static readonly TY_ENDTYPE: number;
+        static readonly TY_TYPE_ACCESS: number;
+        static readonly TY_IF_EXP: number;
+        static readonly TY_IF_EXP_P: number;
+        static readonly TY_IF_EXP_P2: number;
+        static readonly TY_IF_THEN: number;
+        static readonly TY_IF_THEN_P: number;
+        static readonly TY_IF_THEN_P2: number;
+        static readonly TY_IF_ELSE_P: number;
+        static readonly TY_IF_ELSE_P2: number;
+        static readonly TY_IF_ELSE_THEN_P: number;
+        static readonly TY_IF_ELSE_THEN_P2: number;
+        static readonly TY_ELSE_DEC: number;
+        static readonly TY_ELSE_THEN: number;
+        static readonly TY_ELSE_P: number;
+        static readonly TY_ELSE_P2: number;
+        static readonly TY_ELSEIF_DEC: number;
+        static readonly TY_ELSEIF_THEN: number;
+        static readonly TY_ELSEIF_THEN_P: number;
+        static readonly TY_ELSEIF_THEN_P2: number;
+        static readonly TY_ELSEIF_P: number;
+        static readonly TY_ELSEIF_P2: number;
+        static readonly TY_ELSEIF_ELSE_P: number;
+        static readonly TY_ELSEIF_ELSE_P2: number;
+        static readonly TY_MOD_DEC: number;
+        static readonly TY_MOD_ISI: number;
+        static readonly TY_CASE: number;
+        static readonly TY_SELECT: number;
+        static readonly TY_END_SELECT: number;
+        static readonly TY_CASE_DEC: number;
+        static readonly TY_SELECT_DEC: number;
     }
 }
 declare namespace ha.parse {
     class Lexer {
         lexer(): void;
         getOp(): boolean;
+        getOp2(): boolean;
         getCmd(): boolean;
         getNumber(): boolean;
         getComment(): boolean;
         getKeyword2(): boolean;
         getSymbol(): boolean;
-        getId(): boolean;
+        getKata(): boolean;
         getLineBreak(): boolean;
     }
     export var lexer: Lexer;
@@ -153,15 +230,16 @@ declare namespace ha.parse {
     class Blitz {
         parse(str: string): Promise<string>;
         blijs(): string;
-        getToken(idx: number, token: Itoken[]): Itoken;
-        tokenToAr(token: Itoken): any[];
+        getToken(idx: number, token: IToken[]): IToken;
+        tokenToAr(token: IToken): any[];
+        tokenToValue(token: IToken, debug?: boolean): string;
     }
     class Arr {
-        kiri(token: Itoken[], idx: number): Itoken[];
-        kanan(token: Itoken[], idx: number): Itoken[];
-        ambilTengah(token: Itoken[], idx: number, idx2: number): Itoken[];
-        ganti(token: Itoken[], idx: number, idx2: number, token2: Itoken): Itoken[];
-        hapus(token: Itoken[], idx: number): Itoken[];
+        kiri(token: IToken[], idx: number): IToken[];
+        kanan(token: IToken[], idx: number): IToken[];
+        ambilTengah(token: IToken[], idx: number, idx2: number): IToken[];
+        ganti(token: IToken[], idx: number, idx2: number, token2: IToken, debug?: boolean): IToken[];
+        hapus(token: IToken[], idx: number): IToken[];
     }
     export var ar: Arr;
     export var parse: Blitz;
@@ -170,21 +248,20 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Stmt {
         Baru(): boolean;
+        stmtMul(): boolean;
+        stmtColon2(): boolean;
+        stmtColon(): boolean;
+        stmt(): boolean;
         dimAssign(): boolean;
         dimDec(): boolean;
         forPendek(): boolean;
         forStep(): boolean;
         funcDec(): boolean;
-        elseIf(): boolean;
-        ifPendekPerintah(): boolean;
-        ifPendekThen(): boolean;
-        ifPendek(): boolean;
         modifier(): boolean;
+        modIsi(): boolean;
         new2(): boolean;
-        perintah2(): boolean;
-        return2(): boolean;
-        return1(): boolean;
-        varAssign(): boolean;
+        perintah(): boolean;
+        returnExp(): boolean;
         while2(): boolean;
     }
     export var stmt: Stmt;
@@ -192,11 +269,19 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Terjemah {
-        terjemah(token: Itoken): string;
-        string(token: Itoken[]): string;
-        wend(token: Itoken): string;
-        varAssign(token: Itoken): string;
+        terjemah(token: IToken): string;
+        string(token: IToken[]): string;
+        wend(token: IToken): string;
+        varAssign(token: IToken): string;
     }
     export var terj: Terjemah;
+    export {};
+}
+declare namespace ha.parse {
+    class TypeStmt {
+        typeNew(): boolean;
+        typeAkses(): boolean;
+    }
+    export var typeStmt: TypeStmt;
     export {};
 }

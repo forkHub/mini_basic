@@ -1,3 +1,24 @@
+arraylength=arraylength+Mid(in,c,1)
+Mid(in,c,1)=","
+If Lower(Left(in,7))="global " or Lower(Left(in,6))="const "
+AddVertex s,-1,+1,-1,0,0:
+AddVertex s,+1,+1,-1,1,0
+tween=Float(elapsed Mod period)/Float(period)
+ScaleSprite sun,20-(inc*2),20-(inc*2)
+ScaleSprite sun,sx+Rnd(os),sy+Rnd(os)
+dist<970
+If dist<970
+If dist<970 MoveEntity
+If dist<970 MoveEntity man,0,0,.5
+FontHeight()*0,0
+Text 0,FontHeight()*0,"Anim seq: "+AnimSeq( mesh_3ds )
+If fstep > cmot\nsteps then fstep = 1
+if Load_Motion( "Cam.bbm", cmot ) = False then RuntimeError "Error loading file" : End
+RuntimeError "Error loading file"
+if Load_Motion( "Cam.bbm", cmot ) = False then RuntimeError "Error loading file" : End
+cmot.Motion = new motion
+PositionEntity mesh_skybox,EntityX(camera,1),EntityY(camera,1),EntityZ(camera,1)
+If AnimSeq(mesh_3ds)=0 Animate mesh_3ds,1,.5,1,trans
 If inc>3 Then inc=inc+.12 Else inc=inc+.14
 If os>0 And go=0 And stm2<MilliSecs()
 global sky1

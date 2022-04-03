@@ -1,30 +1,18 @@
 namespace ha.parse {
     class Lexer {
+
         lexer(): void {
             console.group('lexer start');
 
             while (data.dataStr.length > 0) {
-                if (this.getKeyword2()) {
-                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
-                }
-                else if (this.getOp()) {
-                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
-                }
-                else if (this.getCmd()) {
-                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
-                }
-                else if (this.getId()) {
-                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
-                }
-                else if (this.getLineBreak()) {
-                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
-                }
-                else if (this.getNumber()) {
-                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
-                }
-                else if (this.getSymbol()) {
-                    // console.log(JSON.stringify(data.token[data.token.length - 1]));
-                }
+                if (this.getKeyword2()) { }
+                else if (this.getOp()) { }
+                else if (this.getOp2()) { }
+                else if (this.getCmd()) { }
+                else if (this.getKata()) { }
+                else if (this.getLineBreak()) { }
+                else if (this.getNumber()) { }
+                else if (this.getSymbol()) { }
                 else {
                     console.group('found unknown character');
                     console.log(data.dataStr.slice(0, 10));
@@ -37,7 +25,7 @@ namespace ha.parse {
             }
 
             //
-            data.token.forEach((token: Itoken) => {
+            data.token.forEach((token: IToken) => {
                 token.valueLowerCase = '';
                 if (token.value) {
                     token.valueLowerCase = token.value.toLocaleLowerCase();
@@ -57,6 +45,23 @@ namespace ha.parse {
                         // token: kata,
                         value: kata,
                         type: Kons.TY_OP
+                    });
+                    data.dataStr = data.dataStr.slice(kata.length);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        getOp2(): boolean {
+            for (let i: number = 0; i < data.op2.length; i++) {
+                let kata: string = data.op2[i];
+
+                if (data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
+                    data.token.push({
+                        value: kata,
+                        type: Kons.TY_OP2
                     });
                     data.dataStr = data.dataStr.slice(kata.length);
                     return true;
@@ -104,7 +109,7 @@ namespace ha.parse {
                 // this.sisa(str);
                 // parse.kataAr.push(hsl + '');
 
-                let token: Itoken = {
+                let token: IToken = {
                     value: value + '',
                     type: Kons.TY_ANGKA
                 }
@@ -137,7 +142,7 @@ namespace ha.parse {
                 if (data.dataStr.slice(0, kata.length).toLowerCase() == kata.toLowerCase()) {
 
                     //filter keyword
-                    let token: Itoken = {
+                    let token: IToken = {
                         value: kata,
                         type: Kons.TY_RES_WORD,
                         valueLowerCase: kata.toLowerCase()
@@ -152,6 +157,33 @@ namespace ha.parse {
                     }
                     else if ("each" == lc) {
                         //TODO:
+                    }
+                    else if ("return" == lc) {
+                        token.type = Kons.TY_RETURN;
+                    }
+                    else if ("false" == lc) {
+                        token.type = Kons.TY_FALSE;
+                    }
+                    else if ("true" == lc) {
+                        token.type = Kons.TY_TRUE
+                    }
+                    else if ("null" == lc) {
+                        token.type = Kons.TY_NULL
+                    }
+                    else if ("end" == lc) {
+                        token.type = Kons.TY_PERINTAH
+                    }
+                    else if ("case" == lc) {
+                        token.type = Kons.TY_CASE
+                    }
+                    else if ("select" == lc) {
+                        token.type = Kons.TY_SELECT
+                    }
+                    else if ("end select" == lc) {
+                        token.type = Kons.TY_END_SELECT
+                    }
+                    else {
+                        console.warn("kata belum didefinisikan: " + lc);
                     }
 
                     data.token.push(token);
@@ -171,11 +203,20 @@ namespace ha.parse {
                 if (data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
                     // console.debug('keyword: ' + kata);
                     // parse.kataAr.push(kata);
-                    data.token.push({
+                    let token: IToken = {
                         // token: kata,
                         value: kata,
-                        type: Kons.TY_SYMBOL
-                    });
+                        type: Kons.TY_SYMBOL,
+                        valueLowerCase: kata.toLowerCase()
+                    };
+
+                    data.token.push(token);
+
+                    let lc: string = kata.toLowerCase();
+                    if (":" == lc) {
+                        token.type = Kons.TY_COLON
+                    }
+
                     data.dataStr = data.dataStr.slice(kata.length);
                     return true;
                 }
@@ -184,7 +225,7 @@ namespace ha.parse {
             return false;
         }
 
-        getId(): boolean {
+        getKata(): boolean {
             let id: RegExp = /^[a-zA-Z_][a-zA-Z0-9_$%#@]*/;
             let hsl: RegExpMatchArray = (data.dataStr.match(id));
             let value: string = '';

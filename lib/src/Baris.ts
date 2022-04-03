@@ -2,7 +2,7 @@ namespace ha.parse {
 	class Baris {
 		// private ar: Arr = new Arr();
 
-		lines(): void {
+		pecahBaris(): void {
 			let idx: number = 100000;
 			let idxTerakhir: number = 0;
 			// let ctr: number=
@@ -11,19 +11,21 @@ namespace ha.parse {
 
 			while (idx >= 0) {
 				idx = this.getLineBreak(idxTerakhir);
-				console.log('line break ' + idx);
+				// console.log('line break ' + idx);
 
 				if (idx >= 0) {
-					let kiri: Itoken[] = ar.ambilTengah(data.token, idxTerakhir, idx);
+					let kiri: IToken[] = ar.ambilTengah(data.token, idxTerakhir, idx);
 					kiri = this.bersih(kiri);
+					kiri = this.hapusComment(kiri);
+					// kiri = exp.teks()
 
 					if (kiri.length > 0) {
 						data.barisAr.push({
 							n: 0,
 							token: kiri,
-							baris: baris.renderLines(kiri)
+							baris: baris.getLine(kiri)
 						});
-						this.renderLines(kiri);
+						// this.renderLines(kiri);
 					}
 
 					idxTerakhir = idx + 1;
@@ -33,58 +35,67 @@ namespace ha.parse {
 			console.groupEnd();
 		}
 
-		bersih(tokenAr: Itoken[]): Itoken[] {
-
-			// console.group('bersih');
+		bersih(tokenAr: IToken[]): IToken[] {
 
 			while ((tokenAr.length > 0) && tokenAr[0].type == Kons.TY_BARIS) {
-				// tokenAr = tokenAr.slice(1);
-				tokenAr = [];
+				tokenAr = tokenAr.slice(1);
 			}
 
 			while ((tokenAr.length > 0) && tokenAr[tokenAr.length - 1].type == Kons.TY_BARIS) {
 				tokenAr = tokenAr.slice(0, tokenAr.length - 1);
 			}
 
+			// tokenAr = this.hapusComment(tokenAr);
+
+			// //bersihkan comment
+			// let idx: number = -1;
+			// for (let i: number = 0; i < tokenAr.length; i++) {
+			// 	if (tokenAr[i].valueLowerCase == ";") {
+			// 		idx = i;
+			// 		break;
+			// 	}
+			// }
+
+			// if (idx >= 0) {
+			// 	tokenAr = tokenAr.slice(0, idx);
+			// }
+
+			if (!tokenAr) tokenAr = [];
+
+			return tokenAr;
+		}
+
+		hapusComment(tokenAr: IToken[]): IToken[] {
 			//bersihkan comment
 			let idx: number = -1;
 			for (let i: number = 0; i < tokenAr.length; i++) {
-				if (tokenAr[i].value == ';') {
+				if (tokenAr[i].valueLowerCase == ";") {
 					idx = i;
 					break;
 				}
 			}
 
 			if (idx >= 0) {
-				// console.group('comment:');
-				// console.log('sebelum');
-				// console.log(tokenAr);
-
 				tokenAr = tokenAr.slice(0, idx);
-
-				// console.log('sesudah:');
-				// console.log(tokenAr);
-				// console.groupEnd();
 			}
 
 			if (!tokenAr) tokenAr = [];
 
-			// console.groupEnd();
 			return tokenAr;
 		}
 
-		valid(token: Itoken[]): boolean {
+		valid(token: IToken[]): boolean {
 			token;
 			return true;
 		}
 
-		renderLines(token: Itoken[]): string {
+		getLine(token: IToken[]): string {
 			let str: string = '';
-			token.forEach((token: Itoken) => {
+			token.forEach((token: IToken) => {
 				str += token.value;
 			});
 
-			console.log(str);
+			// console.log(str);
 			return str;
 		}
 

@@ -7,7 +7,12 @@ namespace ha.parse {
         static readonly TY_TEKS: number = 4;
         static readonly TY_RES_WORD: number = 5;
         static readonly TY_OP: number = 6;
-        static readonly TY_SYMBOL: number = 7;
+        static readonly TY_OP2: number = 7;
+        static readonly TY_SYMBOL: number = 8;
+        static readonly TY_TRUE: number = 9;
+        static readonly TY_FALSE: number = 10;
+        static readonly TY_NULL: number = 11;
+        static readonly TY_COLON: number = 12;
 
         //comp
         static readonly TY_ARGUMENT: number = 100;
@@ -23,35 +28,71 @@ namespace ha.parse {
         //exp2
         static readonly TY_KATA_DOT: number = 200;
         static readonly TY_BINOP: number = 201;
-        static readonly TY_PANGGIL_FUNGSI: number = 202;
-        static readonly TY_EXP: number = 203;
-
-        static readonly TY_KOTAK: number = 203; //gak dipakai
-        static readonly TY_ARRAY: number = 204;
+        static readonly TY_BINOP_EQ: number = 202;
+        static readonly TY_PANGGIL_FUNGSI: number = 203;
+        static readonly TY_EXP: number = 204;
 
         //stmt
-        static readonly TY_VAR_ASSIGNMENT: number = 300;
-        static readonly TY_PERINTAH: number = 301;
-
+        static readonly TY_STMT: number = 300;
+        static readonly TY_STMT_COLON: number = 301;
+        static readonly TY_STMT_M: number = 302;
+        static readonly TY_PERINTAH: number = 303;
 
         static readonly TY_FOR: number = 305;
-        static readonly TY_WEND: number = 306;
-        static readonly TY_FUNC_DEC: number = 307;
-        static readonly TY_RETURN: number = 308;
+        static readonly TY_FOR_STEP: number = 306;
+        static readonly TY_WEND: number = 307;
+        static readonly TY_FUNC_DEC: number = 308;
         static readonly TY_MOD: number = 309;
+        static readonly TY_RETURN: number = 310;
+        static readonly TY_RETURN_EXP: number = 311;
 
         static readonly TY_DIM_ASSINMENT: number = 400;
         static readonly TY_DIM_DEC: number = 401;       //deklarasi dim() tanpa assign ke var
         static readonly TY_DIM_DEC_VAR: number = 402;   //assign dim ke var
 
-        static readonly TY_TYPE_DEF: number = 500;
+        static readonly TY_TYPE_DEC: number = 500;
         static readonly TY_FIELD_DEF: number = 501;
         static readonly TY_TYPE: number = 502;
         static readonly TY_FIELD: number = 503;
         static readonly TY_ENDTYPE: number = 504;
+        static readonly TY_TYPE_ACCESS: number = 505;
 
-        static readonly TY_IF_DEC: number = 602;
-        static readonly TY_IF_DEC_P: number = 604;
-        static readonly TY_ELSEIF_DEC: number = 606;
+        static readonly TY_IF_EXP: number = 600;
+        static readonly TY_IF_EXP_P: number = 601;
+        static readonly TY_IF_EXP_P2: number = 602;
+
+        static readonly TY_IF_THEN: number = 650;
+        static readonly TY_IF_THEN_P: number = 651;
+        static readonly TY_IF_THEN_P2: number = 652;
+
+        static readonly TY_IF_ELSE_P: number = 660;
+        static readonly TY_IF_ELSE_P2: number = 661;
+
+        static readonly TY_IF_ELSE_THEN_P: number = 670;
+        static readonly TY_IF_ELSE_THEN_P2: number = 671;
+
+        static readonly TY_ELSE_DEC: number = 700;
+        static readonly TY_ELSE_THEN: number = 701;
+        static readonly TY_ELSE_P: number = 702;
+        static readonly TY_ELSE_P2: number = 703;
+
+        static readonly TY_ELSEIF_DEC: number = 750;
+        static readonly TY_ELSEIF_THEN: number = 751;
+        static readonly TY_ELSEIF_THEN_P: number = 752;
+        static readonly TY_ELSEIF_THEN_P2: number = 753;
+        static readonly TY_ELSEIF_P: number = 754;
+        static readonly TY_ELSEIF_P2: number = 755;
+        static readonly TY_ELSEIF_ELSE_P: number = 756;
+        static readonly TY_ELSEIF_ELSE_P2: number = 757;
+
+        static readonly TY_MOD_DEC: number = 800;
+        static readonly TY_MOD_ISI: number = 801;
+
+        static readonly TY_CASE: number = 900;
+        static readonly TY_SELECT: number = 910;
+        static readonly TY_END_SELECT: number = 920;
+        static readonly TY_CASE_DEC: number = 930;
+        static readonly TY_SELECT_DEC: number = 940;
+
     }
 }

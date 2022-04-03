@@ -1,7 +1,7 @@
 namespace ha.parse {
     class Terjemah {
 
-        terjemah(token: Itoken): string {
+        terjemah(token: IToken): string {
             console.log("terjemah");
             console.log(token);
             // let b: boolean = false;
@@ -9,9 +9,9 @@ namespace ha.parse {
             if (false) {
                 return '';
             }
-            else if (token.type == Kons.TY_VAR_ASSIGNMENT) {
-                return this.varAssign(token);
-            }
+            // else if (token.type == Kons.TY_VAR_ASSIGNMENT) {
+            //     return this.varAssign(token);
+            // }
             else if (token.type == Kons.TY_ANGKA) {
                 return token.value;
             }
@@ -68,19 +68,25 @@ namespace ha.parse {
                 return '';
             }
             else if (token.type == Kons.TY_FOR) {
+                //TODO:
                 //for kata = exp to exp2 => for (let kata = exp; kata <= exp2; kata++) {
                 //0   1    2 3   4  5
+                // let hasil: string = '';
+                // hasil += 'for (let ' + this.terjemah(token.token[1]) + " = " + this.terjemah(token.token[3]) + ";";
+                // hasil += ' ' + this.terjemah(token.token[1]) + " <= " + this.terjemah(token.token[5]) + ";";
+                // hasil += ' ' + this.terjemah(token.token[1]) + '++) {'
+                // return hasil;
+                return '';
+            }
+            else if (token.type == Kons.TY_FOR_STEP) {
                 let hasil: string = '';
-                hasil += 'for (let ' + this.terjemah(token.token[1]) + " = " + this.terjemah(token.token[3]) + ";";
-                hasil += ' ' + this.terjemah(token.token[1]) + " <= " + this.terjemah(token.token[5]) + ";";
-                hasil += ' ' + this.terjemah(token.token[1]) + '++) {'
                 return hasil;
             }
-            else if (token.type == Kons.TY_IF_DEC) {
+            else if (token.type == Kons.TY_IF_EXP) {
                 //if binop then => if binop {
                 return 'if (' + this.terjemah(token.token[1]) + ") {";
             }
-            else if (token.type == Kons.TY_IF_DEC_P) {
+            else if (token.type == Kons.TY_IF_THEN_P) {
                 //if perintah
                 //0  1
                 return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]) + " }";
@@ -172,8 +178,12 @@ namespace ha.parse {
                 if (token.value == ".") return token.value;
                 return token.value + " ";
             }
-            else if (token.type == Kons.TY_ELSEIF_DEC) {
+            else if (token.type == Kons.TY_IF_ELSE_THEN_P) {
                 return "} else if " + " (" + this.terjemah(token.token[1]) + ") " + " { ";
+            }
+            else if (token.type == Kons.TY_ELSE_THEN) {
+                //TODO:
+                return '';
             }
             else if (token.type == Kons.TY_FUNC_DEC) {
                 let hsl: string = '';
@@ -191,46 +201,76 @@ namespace ha.parse {
 
                 return hsl;
             }
-            else if (token.type == Kons.TY_KOTAK) {
-                if (token.token.length == 2) {
-                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
-                }
-                else if (token.token.length == 3) {
-                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
-                }
-                else {
-                    throw Error('Error parsing: ' + (data.barisObj ? data.barisObj.baris : "unknown line"));
-                }
-            }
-            else if (token.type == Kons.TY_ARRAY) {
-                return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
-            }
             else if (token.type == Kons.TY_RETURN) {
-                if (token.token.length == 1) {
-                    return "return";
-                }
-                else if (token.token.length == 2) {
-                    return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]);
-                }
-                else {
-                    throw Error();
-                }
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_ARGUMENT2) {
+                //TODO;
+
+                return '';
+
+            }
+            else if (token.type == Kons.TY_EXP) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_IF_THEN) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_BINOP_EQ) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_IF_THEN_P2) {
+                return '';
+            }
+            else if (token.type == Kons.TY_TYPE_DEC) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_IF_EXP_P) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_MOD) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_KURUNG_ARG2) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_DIM_DEC) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_DIM_ASSINMENT) {
+                //TODO:
+                return '';
+            }
+            else if (token.type == Kons.TY_RETURN_EXP) {
+                //TODO:
+                return '';
             }
 
             else {
+                console.log(token);
+                console.log('token type ' + token.type);
                 throw Error();
             }
         }
 
-        string(token: Itoken[]): string {
+        string(token: IToken[]): string {
             let hasil: string = '';
-            token.forEach((item: Itoken) => {
+            token.forEach((item: IToken) => {
                 hasil += item.value;
             });
             return " " + hasil;
         }
 
-        wend(token: Itoken): string {
+        wend(token: IToken): string {
             let hasil: string = '';
 
             hasil += token.token[0].value.toLowerCase();
@@ -239,7 +279,7 @@ namespace ha.parse {
             return hasil;
         }
 
-        varAssign(token: Itoken): string {
+        varAssign(token: IToken): string {
             // let hasil: string = '';
             if (token.token.length == 2) {
                 let token1: string = token.token[0].value.toLowerCase();

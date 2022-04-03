@@ -1,7 +1,7 @@
 namespace ha.parse {
     class Data {
         private _dataStr: string = '';
-        private _token: Itoken[] = [];
+        private _token: IToken[] = [];
         private _barisAr: IBarisObj[] = [];
         private _barisObj: IBarisObj;
         readonly config: Config = new Config();
@@ -14,11 +14,11 @@ namespace ha.parse {
         }
 
         private _kataKunci2: string[] = [
-            "If", "ElseIf", "EndIf", "Else", "Then",
+            "If", "elseif", "endif", "else", "then",
 
             "For", "Next", "To", "step",
 
-            "Function", "end function",
+            "Function", "end function", "return",
 
             "While", "Wend",
 
@@ -28,7 +28,11 @@ namespace ha.parse {
             "delete", "before", "after", "each", "last",
 
             //const
-            //"false", "true", "null", "mod",
+            "false", "true", "null",
+
+            "case", "select", "end select",
+
+            "end",
 
             //
             "//",
@@ -42,17 +46,23 @@ namespace ha.parse {
             "==",
             "<=",
             ">=",
+            "=>",
             "<>",
             ">",
             "<",
             "!=",
-            ";",
+
+            "not",
+            "mod"
+        ];
+
+        private _op2: string[] = [
             "&&",
             "||",
-            "not",
             "and",
             "or"
         ];
+
 
         private _symbol: string[] = [
             //symbol
@@ -71,10 +81,17 @@ namespace ha.parse {
             "//",
             "?",
             "&",
+            ";",
+            "'",
+            "!",
+            "$",
+            "#",
+            "%",
 
             //ignore
             " "
         ];
+
         private _cmd: string[] = [
             "Graphics3D",
             "Include",
@@ -82,6 +99,9 @@ namespace ha.parse {
         ];
 
 
+        public get op2(): string[] {
+            return this._op2;
+        }
         public get symbol(): string[] {
             return this._symbol;
         }
@@ -91,7 +111,7 @@ namespace ha.parse {
         public set dataStr(value: string) {
             this._dataStr = value;
         }
-        public get token(): Itoken[] {
+        public get token(): IToken[] {
             return this._token;
         }
         public get barisAr(): IBarisObj[] {

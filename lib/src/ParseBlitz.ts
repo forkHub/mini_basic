@@ -16,15 +16,16 @@ namespace ha.parse {
 
 			lexer.lexer();
 
-			baris.lines();
+			baris.pecahBaris();
 
 			console.group("grammar");
 			for (let i: number = 0; i < data.barisAr.length; i++) {
 				let barisObj: IBarisObj = data.barisAr[i];
 
 				grammar.barisObj = barisObj;
+				data.barisObj = barisObj;
 
-				baris.renderLines(barisObj.token);
+				console.log(baris.getLine(barisObj.token));
 				grammar.grammar();
 
 				// console.group('terjemah:')
@@ -73,20 +74,20 @@ namespace ha.parse {
 			return hsl;
 		}
 
-		getToken(idx: number, token: Itoken[]): Itoken {
+		getToken(idx: number, token: IToken[]): IToken {
 			if (idx < 0) return null;
 			if (idx >= token.length) return null;
 			return token[idx];
 		}
 
-		tokenToAr(token: Itoken): any[] {
+		tokenToAr(token: IToken): any[] {
 			let ar: any[] = [];
 
 			if (token.value) {
 				ar.push(token.valueLowerCase);
 			}
 			else if (token.token) {
-				token.token.forEach((token2: Itoken) => {
+				token.token.forEach((token2: IToken) => {
 					ar.push(this.tokenToAr(token2));
 				});
 			}
@@ -94,34 +95,89 @@ namespace ha.parse {
 			return ar;
 		}
 
+		tokenToValue(token: IToken, debug: boolean = false): string {
+			let hasil: string = '';
+
+			if (debug) {
+				console.log('token to value');
+				console.log(token);
+				console.log(token.token);
+			}
+
+			if (!token) throw Error();
+
+			if (token.valueLowerCase) {
+				if (token.valueLowerCase != '') {
+					hasil += ' ';
+					hasil += token.valueLowerCase;
+					return hasil;
+				}
+			}
+
+			if (token.token) {
+				token.token.forEach((token2: IToken) => {
+					hasil += parse.tokenToValue(token2);
+				});
+				return hasil;
+			}
+
+			throw new Error('');
+		}
+
 	}
 
 	class Arr {
-		kiri(token: Itoken[], idx: number): Itoken[] {
+		kiri(token: IToken[], idx: number): IToken[] {
 			return token.slice(0, idx);
 		}
 
-		kanan(token: Itoken[], idx: number): Itoken[] {
+		kanan(token: IToken[], idx: number): IToken[] {
 			return token.slice(idx + 1);
 		}
 
-		ambilTengah(token: Itoken[], idx: number, idx2: number): Itoken[] {
+		ambilTengah(token: IToken[], idx: number, idx2: number): IToken[] {
 			return token.slice(idx, idx2 + 1);
 		}
 
-		ganti(token: Itoken[], idx: number, idx2: number, token2: Itoken): Itoken[] {
-			let kiri: Itoken[] = this.kiri(token, idx)
-			let kanan: Itoken[] = this.kanan(token, idx2);
+		ganti(token: IToken[], idx: number, idx2: number, token2: IToken, debug: boolean = false): IToken[] {
+			let kiri: IToken[] = this.kiri(token, idx)
+			let kanan: IToken[] = this.kanan(token, idx2);
 
-			let hasil: Itoken[] = kiri.concat(token2).concat(kanan);
+			if (debug) {
+				console.log('index ' + idx);
+
+				console.log('token:');
+				console.log(token);
+
+				console.log('kiri:');
+				console.log(kiri);
+				console.log('kiri l ' + kiri.length);
+
+				console.log('kanan:');
+				console.log('kanan l: ' + kanan.length);
+				console.log(kanan);
+
+				console.log('token2:');
+				console.log(token2);
+			}
+
+			let hasil: IToken[] = kiri.concat(token2);
+			hasil = hasil.concat(kanan);
+			if (debug) {
+				console.log('hasil length ' + hasil.length);
+			}
+
+			if (hasil.length > token.length) {
+				throw Error('');
+			}
 
 			return hasil;
 		}
 
-		hapus(token: Itoken[], idx: number): Itoken[] {
-			let hasil: Itoken[];
-			let kiri: Itoken[];
-			let kanan: Itoken[];
+		hapus(token: IToken[], idx: number): IToken[] {
+			let hasil: IToken[];
+			let kiri: IToken[];
+			let kanan: IToken[];
 
 			// console.group('hapus');
 
