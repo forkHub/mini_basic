@@ -1,3 +1,4 @@
+Field obj
 arraylength=arraylength+Mid(in,c,1)
 Mid(in,c,1)=","
 If Lower(Left(in,7))="global " or Lower(Left(in,6))="const "

@@ -14,13 +14,13 @@ namespace ha.parse {
         }
 
         private _kataKunci2: string[] = [
-            "If", "elseif", "endif", "else", "then",
+            "if", "elseif", "endif", "else", "then",
 
-            "For", "Next", "To", "step",
+            "for", "next", "to", "step",
 
-            "Function", "end function", "return",
+            "function", "end function", "return",
 
-            "While", "Wend",
+            "while", "wend",
 
             "const", "global", "local",
 
@@ -37,6 +37,16 @@ namespace ha.parse {
             //
             "//",
         ];
+
+        private _kataKunci3: string[] = [
+            "end function",
+            "end type",
+            "end select",
+        ];
+
+        public get kataKunci3(): string[] {
+            return this._kataKunci3;
+        }
 
         private _op: string[] = [
             "+",

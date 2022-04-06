@@ -15,14 +15,13 @@ namespace ha.parse {
 			}
 
 			lexer.lexer();
-
 			baris.pecahBaris();
 
 			console.group("grammar");
 			for (let i: number = 0; i < data.barisAr.length; i++) {
 				let barisObj: IBarisObj = data.barisAr[i];
 
-				grammar.barisObj = barisObj;
+				// grammar.barisObj = barisObj;
 				data.barisObj = barisObj;
 
 				console.log(baris.getLine(barisObj.token));

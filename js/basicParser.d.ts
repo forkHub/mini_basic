@@ -28,6 +28,8 @@ declare namespace ha.parse {
         get barisObj(): IBarisObj;
         set barisObj(value: IBarisObj);
         private _kataKunci2;
+        private _kataKunci3;
+        get kataKunci3(): string[];
         private _op;
         private _op2;
         private _symbol;
@@ -54,6 +56,7 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Exp {
+        hapusComment(): boolean;
         isExpBinopLogic(type: number): boolean;
         isExp(token: IToken): boolean;
         expKata(): boolean;
@@ -83,9 +86,6 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Grammar {
-        private _barisObj;
-        get barisObj(): IBarisObj;
-        set barisObj(value: IBarisObj);
         hapusSpace(): boolean;
         grammar(): void;
     }
@@ -146,11 +146,11 @@ declare namespace ha.parse {
         static readonly TY_FALSE: number;
         static readonly TY_NULL: number;
         static readonly TY_COLON: number;
-        static readonly TY_ARGUMENT: number;
-        static readonly TY_ARGUMENT2: number;
         static readonly TY_MIN: number;
+        static readonly TY_ARG: number;
+        static readonly TY_ARG2: number;
+        static readonly TY_ARG_KATA: number;
         static readonly TY_KURUNG_KOSONG: number;
-        static readonly TY_KURUNG_ISI: number;
         static readonly TY_KURUNG_SINGLE: number;
         static readonly TY_KURUNG_ARG: number;
         static readonly TY_KURUNG_ARG2: number;
@@ -173,10 +173,12 @@ declare namespace ha.parse {
         static readonly TY_DIM_ASSINMENT: number;
         static readonly TY_DIM_DEC: number;
         static readonly TY_DIM_DEC_VAR: number;
-        static readonly TY_TYPE_DEC: number;
+        static readonly TY_TYPE_NEW_DEC: number;
+        static readonly TY_TYPE_DEF: number;
         static readonly TY_FIELD_DEF: number;
         static readonly TY_TYPE: number;
         static readonly TY_FIELD: number;
+        static readonly TY_FIELD_M: number;
         static readonly TY_ENDTYPE: number;
         static readonly TY_TYPE_ACCESS: number;
         static readonly TY_IF_EXP: number;
@@ -218,7 +220,7 @@ declare namespace ha.parse {
         getCmd(): boolean;
         getNumber(): boolean;
         getComment(): boolean;
-        getKeyword2(): boolean;
+        getKeyword3(): boolean;
         getSymbol(): boolean;
         getKata(): boolean;
         getLineBreak(): boolean;
@@ -280,6 +282,9 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class TypeStmt {
         typeNew(): boolean;
+        typeDef(): boolean;
+        fieldDef(): boolean;
+        fieldDefM(): boolean;
         typeAkses(): boolean;
     }
     export var typeStmt: TypeStmt;

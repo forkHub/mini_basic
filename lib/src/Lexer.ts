@@ -5,8 +5,8 @@ namespace ha.parse {
             console.group('lexer start');
 
             while (data.dataStr.length > 0) {
-                if (this.getKeyword2()) { }
-                else if (this.getOp()) { }
+                if (this.getKeyword3()) { }
+                if (this.getOp()) { }
                 else if (this.getOp2()) { }
                 else if (this.getCmd()) { }
                 else if (this.getKata()) { }
@@ -134,10 +134,10 @@ namespace ha.parse {
             return false;
         }
 
-        getKeyword2(): boolean {
+        getKeyword3(): boolean {
 
-            for (let i: number = 0; i < data.kataKunci2.length; i++) {
-                let kata: string = data.kataKunci2[i];
+            for (let i: number = 0; i < data.kataKunci3.length; i++) {
+                let kata: string = data.kataKunci3[i];
 
                 if (data.dataStr.slice(0, kata.length).toLowerCase() == kata.toLowerCase()) {
 
@@ -151,6 +151,9 @@ namespace ha.parse {
                     let lc: string = kata.toLowerCase();
                     if ("type" == lc) {
                         token.type = Kons.TY_TYPE;
+                    }
+                    if ("field" == lc) {
+                        token.type = Kons.TY_FIELD;
                     }
                     else if ("end type" == lc) {
                         token.type = Kons.TY_ENDTYPE;
@@ -241,11 +244,64 @@ namespace ha.parse {
                     value = value.slice(0, value.length - 1);
                 }
 
-                data.token.push({
-                    // token: hsl + '',
+                let token: IToken = {
                     value: value,
-                    type: Kons.TY_KATA
-                });
+                    type: Kons.TY_KATA,
+                    valueLowerCase: value.toLowerCase()
+                }
+
+                data.token.push(token);
+
+                if (data.kataKunci2.indexOf(token.valueLowerCase) >= 0) {
+                    // if (token.valueLowerCase == "if") {
+                    // console.log(token.valueLowerCase);
+                    // throw Error('');
+                    token.type = Kons.TY_RES_WORD;
+                    // }
+                }
+
+                //TODO: reserved word
+                let lc: string = token.valueLowerCase;
+                if ("type" == lc) {
+                    token.type = Kons.TY_TYPE;
+                }
+                else if ("field" == lc) {
+                    token.type = Kons.TY_FIELD;
+                }
+                else if ("end type" == lc) {
+                    token.type = Kons.TY_ENDTYPE;
+                }
+                else if ("each" == lc) {
+                    //TODO:
+                }
+                else if ("return" == lc) {
+                    token.type = Kons.TY_RETURN;
+                }
+                else if ("false" == lc) {
+                    token.type = Kons.TY_FALSE;
+                }
+                else if ("true" == lc) {
+                    token.type = Kons.TY_TRUE
+                }
+                else if ("null" == lc) {
+                    token.type = Kons.TY_NULL
+                }
+                else if ("end" == lc) {
+                    token.type = Kons.TY_PERINTAH
+                }
+                else if ("case" == lc) {
+                    token.type = Kons.TY_CASE
+                }
+                else if ("select" == lc) {
+                    token.type = Kons.TY_SELECT
+                }
+                else if ("end select" == lc) {
+                    token.type = Kons.TY_END_SELECT
+                }
+                else {
+                    //console.warn("kata belum didefinisikan: " + lc);
+                }
+
                 return true;
             }
 

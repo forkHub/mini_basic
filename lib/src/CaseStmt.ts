@@ -16,10 +16,10 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -33,7 +33,7 @@ namespace ha.parse {
                     // console.log(tokenBaru);
                     console.log(parse.tokenToValue(tokenBaru, true));
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -59,10 +59,10 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -75,7 +75,7 @@ namespace ha.parse {
                     console.log("select dec:");
                     console.log(parse.tokenToValue(tokenBaru, true));
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }

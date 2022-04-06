@@ -16,7 +16,7 @@ namespace ha.parse {
 				if (idx >= 0) {
 					let kiri: IToken[] = ar.ambilTengah(data.token, idxTerakhir, idx);
 					kiri = this.bersih(kiri);
-					kiri = this.hapusComment(kiri);
+					// kiri = this.hapusComment(kiri);
 					// kiri = exp.teks()
 
 					if (kiri.length > 0) {

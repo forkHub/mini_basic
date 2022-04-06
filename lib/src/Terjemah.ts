@@ -15,7 +15,7 @@ namespace ha.parse {
             else if (token.type == Kons.TY_ANGKA) {
                 return token.value;
             }
-            else if (token.type == Kons.TY_ARGUMENT) {
+            else if (token.type == Kons.TY_ARG) {
                 return this.terjemah(token.token[0]) + ',' + this.terjemah(token.token[2]);
             }
             else if (token.type == Kons.TY_RES_WORD) {
@@ -105,9 +105,9 @@ namespace ha.parse {
             else if (token.type == Kons.TY_KATA_DOT) {
                 return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
             }
-            else if (token.type == Kons.TY_KURUNG_ISI) {
-                return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
-            }
+            // else if (token.type == Kons.TY_KURUNG_ISI) {
+            //     return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
+            // }
             else if (token.type == Kons.TY_KURUNG_KOSONG) {
                 return "()";
             }
@@ -205,7 +205,7 @@ namespace ha.parse {
                 //TODO:
                 return '';
             }
-            else if (token.type == Kons.TY_ARGUMENT2) {
+            else if (token.type == Kons.TY_ARG2) {
                 //TODO;
 
                 return '';
@@ -226,7 +226,7 @@ namespace ha.parse {
             else if (token.type == Kons.TY_IF_THEN_P2) {
                 return '';
             }
-            else if (token.type == Kons.TY_TYPE_DEC) {
+            else if (token.type == Kons.TY_TYPE_NEW_DEC) {
                 //TODO:
                 return '';
             }

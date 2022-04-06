@@ -39,11 +39,11 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -57,7 +57,7 @@ namespace ha.parse {
                     console.log(tokenBaru);
                     console.log(parse.tokenToValue(tokenBaru));
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -86,10 +86,10 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -102,7 +102,7 @@ namespace ha.parse {
                     console.log("if EXP p:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -133,11 +133,11 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -150,7 +150,7 @@ namespace ha.parse {
                     console.log("if EXP p2:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -180,10 +180,10 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -196,7 +196,7 @@ namespace ha.parse {
                     console.log("if then:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -225,10 +225,10 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -241,7 +241,7 @@ namespace ha.parse {
                     console.log("if perintah:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -273,11 +273,11 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -290,7 +290,7 @@ namespace ha.parse {
                     console.log("if perintah2:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -340,11 +340,11 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -357,7 +357,7 @@ namespace ha.parse {
                     console.log("if else:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -399,11 +399,11 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -416,7 +416,7 @@ namespace ha.parse {
                     console.log("if else P 2:");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -451,11 +451,11 @@ namespace ha.parse {
                 return true;
             }
 
-            for (let i: number = 0; i < grammar.barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let t1: IToken = parse.getToken(i + 0, grammar.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, grammar.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, grammar.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
@@ -468,7 +468,7 @@ namespace ha.parse {
                     console.log("else if then");
                     console.log(tokenBaru);
 
-                    grammar.barisObj.token = ar.ganti(grammar.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }

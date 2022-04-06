@@ -15,12 +15,14 @@ namespace ha.parse {
         static readonly TY_COLON: number = 12;
 
         //comp
-        static readonly TY_ARGUMENT: number = 100;
-        static readonly TY_ARGUMENT2: number = 101;
-        static readonly TY_MIN: number = 102;
+        static readonly TY_MIN: number = 50;
+
+        static readonly TY_ARG: number = 100;
+        static readonly TY_ARG2: number = 101;
+        static readonly TY_ARG_KATA: number = 100;
 
         static readonly TY_KURUNG_KOSONG: number = 153;
-        static readonly TY_KURUNG_ISI: number = 154;    //todo: DIHAPUS, gak pernah di buat tokennya
+        // static readonly TY_KURUNG_ISI: number = 154;    //todo: DIHAPUS, gak pernah di buat tokennya
         static readonly TY_KURUNG_SINGLE: number = 155;
         static readonly TY_KURUNG_ARG: number = 156;
         static readonly TY_KURUNG_ARG2: number = 157;
@@ -50,12 +52,14 @@ namespace ha.parse {
         static readonly TY_DIM_DEC: number = 401;       //deklarasi dim() tanpa assign ke var
         static readonly TY_DIM_DEC_VAR: number = 402;   //assign dim ke var
 
-        static readonly TY_TYPE_DEC: number = 500;
-        static readonly TY_FIELD_DEF: number = 501;
-        static readonly TY_TYPE: number = 502;
-        static readonly TY_FIELD: number = 503;
-        static readonly TY_ENDTYPE: number = 504;
-        static readonly TY_TYPE_ACCESS: number = 505;
+        static readonly TY_TYPE_NEW_DEC: number = 500;
+        static readonly TY_TYPE_DEF: number = 510;
+        static readonly TY_FIELD_DEF: number = 520;
+        static readonly TY_TYPE: number = 530;
+        static readonly TY_FIELD: number = 540;
+        static readonly TY_FIELD_M: number = 545;
+        static readonly TY_ENDTYPE: number = 550;
+        static readonly TY_TYPE_ACCESS: number = 560;
 
         static readonly TY_IF_EXP: number = 600;
         static readonly TY_IF_EXP_P: number = 601;

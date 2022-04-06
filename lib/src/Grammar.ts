@@ -1,13 +1,13 @@
 namespace ha.parse {
     class Grammar {
-        private _barisObj: IBarisObj;
+        // private _barisObj: IBarisObj;
 
-        public get barisObj(): IBarisObj {
-            return this._barisObj;
-        }
-        public set barisObj(value: IBarisObj) {
-            this._barisObj = value;
-        }
+        // public get barisObj(): IBarisObj {
+        //     return data.barisObj;
+        // }
+        // public set barisObj(value: IBarisObj) {
+        //     data.barisObj = value;
+        // }
 
         // isStmt(token: IToken): boolean {
         //     if (token.type == Kons.TY_VAR_ASSIGNMENT) return true;
@@ -17,19 +17,19 @@ namespace ha.parse {
         hapusSpace(): boolean {
             // console.group('hapus space');
 
-            for (let i: number = 0; i < this._barisObj.token.length; i++) {
+            for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                if (this._barisObj.token[i].value == ' ') {
+                if (data.barisObj.token[i].value == ' ') {
 
                     // console.log('idx ' + i);
 
                     // console.log('sebelum:');
-                    // console.log(this._barisObj.token);
+                    // console.log(data.barisObj.token);
 
-                    this._barisObj.token = ar.hapus(this._barisObj.token, i);
+                    data.barisObj.token = ar.hapus(data.barisObj.token, i);
 
                     // console.log('sesudah:');
-                    // console.log(this._barisObj.token);
+                    // console.log(data.barisObj.token);
 
                     // console.groupEnd();
                     return true;
@@ -48,11 +48,13 @@ namespace ha.parse {
             /*
                 buat optimisasi
             */
-            while (this._barisObj.token.length > 1) {
+            // exp.hapusComment();
+            while (data.barisObj.token.length > 1) {
                 if (false) { }
 
                 //BASIC
                 else if (exp.teks()) { }
+                else if (exp.hapusComment()) { }
                 else if (this.hapusSpace()) { }
                 else if (exp.exp()) { }
                 else if (exp.expKurungSingle()) { }
@@ -69,10 +71,10 @@ namespace ha.parse {
                 else if (exp.binopLogic()) { }
                 else if (exp.not()) { }
                 else if (exp.arg2()) { }
-                else if (exp.args(this._barisObj.token)) { }
-                // else if (exp.argument4(this._barisObj.token)) { }
-                // else if (exp.argument5(this._barisObj.token)) { }
-                // else if (exp.argument6(this._barisObj.token)) { }
+                else if (exp.args(data.barisObj.token)) { }
+                // else if (exp.argument4(data.barisObj.token)) { }
+                // else if (exp.argument5(data.barisObj.token)) { }
+                // else if (exp.argument6(data.barisObj.token)) { }
                 else if (exp.kurungArg2()) { }
                 else if (exp.kurungArg()) { }
                 else if (typeStmt.typeAkses()) { }
@@ -101,6 +103,10 @@ namespace ha.parse {
                 else if (stmt.perintah()) { }
 
                 else if (typeStmt.typeNew()) { }
+                else if (typeStmt.typeDef()) { }
+                else if (typeStmt.fieldDef()) { }
+                else if (typeStmt.typeAkses()) { }
+                // else if (typeStmt.()) { }
 
                 else if (stmt.dimDec()) { }
                 else if (stmt.dimAssign()) { }
@@ -110,10 +116,10 @@ namespace ha.parse {
                 else if (stmt.stmtColon2()) { }
                 else if (stmt.stmtMul()) { }
 
-                else {
+                else if (data.barisObj.token.length > 1) {
                     console.log("error:");
-                    console.log(this._barisObj.token);
-                    this._barisObj.token.forEach((token: IToken) => {
+                    console.log(data.barisObj.token);
+                    data.barisObj.token.forEach((token: IToken) => {
                         console.log(parse.tokenToValue(token));
                     })
                     throw Error('');
