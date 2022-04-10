@@ -627,13 +627,25 @@ namespace ha.parse {
                 if (t1.type != Kons.TY_KATA) return false;
                 if (t1.valueLowerCase == 'dim') return false;
 
-                if (!exp.isExp(t2)) {
-                    if (t2.type != Kons.TY_ARG) {
-                        if (t2.type != Kons.TY_ARG2) {
-                            return false;
-                        }
-                    }
+                let t2Ar: Number[] = [
+                    Kons.TY_EXP,
+                    Kons.TY_ARG,
+                    Kons.TY_ARG2,
+                    Kons.TY_ARG_KATA,
+                    Kons.TY_ARG_KATA_M
+                ]
+
+                if (t2Ar.indexOf(t2.type) < 0) {
+                    return false;
                 }
+
+                // if (!exp.isExp(t2)) {
+                //     if (t2.type != Kons.TY_ARG) {
+                //         if (t2.type != Kons.TY_ARG2) {
+                //             return false;
+                //         }
+                //     }
+                // }
 
                 //gak boleh didahului exp => contoh belum ada
                 if (t0) {
@@ -644,6 +656,9 @@ namespace ha.parse {
 
                 if (t3) {
                     if (t3.valueLowerCase == '=') return false;
+                    if (t3.type == Kons.TY_OP) return false;
+                    if (t3.type == Kons.TY_OP2) return false;
+                    if (t3.type == Kons.TY_KOMA) return false;
                 }
 
                 return true;

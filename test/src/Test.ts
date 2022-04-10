@@ -135,6 +135,25 @@ namespace ha.parse {
             "C:\\Program Files (x86)\\Blitz3D\\samples\\RobHutchinson\\WingPilot\\WingPilotV0_01.bb",
             "C:\\Program Files (x86)\\Blitz3D\\samples\\mak\\xfighter\\xfighter.bb",
         ];
+        // private aturans: string[] = [
+        //     "\\data\\aturan\\exp.json"
+        // ];
+
+        constructor() {
+            this.debug();
+        }
+
+        async init(): Promise<void> {
+            // await aturan.loads(this.aturans);
+            // gm2.aturanAr.concat(aturan.daftar);
+            await this.load2();
+        }
+
+        debug(): void {
+            // this.files = [
+            //     ".\\data\\testSingle.txt"
+            // ];
+        }
 
         async parse(file: string): Promise<void> {
             let hsl: string = await ha.comp.Util.Ajax2('get', file, '');
@@ -169,9 +188,7 @@ namespace ha.parse {
 }
 
 window.onload = () => {
-    ha.parse.test.load2().catch((e) => {
+    ha.parse.test.init().catch((e) => {
         console.error(e);
     });
-    // ha.parse.test.load('./data/test2.txt');
-    // ha.parse.test.parse('./data/test.txt');
 }

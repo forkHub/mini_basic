@@ -1,4 +1,12 @@
 declare namespace ha.parse {
+    class Aturan {
+        private _daftar;
+        get daftar(): IAturan[];
+    }
+    export var aturan: Aturan;
+    export {};
+}
+declare namespace ha.parse {
     class Baris {
         pecahBaris(): void;
         bersih(tokenAr: IToken[]): IToken[];
@@ -94,9 +102,27 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Grammar2 {
+        private _aturanAr;
+        get aturanAr(): IAturan[];
+        constructor();
+        def(): IAturan;
+        init(): void;
+        tambahAturan(data: any[]): void;
+        checkLog(): boolean;
+        check(): boolean;
+        checkBaris(tokenAr: IToken[], aturan: IAturan): boolean;
+        checkKondisi(kond: number[], token: IToken): boolean;
+        checkAturan(tokenAr: IToken[], aturan: IAturan, idx: number): boolean;
     }
-    export var grammar2: Grammar2;
+    export var gm2: Grammar2;
     export {};
+}
+interface IAturan {
+    nama?: string;
+    type?: number;
+    kondisi?: number[][];
+    sbl?: number[];
+    stl?: number[];
 }
 declare namespace ha.parse {
     class IfStmt {
@@ -146,10 +172,15 @@ declare namespace ha.parse {
         static readonly TY_FALSE: number;
         static readonly TY_NULL: number;
         static readonly TY_COLON: number;
+        static readonly TY_KOMA: number;
+        static readonly TY_KURUNG_BUKA: number;
+        static readonly TY_KURUNG_TUTUP: number;
+        static readonly TY_EQ: number;
         static readonly TY_MIN: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_ARG_KATA: number;
+        static readonly TY_ARG_KATA_M: number;
         static readonly TY_KURUNG_KOSONG: number;
         static readonly TY_KURUNG_SINGLE: number;
         static readonly TY_KURUNG_ARG: number;
@@ -230,11 +261,13 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Blitz {
+        init(): void;
         parse(str: string): Promise<string>;
         blijs(): string;
         getToken(idx: number, token: IToken[]): IToken;
         tokenToAr(token: IToken): any[];
         tokenToValue(token: IToken, debug?: boolean): string;
+        debugToken(token: IToken[]): void;
     }
     class Arr {
         kiri(token: IToken[], idx: number): IToken[];

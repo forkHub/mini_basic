@@ -139,6 +139,22 @@ var ha;
                 "C:\\Program Files (x86)\\Blitz3D\\samples\\RobHutchinson\\WingPilot\\WingPilotV0_01.bb",
                 "C:\\Program Files (x86)\\Blitz3D\\samples\\mak\\xfighter\\xfighter.bb",
             ];
+            // private aturans: string[] = [
+            //     "\\data\\aturan\\exp.json"
+            // ];
+            constructor() {
+                this.debug();
+            }
+            async init() {
+                // await aturan.loads(this.aturans);
+                // gm2.aturanAr.concat(aturan.daftar);
+                await this.load2();
+            }
+            debug() {
+                // this.files = [
+                //     ".\\data\\testSingle.txt"
+                // ];
+            }
             async parse(file) {
                 let hsl = await ha.comp.Util.Ajax2('get', file, '');
                 // console.group("file");
@@ -167,9 +183,7 @@ var ha;
     })(parse = ha.parse || (ha.parse = {}));
 })(ha || (ha = {}));
 window.onload = () => {
-    ha.parse.test.load2().catch((e) => {
+    ha.parse.test.init().catch((e) => {
         console.error(e);
     });
-    // ha.parse.test.load('./data/test2.txt');
-    // ha.parse.test.parse('./data/test.txt');
 };

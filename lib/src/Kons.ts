@@ -13,13 +13,18 @@ namespace ha.parse {
         static readonly TY_FALSE: number = 10;
         static readonly TY_NULL: number = 11;
         static readonly TY_COLON: number = 12;
+        static readonly TY_KOMA: number = 13;
+        static readonly TY_KURUNG_BUKA: number = 14;
+        static readonly TY_KURUNG_TUTUP: number = 15;
+        static readonly TY_EQ: number = 16;
 
         //comp
         static readonly TY_MIN: number = 50;
 
         static readonly TY_ARG: number = 100;
         static readonly TY_ARG2: number = 101;
-        static readonly TY_ARG_KATA: number = 100;
+        static readonly TY_ARG_KATA: number = 102;
+        static readonly TY_ARG_KATA_M: number = 103;
 
         static readonly TY_KURUNG_KOSONG: number = 153;
         // static readonly TY_KURUNG_ISI: number = 154;    //todo: DIHAPUS, gak pernah di buat tokennya

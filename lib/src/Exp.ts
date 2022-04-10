@@ -54,7 +54,6 @@ namespace ha.parse {
             return false;
         }
 
-        //TODO: exp khusus kata
         expKata(): boolean {
             function check(t0: IToken, t1: IToken, t2: IToken): boolean {
                 if (!t1) return false;
@@ -73,7 +72,9 @@ namespace ha.parse {
                     Kons.TY_ARG2,
                     Kons.TY_ANGKA,
                     Kons.TY_PANGGIL_FUNGSI,
-                    Kons.TY_BINOP
+                    Kons.TY_BINOP,
+                    Kons.TY_ARG_KATA,
+                    Kons.TY_ARG_KATA_M
                 ]
 
                 if (t2) {
@@ -83,6 +84,7 @@ namespace ha.parse {
 
                     if (t2.valueLowerCase == "\\") return false;
                     if (t2.valueLowerCase == ".") return false;
+                    if (t2.valueLowerCase == ",") return false;
 
                     if (t2.valueLowerCase == '(') {
                         return false;
@@ -111,6 +113,7 @@ namespace ha.parse {
 
                     if (t0.valueLowerCase == "type") return false;
                     if (t0.valueLowerCase == "field") return false;
+                    if (t0.valueLowerCase == ",") return false;
                 }
 
                 return true;
@@ -462,6 +465,7 @@ namespace ha.parse {
                     }
                     console.log("kurung arg 2:");
                     console.log(parse.tokenToAr(tokenBaru));
+                    console.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                     i--;

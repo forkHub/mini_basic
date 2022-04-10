@@ -3,6 +3,19 @@ var ha;
 (function (ha) {
     var parse;
     (function (parse) {
+        class Aturan {
+            _daftar = [];
+            get daftar() {
+                return this._daftar;
+            }
+        }
+        parse.aturan = new Aturan();
+    })(parse = ha.parse || (ha.parse = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var parse;
+    (function (parse) {
         class Baris {
             pecahBaris() {
                 let idx = 100000;
@@ -356,7 +369,9 @@ var ha;
                         parse.Kons.TY_ARG2,
                         parse.Kons.TY_ANGKA,
                         parse.Kons.TY_PANGGIL_FUNGSI,
-                        parse.Kons.TY_BINOP
+                        parse.Kons.TY_BINOP,
+                        parse.Kons.TY_ARG_KATA,
+                        parse.Kons.TY_ARG_KATA_M
                     ];
                     if (t2) {
                         if (ar2.indexOf(t2.type) >= 0)
@@ -366,6 +381,8 @@ var ha;
                         if (t2.valueLowerCase == "\\")
                             return false;
                         if (t2.valueLowerCase == ".")
+                            return false;
+                        if (t2.valueLowerCase == ",")
                             return false;
                         if (t2.valueLowerCase == '(') {
                             return false;
@@ -395,6 +412,8 @@ var ha;
                         if (t0.valueLowerCase == "type")
                             return false;
                         if (t0.valueLowerCase == "field")
+                            return false;
+                        if (t0.valueLowerCase == ",")
                             return false;
                     }
                     return true;
@@ -662,6 +681,7 @@ var ha;
                         };
                         console.log("kurung arg 2:");
                         console.log(parse.parse.tokenToAr(tokenBaru));
+                        console.log(parse.parse.tokenToValue(tokenBaru));
                         parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                         i--;
                     }
@@ -1215,6 +1235,7 @@ var ha;
                     else if (parse.exp.kurungArg2()) { }
                     else if (parse.exp.kurungArg()) { }
                     else if (parse.typeStmt.typeAkses()) { }
+                    else if (parse.gm2.checkLog()) { }
                     else if (parse.stmt.modifier()) { }
                     else if (parse.stmt.modIsi()) { }
                     else if (parse.stmt.returnExp()) { }
@@ -1263,8 +1284,221 @@ var ha;
     var parse;
     (function (parse) {
         class Grammar2 {
+            _aturanAr = [];
+            get aturanAr() {
+                return this._aturanAr;
+            }
+            constructor() {
+            }
+            def() {
+                return {
+                    nama: '',
+                    type: 0,
+                    kondisi: [],
+                    sbl: [],
+                    stl: []
+                };
+            }
+            init() {
+                {
+                    this._aturanAr.push({
+                        nama: 'arg_kata',
+                        type: parse.Kons.TY_ARG_KATA,
+                        kondisi: [
+                            [parse.Kons.TY_KATA],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_KATA]
+                        ],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2],
+                        stl: [
+                            parse.Kons.TY_OP, parse.Kons.TY_OP2,
+                            parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
+                        ]
+                    });
+                    this._aturanAr.push({
+                        nama: 'arg_kata_m',
+                        type: parse.Kons.TY_ARG_KATA_M,
+                        kondisi: [
+                            [parse.Kons.TY_ARG_KATA],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_KATA]
+                        ],
+                        sbl: [parse.Kons.TY_KOMA],
+                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2,
+                            ,
+                            parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
+                        ]
+                    });
+                }
+                {
+                    this._aturanAr.push({
+                        nama: 'arg kata exp',
+                        type: parse.Kons.TY_ARG2,
+                        kondisi: [
+                            [parse.Kons.TY_KATA],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_EXP]
+                        ],
+                        sbl: [parse.Kons.TY_KOMA],
+                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
+                    });
+                    this._aturanAr.push({
+                        nama: 'arg exp kata',
+                        type: parse.Kons.TY_ARG2,
+                        kondisi: [
+                            [parse.Kons.TY_EXP],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_KATA]
+                        ],
+                        sbl: [parse.Kons.TY_KOMA],
+                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
+                    });
+                    this._aturanAr.push({
+                        nama: 'arg => arg2 kata',
+                        type: parse.Kons.TY_ARG2,
+                        kondisi: [
+                            [parse.Kons.TY_EXP],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_KATA]
+                        ],
+                        sbl: [parse.Kons.TY_KOMA],
+                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
+                    });
+                }
+                this._aturanAr.push({
+                    nama: 'arg campur',
+                    type: parse.Kons.TY_ARG,
+                    kondisi: [
+                        [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG],
+                        [parse.Kons.TY_KOMA],
+                        [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
+                    ],
+                    sbl: [parse.Kons.TY_KOMA],
+                    stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
+                });
+                this._aturanAr = this._aturanAr.concat([
+                    {
+                        nama: 'binop kata',
+                        type: parse.Kons.TY_BINOP,
+                        kondisi: [
+                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP],
+                            [parse.Kons.TY_OP, parse.Kons.TY_OP2],
+                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP]
+                        ],
+                        sbl: [parse.Kons.TY_EQ, parse.Kons.TY_OP, parse.Kons.TY_OP2],
+                        stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
+                    }
+                ]);
+                this._aturanAr = this._aturanAr.concat([
+                    {
+                        nama: 'perintah ',
+                        type: parse.Kons.TY_PERINTAH,
+                        kondisi: [
+                            [parse.Kons.TY_KATA],
+                            [parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M],
+                        ],
+                        sbl: [parse.Kons.TY_EQ, parse.Kons.TY_OP, parse.Kons.TY_OP2],
+                        stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
+                    }
+                ]);
+            }
+            tambahAturan(data) {
+                this._aturanAr.push({
+                    nama: data[0],
+                    type: data[1],
+                    kondisi: data[2],
+                    sbl: data[3],
+                    stl: data[4]
+                });
+            }
+            checkLog() {
+                let hasil = false;
+                console.group('check');
+                hasil = this.check();
+                console.groupEnd();
+                return hasil;
+            }
+            check() {
+                let idxAturan = 0;
+                let aturan;
+                let barisAda;
+                let checkAda = false;
+                while (true) {
+                    aturan = this.aturanAr[idxAturan];
+                    barisAda = this.checkBaris(parse.data.barisObj.token, aturan);
+                    if (barisAda) {
+                        checkAda = true;
+                        idxAturan = 0;
+                    }
+                    else {
+                        idxAturan++;
+                        if (idxAturan >= this.aturanAr.length) {
+                            break;
+                        }
+                    }
+                }
+                return checkAda;
+            }
+            checkBaris(tokenAr, aturan) {
+                let ada = false;
+                for (let i = tokenAr.length - 1; i >= 0; i--) {
+                    let ok = false;
+                    ok = this.checkAturan(tokenAr, aturan, i);
+                    if (ok) {
+                        let tokenBaru = {
+                            token: [],
+                            type: aturan.type
+                        };
+                        for (let j = 0; j < aturan.kondisi.length; j++) {
+                            tokenBaru.token.push(parse.parse.getToken(i + j, tokenAr));
+                        }
+                        console.log(aturan.nama);
+                        console.log(tokenBaru);
+                        console.log(parse.parse.tokenToValue(tokenBaru));
+                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru, false);
+                        ada = true;
+                    }
+                }
+                return ada;
+            }
+            checkKondisi(kond, token) {
+                let hasil = false;
+                hasil = (kond.indexOf(token.type) >= 0);
+                return hasil;
+            }
+            checkAturan(tokenAr, aturan, idx) {
+                let t;
+                let hasil = true;
+                for (let i = 0; i < aturan.kondisi.length; i++) {
+                    t = parse.parse.getToken(idx + i, tokenAr);
+                    if (!t) {
+                        hasil = false;
+                    }
+                    else {
+                        let cocok = this.checkKondisi(aturan.kondisi[i], t);
+                        if (!cocok) {
+                            hasil = false;
+                        }
+                        else {
+                        }
+                    }
+                }
+                t = parse.parse.getToken(idx - 1, tokenAr);
+                if (t) {
+                    if (aturan.sbl.indexOf(t.type) >= 0) {
+                        hasil = false;
+                    }
+                }
+                t = parse.parse.getToken(idx + aturan.kondisi.length, tokenAr);
+                if (t) {
+                    if (aturan.stl.indexOf(t.type) >= 0) {
+                        hasil = false;
+                    }
+                }
+                return hasil;
+            }
         }
-        parse.grammar2 = new Grammar2();
+        parse.gm2 = new Grammar2();
     })(parse = ha.parse || (ha.parse = {}));
 })(ha || (ha = {}));
 var ha;
@@ -1649,10 +1883,15 @@ var ha;
             static TY_FALSE = 10;
             static TY_NULL = 11;
             static TY_COLON = 12;
+            static TY_KOMA = 13;
+            static TY_KURUNG_BUKA = 14;
+            static TY_KURUNG_TUTUP = 15;
+            static TY_EQ = 16;
             static TY_MIN = 50;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
-            static TY_ARG_KATA = 100;
+            static TY_ARG_KATA = 102;
+            static TY_ARG_KATA_M = 103;
             static TY_KURUNG_KOSONG = 153;
             static TY_KURUNG_SINGLE = 155;
             static TY_KURUNG_ARG = 156;
@@ -1884,6 +2123,18 @@ var ha;
                         if (":" == lc) {
                             token.type = parse.Kons.TY_COLON;
                         }
+                        else if ("," == lc) {
+                            token.type = parse.Kons.TY_KOMA;
+                        }
+                        else if ("(" == lc) {
+                            token.type = parse.Kons.TY_KURUNG_BUKA;
+                        }
+                        else if (")" == lc) {
+                            token.type = parse.Kons.TY_KURUNG_TUTUP;
+                        }
+                        else if ("=" == lc) {
+                            token.type = parse.Kons.TY_EQ;
+                        }
                         parse.data.dataStr = parse.data.dataStr.slice(kata.length);
                         return true;
                     }
@@ -1987,6 +2238,9 @@ var ha;
     var parse;
     (function (parse_1) {
         class Blitz {
+            init() {
+                parse_1.gm2.init();
+            }
             async parse(str) {
                 parse_1.data.dataStr = str;
                 parse_1.data.dataStr += ";;";
@@ -2009,6 +2263,10 @@ var ha;
                 console.groupEnd();
                 console.group("hasil:");
                 for (let i = 0; i < parse_1.data.barisAr.length; i++) {
+                    console.log(parse_1.data.barisAr[i].baris);
+                    console.log(parse_1.data.barisAr[i].token);
+                    console.log(parse_1.data.barisAr[i].terjemah);
+                    console.log("");
                 }
                 console.groupEnd();
                 console.log("finish");
@@ -2077,6 +2335,13 @@ var ha;
                 }
                 throw new Error('');
             }
+            debugToken(token) {
+                console.group('debug token:');
+                token.forEach((item) => {
+                    console.log(this.tokenToValue(item));
+                });
+                console.groupEnd();
+            }
         }
         class Arr {
             kiri(token, idx) {
@@ -2126,6 +2391,7 @@ var ha;
         }
         parse_1.ar = new Arr();
         parse_1.parse = new Blitz();
+        parse_1.parse.init();
     })(parse = ha.parse || (ha.parse = {}));
 })(ha || (ha = {}));
 var ha;
@@ -2590,12 +2856,15 @@ var ha;
                         return false;
                     if (t1.valueLowerCase == 'dim')
                         return false;
-                    if (!parse.exp.isExp(t2)) {
-                        if (t2.type != parse.Kons.TY_ARG) {
-                            if (t2.type != parse.Kons.TY_ARG2) {
-                                return false;
-                            }
-                        }
+                    let t2Ar = [
+                        parse.Kons.TY_EXP,
+                        parse.Kons.TY_ARG,
+                        parse.Kons.TY_ARG2,
+                        parse.Kons.TY_ARG_KATA,
+                        parse.Kons.TY_ARG_KATA_M
+                    ];
+                    if (t2Ar.indexOf(t2.type) < 0) {
+                        return false;
                     }
                     if (t0) {
                         if (t0.type == parse.Kons.TY_EXP) {
@@ -2604,6 +2873,12 @@ var ha;
                     }
                     if (t3) {
                         if (t3.valueLowerCase == '=')
+                            return false;
+                        if (t3.type == parse.Kons.TY_OP)
+                            return false;
+                        if (t3.type == parse.Kons.TY_OP2)
+                            return false;
+                        if (t3.type == parse.Kons.TY_KOMA)
                             return false;
                     }
                     return true;

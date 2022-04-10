@@ -72,12 +72,10 @@ namespace ha.parse {
                 else if (exp.not()) { }
                 else if (exp.arg2()) { }
                 else if (exp.args(data.barisObj.token)) { }
-                // else if (exp.argument4(data.barisObj.token)) { }
-                // else if (exp.argument5(data.barisObj.token)) { }
-                // else if (exp.argument6(data.barisObj.token)) { }
                 else if (exp.kurungArg2()) { }
                 else if (exp.kurungArg()) { }
                 else if (typeStmt.typeAkses()) { }
+                else if (gm2.checkLog()) { }
 
                 //STMT
                 else if (stmt.modifier()) { }

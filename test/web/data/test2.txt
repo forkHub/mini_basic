@@ -1,3 +1,19 @@
+ScaleEntity sphere(i),inc-1.5+inc2,inc-1.5+inc2,inc-1.5+inc2
+EntityTexture sphere1,texture1
+ScaleSprite sun,sx+Rnd(os),sy+Rnd(os)
+Left(in,7)="global " or Lower(Left(in,6))="const "
+test or Lower(Left(in,6))="const "
+Lower(Left(in,7))="global " or Lower(Left(in,6))="const "
+Lower(Left(in,6))
+left(in,6)
+test(test(1,1));
+kata,1
+1,kata
+1,kata,kata
+kata,kata
+kata,kata,kata
+kata,kata,1
+kata,kata,kata,1
 Field obj
 arraylength=arraylength+Mid(in,c,1)
 Mid(in,c,1)=","
@@ -6,7 +22,6 @@ AddVertex s,-1,+1,-1,0,0:
 AddVertex s,+1,+1,-1,1,0
 tween=Float(elapsed Mod period)/Float(period)
 ScaleSprite sun,20-(inc*2),20-(inc*2)
-ScaleSprite sun,sx+Rnd(os),sy+Rnd(os)
 dist<970
 If dist<970
 If dist<970 MoveEntity

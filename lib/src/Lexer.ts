@@ -219,6 +219,18 @@ namespace ha.parse {
                     if (":" == lc) {
                         token.type = Kons.TY_COLON
                     }
+                    else if ("," == lc) {
+                        token.type = Kons.TY_KOMA
+                    }
+                    else if ("(" == lc) {
+                        token.type = Kons.TY_KURUNG_BUKA
+                    }
+                    else if (")" == lc) {
+                        token.type = Kons.TY_KURUNG_TUTUP
+                    }
+                    else if ("=" == lc) {
+                        token.type = Kons.TY_EQ
+                    }
 
                     data.dataStr = data.dataStr.slice(kata.length);
                     return true;

@@ -1,6 +1,11 @@
 namespace ha.parse {
 	class Blitz {
 
+		init(): void {
+			gm2.init();
+			// await aturan.loads([""]);
+		}
+
 		async parse(str: string): Promise<string> {
 			data.dataStr = str;
 			data.dataStr += ";;";
@@ -26,22 +31,15 @@ namespace ha.parse {
 
 				console.log(baris.getLine(barisObj.token));
 				grammar.grammar();
-
-				// console.group('terjemah:')
-				// barisObj.terjemah = terj.terjemah(barisObj.token[0]);
-				// console.groupEnd();
-
-				// console.log("hasil:");
-				// console.log(barisObj.terjemah);
-				// console.log("");
 			}
 			console.groupEnd();
 
 			console.group("hasil:");
 			for (let i: number = 0; i < data.barisAr.length; i++) {
-				// console.log(data.barisAr[i].baris);
-				// console.log(data.barisAr[i].terjemah);
-				// console.log("");
+				console.log(data.barisAr[i].baris);
+				console.log(data.barisAr[i].token);
+				console.log(data.barisAr[i].terjemah);
+				console.log("");
 			}
 			console.groupEnd();
 
@@ -123,6 +121,15 @@ namespace ha.parse {
 			throw new Error('');
 		}
 
+		debugToken(token: IToken[]): void {
+			console.group('debug token:')
+			token.forEach((item: IToken) => {
+				console.log(this.tokenToValue(item));
+			})
+			console.groupEnd();
+			// return '';
+		}
+
 	}
 
 	class Arr {
@@ -201,4 +208,5 @@ namespace ha.parse {
 
 	export var ar: Arr = new Arr();
 	export var parse: Blitz = new Blitz();
+	parse.init();
 }
