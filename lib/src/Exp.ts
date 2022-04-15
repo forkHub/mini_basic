@@ -74,7 +74,8 @@ namespace ha.parse {
                     Kons.TY_PANGGIL_FUNGSI,
                     Kons.TY_BINOP,
                     Kons.TY_ARG_KATA,
-                    Kons.TY_ARG_KATA_M
+                    Kons.TY_ARG_KATA_M,
+                    Kons.TY_NEW
                 ]
 
                 if (t2) {
@@ -164,6 +165,7 @@ namespace ha.parse {
 
                 if (t0) {
                     if (t0.type == Kons.TY_KATA) return false;
+                    if (t0.type == Kons.TY_KATA_DOT) return false;
                 }
 
                 return true;
@@ -218,7 +220,8 @@ namespace ha.parse {
                     Kons.TY_TYPE_ACCESS,
                     Kons.TY_FALSE,
                     Kons.TY_TRUE,
-                    Kons.TY_NULL
+                    Kons.TY_NULL,
+                    Kons.TY_TYPE_ACCESS_DIM
                 ];
 
                 if (ar.indexOf(t1.type) < 0) return false;
@@ -329,9 +332,10 @@ namespace ha.parse {
                     }
 
                     console.log("kata dot:");
-                    console.log(tokenBaru);
+                    console.log(parse.tokenToValue(tokenBaru));
+                    // parse.debugToken(data.barisObj.token);
 
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }
@@ -398,7 +402,11 @@ namespace ha.parse {
 
                 if (t1.valueLowerCase != '(') return false;
                 if (t3.valueLowerCase != ')') return false;
-                if (t2.type != Kons.TY_EXP) return false;
+                if (t2.type != Kons.TY_EXP) {
+                    if (t2.type != Kons.TY_BINOP_EQ) {
+                        return false;
+                    }
+                }
 
                 //optional
 
@@ -442,7 +450,11 @@ namespace ha.parse {
 
                 if (t1.valueLowerCase != '(') return false;
                 if (t3.valueLowerCase != ')') return false;
-                if (t2.type != Kons.TY_ARG2) return false;
+                if (t2.type != Kons.TY_ARG2) {
+                    if (t2.type != Kons.TY_ARG_KATA) {
+                        return false;
+                    }
+                }
 
                 //optional
 
@@ -487,8 +499,11 @@ namespace ha.parse {
 
                 if (t1.valueLowerCase != '(') return false;
                 if (t3.valueLowerCase != ')') return false;
-                if (t2.type != Kons.TY_ARG) return false;
-
+                if (t2.type != Kons.TY_ARG) {
+                    if (t2.type != Kons.TY_ARG_KATA_M) {
+                        return false;
+                    }
+                }
                 //optional
 
                 //ok
@@ -522,6 +537,7 @@ namespace ha.parse {
         binop(): boolean {
             let ada: boolean = false;
 
+            //TODO: binop dibuat dari kiri ke kanan
             function check(t1: IToken, t2: IToken, t3: IToken) {
                 if (!t1) return false;
                 if (!t2) return false;
@@ -589,6 +605,7 @@ namespace ha.parse {
                     if (t0.valueLowerCase == 'global') return false;
                     if (t0.valueLowerCase == 'local') return false;
                     if (t0.valueLowerCase == 'const') return false;
+                    if (t0.valueLowerCase == '\\') return false;
                 }
 
                 if (t4) {
@@ -738,16 +755,20 @@ namespace ha.parse {
                     }
                 }
 
-                if (t2.type != Kons.TY_EXP) return false;
+                if (t2.type != Kons.TY_EXP) {
+                    if (t2.type != Kons.TY_KATA) {
+                        return false;
+                    }
+                }
 
                 if (t0) {
                     if (t0.type == Kons.TY_EXP) return false;
                     if (t0.type == Kons.TY_KURUNG_ARG) return false;
                     if (t0.type == Kons.TY_KURUNG_ARG2) return false;
-                    // if (t0.type == Kons.TY_KURUNG_ISI) return false;
                     if (t0.type == Kons.TY_KURUNG_KOSONG) return false;
                     if (t0.type == Kons.TY_KURUNG_SINGLE) return false;
                     if (t0.type == Kons.TY_KATA) return false;
+                    if (t0.type == Kons.TY_MIN) return false;
 
                     if (t0.valueLowerCase == ")") return false;
                 }
@@ -773,10 +794,10 @@ namespace ha.parse {
                     console.log("min:");
                     console.log(tokenBaru);
                     console.log(parse.tokenToValue(tokenBaru));
-                    if (t0) {
-                        console.log('to');
-                        console.log(t0);
-                    }
+                    // if (t0) {
+                    //     console.log('to');
+                    //     console.log(t0);
+                    // }
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -799,9 +820,19 @@ namespace ha.parse {
                 if (!t2) return false;
                 if (!t3) return false;
 
-                if (t1.type != Kons.TY_EXP) return false;
+                if (t1.type != Kons.TY_EXP) {
+                    if (t1.type != Kons.TY_BINOP_EQ) {
+                        return false;
+                    }
+                }
+
                 if (t2.valueLowerCase != ',') return false;
-                if (t3.type != Kons.TY_EXP) return false;
+
+                if (t3.type != Kons.TY_EXP) {
+                    if (t3.type != Kons.TY_BINOP_EQ) {
+                        return false;
+                    }
+                }
 
                 if (t0) {
                     if (t0.valueLowerCase == ",") return false;
@@ -866,7 +897,11 @@ namespace ha.parse {
                 }
 
                 if (t2.value != ',') return false;
-                if (t3.type != Kons.TY_EXP) return false;
+                if (t3.type != Kons.TY_EXP) {
+                    if (t3.type != Kons.TY_BINOP_EQ) {
+                        return false;
+                    }
+                }
 
                 if (t4) {
                     if (t4.valueLowerCase == "+") return false;
@@ -1015,6 +1050,7 @@ namespace ha.parse {
                 //tidak boleh diikuti =
                 if (t3) {
                     if (t3.valueLowerCase == '=') return false;
+                    if (t3.valueLowerCase == '\\') return false;
                 }
 
                 //ok

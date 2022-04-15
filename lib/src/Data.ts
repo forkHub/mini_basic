@@ -34,6 +34,8 @@ namespace ha.parse {
 
             "end",
 
+            "dim",
+
             //
             "//",
         ];
@@ -62,15 +64,15 @@ namespace ha.parse {
             "<",
             "!=",
 
-            "not",
-            "mod"
+            // "not",
+            // "mod"
         ];
 
         private _op2: string[] = [
             "&&",
             "||",
-            "and",
-            "or"
+            // "and",
+            // "or"
         ];
 
 

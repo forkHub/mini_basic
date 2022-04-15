@@ -231,6 +231,12 @@ namespace ha.parse {
                     else if ("=" == lc) {
                         token.type = Kons.TY_EQ
                     }
+                    else if ("\\" == lc) {
+                        token.type = Kons.TY_BACK_SLASH
+                    }
+                    else if ("." == lc) {
+                        token.type = Kons.TY_DOT
+                    }
 
                     data.dataStr = data.dataStr.slice(kata.length);
                     return true;
@@ -309,6 +315,27 @@ namespace ha.parse {
                 }
                 else if ("end select" == lc) {
                     token.type = Kons.TY_END_SELECT
+                }
+                else if ("dim" == lc) {
+                    token.type = Kons.TY_DIM
+                }
+                else if ("new" == lc) {
+                    token.type = Kons.TY_NEW
+                }
+                else if ("and" == lc) {
+                    token.type = Kons.TY_OP2
+                }
+                else if ("or" == lc) {
+                    token.type = Kons.TY_OP2
+                }
+                else if ("xor" == lc) {
+                    token.type = Kons.TY_OP2
+                }
+                else if ("mod" == lc) {
+                    token.type = Kons.TY_OP
+                }
+                else if ("not" == lc) {
+                    token.type = Kons.TY_OP
                 }
                 else {
                     //console.warn("kata belum didefinisikan: " + lc);

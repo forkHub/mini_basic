@@ -185,6 +185,7 @@ var ha;
                 "false", "true", "null",
                 "case", "select", "end select",
                 "end",
+                "dim",
                 "//",
             ];
             _kataKunci3 = [
@@ -208,14 +209,10 @@ var ha;
                 ">",
                 "<",
                 "!=",
-                "not",
-                "mod"
             ];
             _op2 = [
                 "&&",
                 "||",
-                "and",
-                "or"
             ];
             _symbol = [
                 '"',
@@ -371,7 +368,8 @@ var ha;
                         parse.Kons.TY_PANGGIL_FUNGSI,
                         parse.Kons.TY_BINOP,
                         parse.Kons.TY_ARG_KATA,
-                        parse.Kons.TY_ARG_KATA_M
+                        parse.Kons.TY_ARG_KATA_M,
+                        parse.Kons.TY_NEW
                     ];
                     if (t2) {
                         if (ar2.indexOf(t2.type) >= 0)
@@ -453,6 +451,8 @@ var ha;
                     if (t0) {
                         if (t0.type == parse.Kons.TY_KATA)
                             return false;
+                        if (t0.type == parse.Kons.TY_KATA_DOT)
+                            return false;
                     }
                     return true;
                 }
@@ -496,7 +496,8 @@ var ha;
                         parse.Kons.TY_TYPE_ACCESS,
                         parse.Kons.TY_FALSE,
                         parse.Kons.TY_TRUE,
-                        parse.Kons.TY_NULL
+                        parse.Kons.TY_NULL,
+                        parse.Kons.TY_TYPE_ACCESS_DIM
                     ];
                     if (ar.indexOf(t1.type) < 0)
                         return false;
@@ -591,8 +592,8 @@ var ha;
                             token: [t1, t2, t3]
                         };
                         console.log("kata dot:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
+                        console.log(parse.parse.tokenToValue(tokenBaru));
+                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                         ada = true;
                     }
                 }
@@ -630,8 +631,11 @@ var ha;
                         return false;
                     if (t3.valueLowerCase != ')')
                         return false;
-                    if (t2.type != parse.Kons.TY_EXP)
-                        return false;
+                    if (t2.type != parse.Kons.TY_EXP) {
+                        if (t2.type != parse.Kons.TY_BINOP_EQ) {
+                            return false;
+                        }
+                    }
                     return true;
                 }
                 for (let i = 0; i < parse.data.barisObj.token.length; i++) {
@@ -665,8 +669,11 @@ var ha;
                         return false;
                     if (t3.valueLowerCase != ')')
                         return false;
-                    if (t2.type != parse.Kons.TY_ARG2)
-                        return false;
+                    if (t2.type != parse.Kons.TY_ARG2) {
+                        if (t2.type != parse.Kons.TY_ARG_KATA) {
+                            return false;
+                        }
+                    }
                     return true;
                 }
                 for (let i = 0; i < parse.data.barisObj.token.length; i++) {
@@ -701,8 +708,11 @@ var ha;
                         return false;
                     if (t3.valueLowerCase != ')')
                         return false;
-                    if (t2.type != parse.Kons.TY_ARG)
-                        return false;
+                    if (t2.type != parse.Kons.TY_ARG) {
+                        if (t2.type != parse.Kons.TY_ARG_KATA_M) {
+                            return false;
+                        }
+                    }
                     return true;
                 }
                 for (let i = 0; i < parse.data.barisObj.token.length; i++) {
@@ -786,6 +796,8 @@ var ha;
                         if (t0.valueLowerCase == 'local')
                             return false;
                         if (t0.valueLowerCase == 'const')
+                            return false;
+                        if (t0.valueLowerCase == '\\')
                             return false;
                     }
                     if (t4) {
@@ -910,8 +922,11 @@ var ha;
                             return false;
                         }
                     }
-                    if (t2.type != parse.Kons.TY_EXP)
-                        return false;
+                    if (t2.type != parse.Kons.TY_EXP) {
+                        if (t2.type != parse.Kons.TY_KATA) {
+                            return false;
+                        }
+                    }
                     if (t0) {
                         if (t0.type == parse.Kons.TY_EXP)
                             return false;
@@ -924,6 +939,8 @@ var ha;
                         if (t0.type == parse.Kons.TY_KURUNG_SINGLE)
                             return false;
                         if (t0.type == parse.Kons.TY_KATA)
+                            return false;
+                        if (t0.type == parse.Kons.TY_MIN)
                             return false;
                         if (t0.valueLowerCase == ")")
                             return false;
@@ -943,10 +960,6 @@ var ha;
                         console.log("min:");
                         console.log(tokenBaru);
                         console.log(parse.parse.tokenToValue(tokenBaru));
-                        if (t0) {
-                            console.log('to');
-                            console.log(t0);
-                        }
                         parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                         ada = true;
                     }
@@ -964,12 +977,18 @@ var ha;
                         return false;
                     if (!t3)
                         return false;
-                    if (t1.type != parse.Kons.TY_EXP)
-                        return false;
+                    if (t1.type != parse.Kons.TY_EXP) {
+                        if (t1.type != parse.Kons.TY_BINOP_EQ) {
+                            return false;
+                        }
+                    }
                     if (t2.valueLowerCase != ',')
                         return false;
-                    if (t3.type != parse.Kons.TY_EXP)
-                        return false;
+                    if (t3.type != parse.Kons.TY_EXP) {
+                        if (t3.type != parse.Kons.TY_BINOP_EQ) {
+                            return false;
+                        }
+                    }
                     if (t0) {
                         if (t0.valueLowerCase == ",")
                             return false;
@@ -1026,8 +1045,11 @@ var ha;
                     }
                     if (t2.value != ',')
                         return false;
-                    if (t3.type != parse.Kons.TY_EXP)
-                        return false;
+                    if (t3.type != parse.Kons.TY_EXP) {
+                        if (t3.type != parse.Kons.TY_BINOP_EQ) {
+                            return false;
+                        }
+                    }
                     if (t4) {
                         if (t4.valueLowerCase == "+")
                             return false;
@@ -1136,6 +1158,8 @@ var ha;
                     }
                     if (t3) {
                         if (t3.valueLowerCase == '=')
+                            return false;
+                        if (t3.valueLowerCase == '\\')
                             return false;
                     }
                     return true;
@@ -1309,7 +1333,7 @@ var ha;
                             [parse.Kons.TY_KOMA],
                             [parse.Kons.TY_KATA]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH],
                         stl: [
                             parse.Kons.TY_OP, parse.Kons.TY_OP2,
                             parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
@@ -1335,34 +1359,23 @@ var ha;
                         nama: 'arg kata exp',
                         type: parse.Kons.TY_ARG2,
                         kondisi: [
-                            [parse.Kons.TY_KATA],
+                            [parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ],
                             [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_EXP]
+                            [parse.Kons.TY_EXP, , parse.Kons.TY_BINOP_EQ]
                         ],
-                        sbl: [parse.Kons.TY_KOMA],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH],
                         stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
                     });
                     this._aturanAr.push({
-                        nama: 'arg exp kata',
+                        nama: 'exp , kata',
                         type: parse.Kons.TY_ARG2,
                         kondisi: [
-                            [parse.Kons.TY_EXP],
+                            [parse.Kons.TY_EXP, parse.Kons.TY_BINOP_EQ],
                             [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA]
+                            [parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ]
                         ],
-                        sbl: [parse.Kons.TY_KOMA],
-                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
-                    });
-                    this._aturanAr.push({
-                        nama: 'arg => arg2 kata',
-                        type: parse.Kons.TY_ARG2,
-                        kondisi: [
-                            [parse.Kons.TY_EXP],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA]
-                        ],
-                        sbl: [parse.Kons.TY_KOMA],
-                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH],
+                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH]
                     });
                 }
                 this._aturanAr.push({
@@ -1371,7 +1384,7 @@ var ha;
                     kondisi: [
                         [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG],
                         [parse.Kons.TY_KOMA],
-                        [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
+                        [parse.Kons.TY_EXP, parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ]
                     ],
                     sbl: [parse.Kons.TY_KOMA],
                     stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
@@ -1387,7 +1400,7 @@ var ha;
                         ],
                         sbl: [parse.Kons.TY_EQ, parse.Kons.TY_OP, parse.Kons.TY_OP2],
                         stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
-                    }
+                    },
                 ]);
                 this._aturanAr = this._aturanAr.concat([
                     {
@@ -1399,6 +1412,78 @@ var ha;
                         ],
                         sbl: [parse.Kons.TY_EQ, parse.Kons.TY_OP, parse.Kons.TY_OP2],
                         stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
+                    },
+                    {
+                        nama: 'label ',
+                        type: parse.Kons.TY_LABEL,
+                        kondisi: [
+                            [parse.Kons.TY_DOT],
+                            [parse.Kons.TY_KATA],
+                        ],
+                        sbl: [parse.Kons.TY_KATA],
+                        stl: []
+                    }
+                ]);
+                this._aturanAr = this._aturanAr.concat([
+                    {
+                        nama: 'field def m',
+                        type: parse.Kons.TY_FIELD_NEW_DEF_M,
+                        kondisi: [
+                            [parse.Kons.TY_FIELD],
+                            [parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M],
+                        ],
+                        sbl: [],
+                        stl: [parse.Kons.TY_KOMA]
+                    },
+                    {
+                        nama: 'new',
+                        type: parse.Kons.TY_NEW_INST,
+                        kondisi: [
+                            [parse.Kons.TY_NEW],
+                            [parse.Kons.TY_KATA],
+                        ],
+                        sbl: [],
+                        stl: []
+                    },
+                    {
+                        nama: 'dim(n)\\kata',
+                        type: parse.Kons.TY_TYPE_ACCESS_DIM,
+                        kondisi: [
+                            [parse.Kons.TY_KATA],
+                            [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_ARG2],
+                            [parse.Kons.TY_BACK_SLASH],
+                            [parse.Kons.TY_KATA]
+                        ],
+                        sbl: [],
+                        stl: []
+                    },
+                    {
+                        nama: 'dim(n)\\prop = exp|kata',
+                        type: parse.Kons.TY_DIM_PROP_ASSINMENT,
+                        kondisi: [
+                            [parse.Kons.TY_TYPE_ACCESS_DIM],
+                            [parse.Kons.TY_EQ],
+                            [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
+                        ],
+                        sbl: [],
+                        stl: [
+                            parse.Kons.TY_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M,
+                            parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE,
+                            parse.Kons.TY_KURUNG_BUKA
+                        ]
+                    },
+                ]);
+                this._aturanAr = this._aturanAr.concat([
+                    {
+                        nama: 'dim dec',
+                        type: parse.Kons.TY_DIM_DEC,
+                        kondisi: [
+                            [parse.Kons.TY_DIM],
+                            [parse.Kons.TY_KATA_DOT, parse.Kons.TY_KATA],
+                            [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA]
+                        ],
+                        sbl: [],
+                        stl: []
                     }
                 ]);
             }
@@ -1887,6 +1972,9 @@ var ha;
             static TY_KURUNG_BUKA = 14;
             static TY_KURUNG_TUTUP = 15;
             static TY_EQ = 16;
+            static TY_NEW = 17;
+            static TY_BACK_SLASH = 18;
+            static TY_DOT = 19;
             static TY_MIN = 50;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
@@ -1905,24 +1993,29 @@ var ha;
             static TY_STMT_COLON = 301;
             static TY_STMT_M = 302;
             static TY_PERINTAH = 303;
+            static TY_LABEL = 304;
             static TY_FOR = 305;
             static TY_FOR_STEP = 306;
             static TY_WEND = 307;
             static TY_FUNC_DEC = 308;
-            static TY_MOD = 309;
+            static TY_MODIFIER = 309;
             static TY_RETURN = 310;
             static TY_RETURN_EXP = 311;
-            static TY_DIM_ASSINMENT = 400;
-            static TY_DIM_DEC = 401;
-            static TY_DIM_DEC_VAR = 402;
-            static TY_TYPE_NEW_DEC = 500;
-            static TY_TYPE_DEF = 510;
-            static TY_FIELD_DEF = 520;
+            static TY_DIM = 400;
+            static TY_DIM_ASSINMENT = 401;
+            static TY_DIM_DEC = 402;
+            static TY_DIM_DEC_VAR = 403;
+            static TY_DIM_PROP_ASSINMENT = 404;
+            static TY_TYPE_NEW_INST = 500;
+            static TY_TYPE_NEW_DEF = 510;
+            static TY_FIELD_NEW_DEF = 520;
             static TY_TYPE = 530;
             static TY_FIELD = 540;
-            static TY_FIELD_M = 545;
+            static TY_FIELD_NEW_DEF_M = 545;
             static TY_ENDTYPE = 550;
             static TY_TYPE_ACCESS = 560;
+            static TY_TYPE_ACCESS_DIM = 561;
+            static TY_NEW_INST = 570;
             static TY_IF_EXP = 600;
             static TY_IF_EXP_P = 601;
             static TY_IF_EXP_P2 = 602;
@@ -2135,6 +2228,12 @@ var ha;
                         else if ("=" == lc) {
                             token.type = parse.Kons.TY_EQ;
                         }
+                        else if ("\\" == lc) {
+                            token.type = parse.Kons.TY_BACK_SLASH;
+                        }
+                        else if ("." == lc) {
+                            token.type = parse.Kons.TY_DOT;
+                        }
                         parse.data.dataStr = parse.data.dataStr.slice(kata.length);
                         return true;
                     }
@@ -2195,6 +2294,27 @@ var ha;
                     }
                     else if ("end select" == lc) {
                         token.type = parse.Kons.TY_END_SELECT;
+                    }
+                    else if ("dim" == lc) {
+                        token.type = parse.Kons.TY_DIM;
+                    }
+                    else if ("new" == lc) {
+                        token.type = parse.Kons.TY_NEW;
+                    }
+                    else if ("and" == lc) {
+                        token.type = parse.Kons.TY_OP2;
+                    }
+                    else if ("or" == lc) {
+                        token.type = parse.Kons.TY_OP2;
+                    }
+                    else if ("xor" == lc) {
+                        token.type = parse.Kons.TY_OP2;
+                    }
+                    else if ("mod" == lc) {
+                        token.type = parse.Kons.TY_OP;
+                    }
+                    else if ("not" == lc) {
+                        token.type = parse.Kons.TY_OP;
                     }
                     else {
                     }
@@ -2548,7 +2668,7 @@ var ha;
                 return ada;
             }
             dimAssign() {
-                function check(t1, t2, t3, t4) {
+                function check(t1, t2, t3, t4, t5) {
                     if (!t1)
                         return false;
                     if (!t2)
@@ -2564,8 +2684,15 @@ var ha;
                         return false;
                     if (t3.valueLowerCase != '=')
                         return false;
-                    if (t4.type != parse.Kons.TY_EXP)
-                        return false;
+                    if (t4.type != parse.Kons.TY_EXP) {
+                        if (t4.type != parse.Kons.TY_NEW_INST) {
+                            return false;
+                        }
+                    }
+                    if (t5) {
+                        if (t5.type == parse.Kons.TY_KATA)
+                            return false;
+                    }
                     return true;
                 }
                 let ada = false;
@@ -2574,7 +2701,8 @@ var ha;
                     let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
                     let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
                     let t4 = parse.parse.getToken(i + 3, parse.data.barisObj.token);
-                    if (check(t1, t2, t3, t4)) {
+                    let t5 = parse.parse.getToken(i + 4, parse.data.barisObj.token);
+                    if (check(t1, t2, t3, t4, t5)) {
                         let tokenBaru;
                         tokenBaru = {
                             type: parse.Kons.TY_DIM_ASSINMENT,
@@ -2582,6 +2710,7 @@ var ha;
                         };
                         console.log("dim assign");
                         console.log(tokenBaru);
+                        console.log(t5);
                         parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                         ada = true;
                     }
@@ -2777,7 +2906,7 @@ var ha;
                     if (check(token1, token2)) {
                         let tokenBaru;
                         tokenBaru = {
-                            type: parse.Kons.TY_MOD,
+                            type: parse.Kons.TY_MODIFIER,
                             token: [token1, token2]
                         };
                         console.log("modifier");
@@ -2800,7 +2929,7 @@ var ha;
                         return false;
                     if (!t3)
                         return false;
-                    if (t1.type != parse.Kons.TY_MOD)
+                    if (t1.type != parse.Kons.TY_MODIFIER)
                         return false;
                     if (t2.valueLowerCase != '=')
                         return false;
@@ -2867,9 +2996,6 @@ var ha;
                         return false;
                     }
                     if (t0) {
-                        if (t0.type == parse.Kons.TY_EXP) {
-                            return false;
-                        }
                     }
                     if (t3) {
                         if (t3.valueLowerCase == '=')
@@ -3164,13 +3290,13 @@ var ha;
                 else if (token.type == parse.Kons.TY_IF_THEN_P2) {
                     return '';
                 }
-                else if (token.type == parse.Kons.TY_TYPE_NEW_DEC) {
+                else if (token.type == parse.Kons.TY_TYPE_NEW_INST) {
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_IF_EXP_P) {
                     return '';
                 }
-                else if (token.type == parse.Kons.TY_MOD) {
+                else if (token.type == parse.Kons.TY_MODIFIER) {
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_KURUNG_ARG2) {
@@ -3238,22 +3364,18 @@ var ha;
         class TypeStmt {
             typeNew() {
                 let ada = false;
-                function check(t1, t2, t3, t4) {
+                function check(t1, t2, t3) {
                     if (!t1)
                         return false;
                     if (!t2)
                         return false;
                     if (!t3)
                         return false;
-                    if (!t4)
-                        return false;
                     if (t1.type != parse.Kons.TY_KATA_DOT)
                         return false;
                     if (t2.valueLowerCase != "=")
                         return false;
-                    if (t3.valueLowerCase != "new")
-                        return false;
-                    if (t4.type != parse.Kons.TY_KATA)
+                    if (t3.type != parse.Kons.TY_NEW_INST)
                         return false;
                     return true;
                 }
@@ -3261,12 +3383,11 @@ var ha;
                     let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
                     let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
                     let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let t4 = parse.parse.getToken(i + 3, parse.data.barisObj.token);
                     let tokenBaru;
-                    if (check(t1, t2, t3, t4)) {
+                    if (check(t1, t2, t3)) {
                         tokenBaru = {
-                            type: parse.Kons.TY_TYPE_NEW_DEC,
-                            token: [t1, t2, t3, t4]
+                            type: parse.Kons.TY_TYPE_NEW_INST,
+                            token: [t1, t2, t3]
                         };
                         console.log("type dec");
                         console.log(tokenBaru);
@@ -3295,7 +3416,7 @@ var ha;
                     let tokenBaru;
                     if (check(t1, t2)) {
                         tokenBaru = {
-                            type: parse.Kons.TY_TYPE_DEF,
+                            type: parse.Kons.TY_TYPE_NEW_DEF,
                             token: [t1, t2]
                         };
                         console.log("type def");
@@ -3325,7 +3446,7 @@ var ha;
                     let tokenBaru;
                     if (check(t1, t2)) {
                         tokenBaru = {
-                            type: parse.Kons.TY_FIELD_DEF,
+                            type: parse.Kons.TY_FIELD_NEW_DEF,
                             token: [t1, t2]
                         };
                         console.log("field def");
@@ -3345,7 +3466,7 @@ var ha;
                         return false;
                     if (!t3)
                         return false;
-                    if (t1.type != parse.Kons.TY_TYPE_DEF)
+                    if (t1.type != parse.Kons.TY_TYPE_NEW_DEF)
                         return false;
                     if (t2.valueLowerCase != ",")
                         return false;
@@ -3360,7 +3481,7 @@ var ha;
                     let tokenBaru;
                     if (check(t1, t2, t3)) {
                         tokenBaru = {
-                            type: parse.Kons.TY_FIELD_DEF,
+                            type: parse.Kons.TY_FIELD_NEW_DEF,
                             token: [t1, t2]
                         };
                         console.log("field def");

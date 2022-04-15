@@ -208,7 +208,7 @@ namespace ha.parse {
             //kata (single) = exp
             //kata (arg2)   = exp
             //1    2        3 4
-            function check(t1: IToken, t2: IToken, t3: IToken, t4: IToken): boolean {
+            function check(t1: IToken, t2: IToken, t3: IToken, t4: IToken, t5: IToken): boolean {
                 if (!t1) return false;
                 if (!t2) return false;
                 if (!t3) return false;
@@ -225,7 +225,15 @@ namespace ha.parse {
                 if (t3.valueLowerCase != '=') return false;
 
                 //t4 exp
-                if (t4.type != Kons.TY_EXP) return false;
+                if (t4.type != Kons.TY_EXP) {
+                    if (t4.type != Kons.TY_NEW_INST) {
+                        return false;
+                    }
+                }
+
+                if (t5) {
+                    if (t5.type == Kons.TY_KATA) return false;
+                }
 
                 return true;
             }
@@ -238,9 +246,9 @@ namespace ha.parse {
                 let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
                 let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
                 let t4: IToken = parse.getToken(i + 3, data.barisObj.token);
+                let t5: IToken = parse.getToken(i + 4, data.barisObj.token);
 
-
-                if (check(t1, t2, t3, t4)) {
+                if (check(t1, t2, t3, t4, t5)) {
                     let tokenBaru: IToken;
 
                     tokenBaru = {
@@ -250,6 +258,7 @@ namespace ha.parse {
 
                     console.log("dim assign");
                     console.log(tokenBaru);
+                    console.log(t5);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -522,7 +531,7 @@ namespace ha.parse {
                 if (check(token1, token2)) {
                     let tokenBaru: IToken;
                     tokenBaru = {
-                        type: Kons.TY_MOD,
+                        type: Kons.TY_MODIFIER,
                         token: [token1, token2]
                     }
 
@@ -553,7 +562,7 @@ namespace ha.parse {
                 if (!t2) return false;
                 if (!t3) return false;
 
-                if (t1.type != Kons.TY_MOD) return false;
+                if (t1.type != Kons.TY_MODIFIER) return false;
                 if (t2.valueLowerCase != '=') return false;
                 if (t3.type != Kons.TY_EXP) return false;
 
@@ -649,9 +658,9 @@ namespace ha.parse {
 
                 //gak boleh didahului exp => contoh belum ada
                 if (t0) {
-                    if (t0.type == Kons.TY_EXP) {
-                        return false;
-                    }
+                    //     if (t0.type == Kons.TY_EXP) {
+                    //         return false;
+                    //     }
                 }
 
                 if (t3) {

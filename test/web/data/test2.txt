@@ -1,3 +1,56 @@
+Until Upper(out$) = "Y" Or Upper(out$) = "N"
+mode
+Function IAskQuestion(name$,question$,mode,high=0,low=0,def=0,prtblk=1)
+(def=1)
+
+def,prtblk=1
+def,def,prtblk=1
+def,def,def,prtblk=1
+
+1,prtblk=1
+1,1,prtblk=1
+1,1,1,prtblk=1
+
+def,1,prtblk=1
+def,1,1,prtblk=1
+def,1,1,1,prtblk=1
+
+Function FAskQuestion(name$,question$,high,low,def,prtblk=1)
+
+.UpdateAll
+
+blox(a)\spdx = Rnd(-TopSpeed,TopSpeed)
+blox(a)\spdx = Rnd(TopSpeed)
+blox(a)\spdx = Rnd(a,a,a)
+blox(a)\spdx = Rnd(a,a,a,a)
+blox(a)\spdx = Rnd(a,a)
+blox(a)\spdx = Rnd(1)
+blox(a)\spdx = Rnd(1,1)
+blox(a)\spdx = Rnd(1,1,1)
+blox(a)\spdx = Rnd(TopSpeed,1)
+blox(a)\spdx = Rnd(a,a,a,1)
+blox(a)\spdx = Rnd(a,a,a,a,1)
+blox(a)\spdx = Rnd(a,a,1)
+
+blox(a)\obj,Rnd(0.2,1.0)
+blox(a)\obj,kata
+kata,blox(a)\obj
+EntityAlpha blox(a)\obj,Rnd(0.2,1.0)
+blox(a)\obj 
+blox(1)\obj
+blox(a, a)\obj 
+blox(a, 1)\obj
+blox(1, a)\obj
+blox(1, 1)\obj
+blox(a)\obj  = CopyEntity(crate)
+Animate mesh_3ds,1,.5,1,trans
+If AnimSeq(mesh_3ds)=0 Animate mesh_3ds,1,.5,1,trans
+blox(a)      = New blok
+PositionEntity c_pivot,-2,-20+xx,17 ;Pull back parent entity of camera
+FitMesh   crate,-cratesize,-cratesize,-cratesize,cratesize*2,cratesize*2,cratesize*2
+Dim blox.blok(maxBlox)
+Field posx,posy,posz
+Apply_Motion(cmot,fstep,camera)
 ScaleEntity sphere(i),inc-1.5+inc2,inc-1.5+inc2,inc-1.5+inc2
 EntityTexture sphere1,texture1
 ScaleSprite sun,sx+Rnd(os),sy+Rnd(os)
@@ -34,7 +87,6 @@ RuntimeError "Error loading file"
 if Load_Motion( "Cam.bbm", cmot ) = False then RuntimeError "Error loading file" : End
 cmot.Motion = new motion
 PositionEntity mesh_skybox,EntityX(camera,1),EntityY(camera,1),EntityZ(camera,1)
-If AnimSeq(mesh_3ds)=0 Animate mesh_3ds,1,.5,1,trans
 If inc>3 Then inc=inc+.12 Else inc=inc+.14
 If os>0 And go=0 And stm2<MilliSecs()
 global sky1

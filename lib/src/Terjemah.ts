@@ -226,7 +226,7 @@ namespace ha.parse {
             else if (token.type == Kons.TY_IF_THEN_P2) {
                 return '';
             }
-            else if (token.type == Kons.TY_TYPE_NEW_DEC) {
+            else if (token.type == Kons.TY_TYPE_NEW_INST) {
                 //TODO:
                 return '';
             }
@@ -234,7 +234,7 @@ namespace ha.parse {
                 //TODO:
                 return '';
             }
-            else if (token.type == Kons.TY_MOD) {
+            else if (token.type == Kons.TY_MODIFIER) {
                 //TODO:
                 return '';
             }

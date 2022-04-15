@@ -4,18 +4,18 @@ namespace ha.parse {
         typeNew(): boolean {
             let ada: boolean = false;
 
-            //KATA_DOT = new KATA
-            function check(t1: IToken, t2: IToken, t3: IToken, t4: IToken): boolean {
+            //KATA_DOT = TY_TYPE_NEW_INST
+            function check(t1: IToken, t2: IToken, t3: IToken): boolean {
 
                 if (!t1) return false;
                 if (!t2) return false;
                 if (!t3) return false;
-                if (!t4) return false;
+                // if (!t4) return false;
 
                 if (t1.type != Kons.TY_KATA_DOT) return false;
                 if (t2.valueLowerCase != "=") return false;
-                if (t3.valueLowerCase != "new") return false;
-                if (t4.type != Kons.TY_KATA) return false;
+                if (t3.type != Kons.TY_NEW_INST) return false;
+                // if (t4.type != Kons.TY_KATA) return false;
 
                 return true;
             }
@@ -25,14 +25,14 @@ namespace ha.parse {
                 let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
                 let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
                 let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
-                let t4: IToken = parse.getToken(i + 3, data.barisObj.token);
+                // let t4: IToken = parse.getToken(i + 3, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
-                if (check(t1, t2, t3, t4)) {
+                if (check(t1, t2, t3)) {
                     tokenBaru = {
-                        type: Kons.TY_TYPE_NEW_DEC,
-                        token: [t1, t2, t3, t4]
+                        type: Kons.TY_TYPE_NEW_INST,
+                        token: [t1, t2, t3]
                     }
 
                     console.log("type dec");
@@ -71,7 +71,7 @@ namespace ha.parse {
 
                 if (check(t1, t2)) {
                     tokenBaru = {
-                        type: Kons.TY_TYPE_DEF,
+                        type: Kons.TY_TYPE_NEW_DEF,
                         token: [t1, t2]
                     }
 
@@ -114,7 +114,7 @@ namespace ha.parse {
 
                 if (check(t1, t2)) {
                     tokenBaru = {
-                        type: Kons.TY_FIELD_DEF,
+                        type: Kons.TY_FIELD_NEW_DEF,
                         token: [t1, t2]
                     }
 
@@ -140,7 +140,7 @@ namespace ha.parse {
                 if (!t2) return false;
                 if (!t3) return false;
 
-                if (t1.type != Kons.TY_TYPE_DEF) return false;
+                if (t1.type != Kons.TY_TYPE_NEW_DEF) return false;
                 if (t2.valueLowerCase != ",") return false;
                 if (t2.type != Kons.TY_KATA) return false;
 
@@ -157,7 +157,7 @@ namespace ha.parse {
 
                 if (check(t1, t2, t3)) {
                     tokenBaru = {
-                        type: Kons.TY_FIELD_DEF,
+                        type: Kons.TY_FIELD_NEW_DEF,
                         token: [t1, t2]
                     }
 

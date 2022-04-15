@@ -30,7 +30,7 @@ namespace ha.parse {
                         [Kons.TY_KOMA],
                         [Kons.TY_KATA]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2],
+                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH],
                     stl: [
                         Kons.TY_OP, Kons.TY_OP2,
                         Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
@@ -61,47 +61,36 @@ namespace ha.parse {
                     nama: 'arg kata exp',
                     type: Kons.TY_ARG2,
                     kondisi: [
-                        [Kons.TY_KATA],
+                        [Kons.TY_KATA, Kons.TY_BINOP_EQ],
                         [Kons.TY_KOMA],
-                        [Kons.TY_EXP]
+                        [Kons.TY_EXP, , Kons.TY_BINOP_EQ]
                     ],
-                    sbl: [Kons.TY_KOMA],
+                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH],
                     stl: [Kons.TY_OP, Kons.TY_OP2]
                 })
 
                 this._aturanAr.push({
-                    nama: 'arg exp kata',
+                    nama: 'exp , kata',
                     type: Kons.TY_ARG2,
                     kondisi: [
-                        [Kons.TY_EXP],
+                        [Kons.TY_EXP, Kons.TY_BINOP_EQ],
                         [Kons.TY_KOMA],
-                        [Kons.TY_KATA]
+                        [Kons.TY_KATA, Kons.TY_BINOP_EQ]
                     ],
-                    sbl: [Kons.TY_KOMA],
-                    stl: [Kons.TY_OP, Kons.TY_OP2]
-                })
-
-                this._aturanAr.push({
-                    nama: 'arg => arg2 kata',
-                    type: Kons.TY_ARG2,
-                    kondisi: [
-                        [Kons.TY_EXP],
-                        [Kons.TY_KOMA],
-                        [Kons.TY_KATA]
-                    ],
-                    sbl: [Kons.TY_KOMA],
-                    stl: [Kons.TY_OP, Kons.TY_OP2]
+                    sbl: [Kons.TY_KOMA, Kons.TY_BACK_SLASH],
+                    stl: [Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH]
                 })
 
             }
 
+            //arg campur
             this._aturanAr.push({
                 nama: 'arg campur',
                 type: Kons.TY_ARG,
                 kondisi: [
                     [Kons.TY_ARG_KATA_M, Kons.TY_ARG_KATA, Kons.TY_ARG2, Kons.TY_ARG],
                     [Kons.TY_KOMA],
-                    [Kons.TY_EXP, Kons.TY_KATA]
+                    [Kons.TY_EXP, Kons.TY_KATA, Kons.TY_BINOP_EQ]
                 ],
                 sbl: [Kons.TY_KOMA],
                 stl: [Kons.TY_OP, Kons.TY_OP2]
@@ -119,7 +108,7 @@ namespace ha.parse {
                     ],
                     sbl: [Kons.TY_EQ, Kons.TY_OP, Kons.TY_OP2],
                     stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
-                }
+                },
             ])
 
             //stmt
@@ -133,6 +122,83 @@ namespace ha.parse {
                     ],
                     sbl: [Kons.TY_EQ, Kons.TY_OP, Kons.TY_OP2],
                     stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
+                },
+                {
+                    nama: 'label ',
+                    type: Kons.TY_LABEL,
+                    kondisi: [
+                        [Kons.TY_DOT],
+                        [Kons.TY_KATA],
+                    ],
+                    sbl: [Kons.TY_KATA],
+                    stl: []
+                }
+            ])
+
+            //type
+            this._aturanAr = this._aturanAr.concat([
+                {
+                    nama: 'field def m',
+                    type: Kons.TY_FIELD_NEW_DEF_M,
+                    kondisi: [
+                        [Kons.TY_FIELD],
+                        [Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M],
+                    ],
+                    sbl: [],
+                    stl: [Kons.TY_KOMA]
+                },
+                {
+                    nama: 'new',
+                    type: Kons.TY_NEW_INST,
+                    kondisi: [
+                        [Kons.TY_NEW],
+                        [Kons.TY_KATA],
+                    ],
+                    sbl: [],
+                    stl: []
+                },
+                {
+                    nama: 'dim(n)\\kata',
+                    type: Kons.TY_TYPE_ACCESS_DIM,
+                    kondisi: [
+                        [Kons.TY_KATA],
+                        [Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_ARG2],
+                        [Kons.TY_BACK_SLASH],
+                        [Kons.TY_KATA]
+                    ],
+                    sbl: [],
+                    stl: []
+                },
+                {
+                    nama: 'dim(n)\\prop = exp|kata',
+                    type: Kons.TY_DIM_PROP_ASSINMENT,
+                    kondisi: [
+                        [Kons.TY_TYPE_ACCESS_DIM],
+                        [Kons.TY_EQ],
+                        [Kons.TY_EXP, Kons.TY_KATA]
+                    ],
+                    sbl: [],
+                    stl: [
+                        Kons.TY_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M,
+                        Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE,
+                        Kons.TY_KURUNG_BUKA
+                    ]
+                },
+
+            ])
+
+            //dim
+            this._aturanAr = this._aturanAr.concat([
+                {
+                    nama: 'dim dec',
+                    type: Kons.TY_DIM_DEC,
+                    kondisi: [
+                        [Kons.TY_DIM],
+                        [Kons.TY_KATA_DOT, Kons.TY_KATA],
+                        [Kons.TY_KURUNG_SINGLE, Kons.TY_ARG2, Kons.TY_ARG_KATA]
+                    ],
+                    sbl: [],
+                    stl: []
                 }
             ])
 

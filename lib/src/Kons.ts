@@ -17,8 +17,9 @@ namespace ha.parse {
         static readonly TY_KURUNG_BUKA: number = 14;
         static readonly TY_KURUNG_TUTUP: number = 15;
         static readonly TY_EQ: number = 16;
-
-        //comp
+        static readonly TY_NEW: number = 17;
+        static readonly TY_BACK_SLASH: number = 18;
+        static readonly TY_DOT: number = 19;
         static readonly TY_MIN: number = 50;
 
         static readonly TY_ARG: number = 100;
@@ -27,7 +28,6 @@ namespace ha.parse {
         static readonly TY_ARG_KATA_M: number = 103;
 
         static readonly TY_KURUNG_KOSONG: number = 153;
-        // static readonly TY_KURUNG_ISI: number = 154;    //todo: DIHAPUS, gak pernah di buat tokennya
         static readonly TY_KURUNG_SINGLE: number = 155;
         static readonly TY_KURUNG_ARG: number = 156;
         static readonly TY_KURUNG_ARG2: number = 157;
@@ -44,27 +44,33 @@ namespace ha.parse {
         static readonly TY_STMT_COLON: number = 301;
         static readonly TY_STMT_M: number = 302;
         static readonly TY_PERINTAH: number = 303;
+        static readonly TY_LABEL: number = 304;
+        //HABIS => 305
 
         static readonly TY_FOR: number = 305;
         static readonly TY_FOR_STEP: number = 306;
         static readonly TY_WEND: number = 307;
         static readonly TY_FUNC_DEC: number = 308;
-        static readonly TY_MOD: number = 309;
+        static readonly TY_MODIFIER: number = 309;
         static readonly TY_RETURN: number = 310;
         static readonly TY_RETURN_EXP: number = 311;
 
-        static readonly TY_DIM_ASSINMENT: number = 400;
-        static readonly TY_DIM_DEC: number = 401;       //deklarasi dim() tanpa assign ke var
-        static readonly TY_DIM_DEC_VAR: number = 402;   //assign dim ke var
+        static readonly TY_DIM: number = 400;
+        static readonly TY_DIM_ASSINMENT: number = 401;
+        static readonly TY_DIM_DEC: number = 402;       //deklarasi dim() tanpa assign ke var
+        static readonly TY_DIM_DEC_VAR: number = 403;   //assign dim ke var
+        static readonly TY_DIM_PROP_ASSINMENT: number = 404;    //dim(n)\prop = exp|kata
 
-        static readonly TY_TYPE_NEW_DEC: number = 500;
-        static readonly TY_TYPE_DEF: number = 510;
-        static readonly TY_FIELD_DEF: number = 520;
+        static readonly TY_TYPE_NEW_INST: number = 500;
+        static readonly TY_TYPE_NEW_DEF: number = 510;
+        static readonly TY_FIELD_NEW_DEF: number = 520;
         static readonly TY_TYPE: number = 530;
         static readonly TY_FIELD: number = 540;
-        static readonly TY_FIELD_M: number = 545;
+        static readonly TY_FIELD_NEW_DEF_M: number = 545;
         static readonly TY_ENDTYPE: number = 550;
         static readonly TY_TYPE_ACCESS: number = 560;
+        static readonly TY_TYPE_ACCESS_DIM: number = 561;
+        static readonly TY_NEW_INST: number = 570;
 
         static readonly TY_IF_EXP: number = 600;
         static readonly TY_IF_EXP_P: number = 601;
