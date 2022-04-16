@@ -1,9 +1,15 @@
 namespace ha.parse {
     class Grammar2 {
-        private _aturanAr: IAturan[] = [];
-        public get aturanAr(): IAturan[] {
-            return this._aturanAr;
+        private _aturanExpAr: IAturan[] = [];
+        public get aturanExpAr(): IAturan[] {
+            return this._aturanExpAr;
         }
+
+        private _aturanStmtAr: IAturan[] = [];
+        public get aturanStmtAr(): IAturan[] {
+            return this._aturanStmtAr;
+        }
+
 
         constructor() {
 
@@ -19,10 +25,10 @@ namespace ha.parse {
             }
         }
 
-        init(): void {
+        aturanExp(): void {
             //arg kata 
             {
-                this._aturanAr.push({
+                this.aturanExpAr.push({
                     nama: 'arg_kata',
                     type: Kons.TY_ARG_KATA,
                     kondisi: [
@@ -37,7 +43,7 @@ namespace ha.parse {
                     ]
                 })
 
-                this._aturanAr.push({
+                this.aturanExpAr.push({
                     nama: 'arg_kata_m',
                     type: Kons.TY_ARG_KATA_M,
                     kondisi: [
@@ -57,7 +63,7 @@ namespace ha.parse {
             //arg2 campur
             {
 
-                this._aturanAr.push({
+                this.aturanExpAr.push({
                     nama: 'arg kata exp',
                     type: Kons.TY_ARG2,
                     kondisi: [
@@ -69,7 +75,7 @@ namespace ha.parse {
                     stl: [Kons.TY_OP, Kons.TY_OP2]
                 })
 
-                this._aturanAr.push({
+                this.aturanExpAr.push({
                     nama: 'exp , kata',
                     type: Kons.TY_ARG2,
                     kondisi: [
@@ -84,7 +90,7 @@ namespace ha.parse {
             }
 
             //arg campur
-            this._aturanAr.push({
+            this.aturanExpAr.push({
                 nama: 'arg campur',
                 type: Kons.TY_ARG,
                 kondisi: [
@@ -97,7 +103,7 @@ namespace ha.parse {
             })
 
             //exp
-            this._aturanAr = this._aturanAr.concat([
+            this._aturanExpAr = this.aturanExpAr.concat([
                 {
                     nama: 'binop kata',
                     type: Kons.TY_BINOP,
@@ -110,9 +116,11 @@ namespace ha.parse {
                     stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
                 },
             ])
+        }
 
+        aturanStmt(): void {
             //stmt
-            this._aturanAr = this._aturanAr.concat([
+            this._aturanStmtAr = this.aturanStmtAr.concat([
                 {
                     nama: 'perintah ',
                     type: Kons.TY_PERINTAH,
@@ -132,11 +140,21 @@ namespace ha.parse {
                     ],
                     sbl: [Kons.TY_KATA],
                     stl: []
+                },
+                {
+                    nama: 'until  ',
+                    type: Kons.TY_UNTIL_DEC,
+                    kondisi: [
+                        [Kons.TY_UNTIL],
+                        [Kons.TY_EXP],
+                    ],
+                    sbl: [],
+                    stl: []
                 }
             ])
 
             //type
-            this._aturanAr = this._aturanAr.concat([
+            this._aturanStmtAr = this.aturanStmtAr.concat([
                 {
                     nama: 'field def m',
                     type: Kons.TY_FIELD_NEW_DEF_M,
@@ -188,7 +206,7 @@ namespace ha.parse {
             ])
 
             //dim
-            this._aturanAr = this._aturanAr.concat([
+            this._aturanStmtAr = this.aturanStmtAr.concat([
                 {
                     nama: 'dim dec',
                     type: Kons.TY_DIM_DEC,
@@ -204,32 +222,37 @@ namespace ha.parse {
 
         }
 
-        tambahAturan(data: any[]): void {
-            this._aturanAr.push({
-                nama: data[0],
-                type: data[1],
-                kondisi: data[2],
-                sbl: data[3],
-                stl: data[4]
-            });
+        init(): void {
+            this.aturanExp();
+            this.aturanStmt();
         }
 
-        checkLog(): boolean {
+        // tambahAturan(data: any[]): void {
+        //     this._aturanAr.push({
+        //         nama: data[0],
+        //         type: data[1],
+        //         kondisi: data[2],
+        //         sbl: data[3],
+        //         stl: data[4]
+        //     });
+        // }
+
+        checkLog(aturan: IAturan[]): boolean {
             let hasil: boolean = false;
             console.group('check');
-            hasil = this.check();
+            hasil = this.check(aturan);
             console.groupEnd();
             return hasil;
         }
 
-        check(): boolean {
+        check(aturanAr: IAturan[]): boolean {
             let idxAturan: number = 0;
             let aturan: IAturan;
             let barisAda: boolean;
             let checkAda: boolean = false;
 
             while (true) {
-                aturan = this.aturanAr[idxAturan];
+                aturan = aturanAr[idxAturan];
                 barisAda = this.checkBaris(data.barisObj.token, aturan);
                 if (barisAda) {
                     checkAda = true;
@@ -237,7 +260,7 @@ namespace ha.parse {
                 }
                 else {
                     idxAturan++;
-                    if (idxAturan >= this.aturanAr.length) {
+                    if (idxAturan >= aturanAr.length) {
                         break;
                     }
                 }

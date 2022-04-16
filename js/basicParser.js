@@ -17,57 +17,6 @@ var ha;
     var parse;
     (function (parse) {
         class Baris {
-            pecahBaris() {
-                let idx = 100000;
-                let idxTerakhir = 0;
-                console.group('lines');
-                while (idx >= 0) {
-                    idx = this.getLineBreak(idxTerakhir);
-                    if (idx >= 0) {
-                        let kiri = parse.ar.ambilTengah(parse.data.token, idxTerakhir, idx);
-                        kiri = this.bersih(kiri);
-                        if (kiri.length > 0) {
-                            parse.data.barisAr.push({
-                                n: 0,
-                                token: kiri,
-                                baris: parse.baris.getLine(kiri)
-                            });
-                        }
-                        idxTerakhir = idx + 1;
-                    }
-                }
-                console.groupEnd();
-            }
-            bersih(tokenAr) {
-                while ((tokenAr.length > 0) && tokenAr[0].type == parse.Kons.TY_BARIS) {
-                    tokenAr = tokenAr.slice(1);
-                }
-                while ((tokenAr.length > 0) && tokenAr[tokenAr.length - 1].type == parse.Kons.TY_BARIS) {
-                    tokenAr = tokenAr.slice(0, tokenAr.length - 1);
-                }
-                if (!tokenAr)
-                    tokenAr = [];
-                return tokenAr;
-            }
-            hapusComment(tokenAr) {
-                let idx = -1;
-                for (let i = 0; i < tokenAr.length; i++) {
-                    if (tokenAr[i].valueLowerCase == ";") {
-                        idx = i;
-                        break;
-                    }
-                }
-                if (idx >= 0) {
-                    tokenAr = tokenAr.slice(0, idx);
-                }
-                if (!tokenAr)
-                    tokenAr = [];
-                return tokenAr;
-            }
-            valid(token) {
-                token;
-                return true;
-            }
             getLine(token) {
                 let str = '';
                 token.forEach((token) => {
@@ -165,7 +114,6 @@ var ha;
         class Data {
             _dataStr = '';
             _token = [];
-            _barisAr = [];
             _barisObj;
             config = new Config();
             get barisObj() {
@@ -178,7 +126,7 @@ var ha;
                 "if", "elseif", "endif", "else", "then",
                 "for", "next", "to", "step",
                 "function", "end function", "return",
-                "while", "wend",
+                "while", "wend", "repeat", "until",
                 "const", "global", "local",
                 "type", "field", "end type", "new",
                 "delete", "before", "after", "each", "last",
@@ -188,13 +136,13 @@ var ha;
                 "dim",
                 "//",
             ];
-            _kataKunci3 = [
+            _kataKunciDouble = [
                 "end function",
                 "end type",
                 "end select",
             ];
-            get kataKunci3() {
-                return this._kataKunci3;
+            get kataKunciDouble() {
+                return this._kataKunciDouble;
             }
             _op = [
                 "+",
@@ -257,9 +205,6 @@ var ha;
             }
             get token() {
                 return this._token;
-            }
-            get barisAr() {
-                return this._barisAr;
             }
             get kataKunci2() {
                 return this._kataKunci2;
@@ -1227,7 +1172,8 @@ var ha;
         class Grammar {
             hapusSpace() {
                 for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    if (parse.data.barisObj.token[i].value == ' ') {
+                    let value = parse.data.barisObj.token[i].value;
+                    if (value == ' ' || (value == '\t')) {
                         parse.data.barisObj.token = parse.ar.hapus(parse.data.barisObj.token, i);
                         return true;
                     }
@@ -1259,7 +1205,7 @@ var ha;
                     else if (parse.exp.kurungArg2()) { }
                     else if (parse.exp.kurungArg()) { }
                     else if (parse.typeStmt.typeAkses()) { }
-                    else if (parse.gm2.checkLog()) { }
+                    else if (parse.gm2.checkLog(parse.gm2.aturanExpAr)) { }
                     else if (parse.stmt.modifier()) { }
                     else if (parse.stmt.modIsi()) { }
                     else if (parse.stmt.returnExp()) { }
@@ -1288,6 +1234,7 @@ var ha;
                     else if (parse.stmt.stmtColon()) { }
                     else if (parse.stmt.stmtColon2()) { }
                     else if (parse.stmt.stmtMul()) { }
+                    else if (parse.gm2.checkLog(parse.gm2.aturanStmtAr)) { }
                     else if (parse.data.barisObj.token.length > 1) {
                         console.log("error:");
                         console.log(parse.data.barisObj.token);
@@ -1308,9 +1255,13 @@ var ha;
     var parse;
     (function (parse) {
         class Grammar2 {
-            _aturanAr = [];
-            get aturanAr() {
-                return this._aturanAr;
+            _aturanExpAr = [];
+            get aturanExpAr() {
+                return this._aturanExpAr;
+            }
+            _aturanStmtAr = [];
+            get aturanStmtAr() {
+                return this._aturanStmtAr;
             }
             constructor() {
             }
@@ -1323,9 +1274,9 @@ var ha;
                     stl: []
                 };
             }
-            init() {
+            aturanExp() {
                 {
-                    this._aturanAr.push({
+                    this.aturanExpAr.push({
                         nama: 'arg_kata',
                         type: parse.Kons.TY_ARG_KATA,
                         kondisi: [
@@ -1339,7 +1290,7 @@ var ha;
                             parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
                         ]
                     });
-                    this._aturanAr.push({
+                    this.aturanExpAr.push({
                         nama: 'arg_kata_m',
                         type: parse.Kons.TY_ARG_KATA_M,
                         kondisi: [
@@ -1355,7 +1306,7 @@ var ha;
                     });
                 }
                 {
-                    this._aturanAr.push({
+                    this.aturanExpAr.push({
                         nama: 'arg kata exp',
                         type: parse.Kons.TY_ARG2,
                         kondisi: [
@@ -1366,7 +1317,7 @@ var ha;
                         sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH],
                         stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
                     });
-                    this._aturanAr.push({
+                    this.aturanExpAr.push({
                         nama: 'exp , kata',
                         type: parse.Kons.TY_ARG2,
                         kondisi: [
@@ -1378,7 +1329,7 @@ var ha;
                         stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH]
                     });
                 }
-                this._aturanAr.push({
+                this.aturanExpAr.push({
                     nama: 'arg campur',
                     type: parse.Kons.TY_ARG,
                     kondisi: [
@@ -1389,7 +1340,7 @@ var ha;
                     sbl: [parse.Kons.TY_KOMA],
                     stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
                 });
-                this._aturanAr = this._aturanAr.concat([
+                this._aturanExpAr = this.aturanExpAr.concat([
                     {
                         nama: 'binop kata',
                         type: parse.Kons.TY_BINOP,
@@ -1402,7 +1353,9 @@ var ha;
                         stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
                     },
                 ]);
-                this._aturanAr = this._aturanAr.concat([
+            }
+            aturanStmt() {
+                this._aturanStmtAr = this.aturanStmtAr.concat([
                     {
                         nama: 'perintah ',
                         type: parse.Kons.TY_PERINTAH,
@@ -1422,9 +1375,19 @@ var ha;
                         ],
                         sbl: [parse.Kons.TY_KATA],
                         stl: []
+                    },
+                    {
+                        nama: 'until  ',
+                        type: parse.Kons.TY_UNTIL_DEC,
+                        kondisi: [
+                            [parse.Kons.TY_UNTIL],
+                            [parse.Kons.TY_EXP],
+                        ],
+                        sbl: [],
+                        stl: []
                     }
                 ]);
-                this._aturanAr = this._aturanAr.concat([
+                this._aturanStmtAr = this.aturanStmtAr.concat([
                     {
                         nama: 'field def m',
                         type: parse.Kons.TY_FIELD_NEW_DEF_M,
@@ -1473,7 +1436,7 @@ var ha;
                         ]
                     },
                 ]);
-                this._aturanAr = this._aturanAr.concat([
+                this._aturanStmtAr = this.aturanStmtAr.concat([
                     {
                         nama: 'dim dec',
                         type: parse.Kons.TY_DIM_DEC,
@@ -1487,29 +1450,24 @@ var ha;
                     }
                 ]);
             }
-            tambahAturan(data) {
-                this._aturanAr.push({
-                    nama: data[0],
-                    type: data[1],
-                    kondisi: data[2],
-                    sbl: data[3],
-                    stl: data[4]
-                });
+            init() {
+                this.aturanExp();
+                this.aturanStmt();
             }
-            checkLog() {
+            checkLog(aturan) {
                 let hasil = false;
                 console.group('check');
-                hasil = this.check();
+                hasil = this.check(aturan);
                 console.groupEnd();
                 return hasil;
             }
-            check() {
+            check(aturanAr) {
                 let idxAturan = 0;
                 let aturan;
                 let barisAda;
                 let checkAda = false;
                 while (true) {
-                    aturan = this.aturanAr[idxAturan];
+                    aturan = aturanAr[idxAturan];
                     barisAda = this.checkBaris(parse.data.barisObj.token, aturan);
                     if (barisAda) {
                         checkAda = true;
@@ -1517,7 +1475,7 @@ var ha;
                     }
                     else {
                         idxAturan++;
-                        if (idxAturan >= this.aturanAr.length) {
+                        if (idxAturan >= aturanAr.length) {
                             break;
                         }
                     }
@@ -1975,7 +1933,7 @@ var ha;
             static TY_NEW = 17;
             static TY_BACK_SLASH = 18;
             static TY_DOT = 19;
-            static TY_MIN = 50;
+            static TY_UNTIL = 19;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
             static TY_ARG_KATA = 102;
@@ -1988,7 +1946,8 @@ var ha;
             static TY_BINOP = 201;
             static TY_BINOP_EQ = 202;
             static TY_PANGGIL_FUNGSI = 203;
-            static TY_EXP = 204;
+            static TY_MIN = 205;
+            static TY_EXP = 240;
             static TY_STMT = 300;
             static TY_STMT_COLON = 301;
             static TY_STMT_M = 302;
@@ -2045,6 +2004,7 @@ var ha;
             static TY_END_SELECT = 920;
             static TY_CASE_DEC = 930;
             static TY_SELECT_DEC = 940;
+            static TY_UNTIL_DEC = 1000;
         }
         parse.Kons = Kons;
     })(parse = ha.parse || (ha.parse = {}));
@@ -2057,21 +2017,25 @@ var ha;
             lexer() {
                 console.group('lexer start');
                 while (parse.data.dataStr.length > 0) {
-                    if (this.getKeyword3()) { }
-                    if (this.getOp()) { }
+                    if (this.keyWordDouble()) { }
+                    else if (this.getOp()) { }
                     else if (this.getOp2()) { }
-                    else if (this.getCmd()) { }
                     else if (this.getKata()) { }
-                    else if (this.getLineBreak()) { }
                     else if (this.getNumber()) { }
                     else if (this.getSymbol()) { }
                     else {
+                        let token = {
+                            value: parse.data.dataStr.charAt(0),
+                            type: parse.Kons.TY_SYMBOL,
+                            valueLowerCase: parse.data.dataStr.charAt(0).toLowerCase()
+                        };
+                        parse.data.token.push(token);
+                        parse.data.dataStr = parse.data.dataStr.slice(1);
                         console.group('found unknown character');
                         console.log(parse.data.dataStr.slice(0, 10));
                         console.log(parse.data.dataStr.charCodeAt(0));
                         console.log(parse.data.dataStr.charAt(0));
                         console.groupEnd();
-                        throw Error('');
                     }
                 }
                 parse.data.token.forEach((token) => {
@@ -2110,20 +2074,6 @@ var ha;
                 }
                 return false;
             }
-            getCmd() {
-                for (let i = 0; i < parse.data.cmd.length; i++) {
-                    let kata = parse.data.cmd[i];
-                    if (parse.data.dataStr.slice(0, kata.length).toLowerCase() == kata.toLowerCase()) {
-                        parse.data.token.push({
-                            value: kata,
-                            type: parse.Kons.TY_KATA
-                        });
-                        parse.data.dataStr = parse.data.dataStr.slice(kata.length);
-                        return true;
-                    }
-                }
-                return false;
-            }
             getNumber() {
                 let id = /^[0-9]*\.?[0-9]+/;
                 let hsl = (parse.data.dataStr.match(id));
@@ -2140,16 +2090,9 @@ var ha;
                 }
                 return false;
             }
-            getComment() {
-                if (parse.data.dataStr.slice(0, 2) == '//') {
-                    parse.data.dataStr = '';
-                    return true;
-                }
-                return false;
-            }
-            getKeyword3() {
-                for (let i = 0; i < parse.data.kataKunci3.length; i++) {
-                    let kata = parse.data.kataKunci3[i];
+            keyWordDouble() {
+                for (let i = 0; i < parse.data.kataKunciDouble.length; i++) {
+                    let kata = parse.data.kataKunciDouble[i];
                     if (parse.data.dataStr.slice(0, kata.length).toLowerCase() == kata.toLowerCase()) {
                         let token = {
                             value: kata,
@@ -2316,35 +2259,11 @@ var ha;
                     else if ("not" == lc) {
                         token.type = parse.Kons.TY_OP;
                     }
+                    else if ("until" == lc) {
+                        token.type = parse.Kons.TY_UNTIL;
+                    }
                     else {
                     }
-                    return true;
-                }
-                return false;
-            }
-            getLineBreak() {
-                if (parse.data.dataStr.charCodeAt(0) == 13) {
-                    parse.data.dataStr = parse.data.dataStr.slice(1, parse.data.dataStr.length);
-                    parse.data.token.push({
-                        value: '\n',
-                        type: parse.Kons.TY_BARIS
-                    });
-                    return true;
-                }
-                if (parse.data.dataStr.charCodeAt(0) == 10) {
-                    parse.data.dataStr = parse.data.dataStr.slice(1, parse.data.dataStr.length);
-                    parse.data.token.push({
-                        value: '\n',
-                        type: parse.Kons.TY_BARIS
-                    });
-                    return true;
-                }
-                if (parse.data.dataStr.charCodeAt(0) == 9) {
-                    parse.data.dataStr = parse.data.dataStr.slice(1, parse.data.dataStr.length);
-                    parse.data.token.push({
-                        value: '\n',
-                        type: parse.Kons.TY_BARIS
-                    });
                     return true;
                 }
                 return false;
@@ -2363,54 +2282,33 @@ var ha;
             }
             async parse(str) {
                 parse_1.data.dataStr = str;
-                parse_1.data.dataStr += ";;";
-                parse_1.data.dataStr += "\r\n";
-                while (parse_1.data.barisAr.length > 0) {
-                    parse_1.data.barisAr.pop();
+                console.groupCollapsed('parse: ' + str);
+                parse_1.data.dataStr = parse_1.data.dataStr.trim();
+                let idx = parse_1.data.dataStr.indexOf(';');
+                if (idx >= 0) {
+                    parse_1.data.dataStr = parse_1.data.dataStr.slice(0, idx);
                 }
                 while (parse_1.data.token.length > 0) {
                     parse_1.data.token.pop();
                 }
+                console.log('str ' + parse_1.data.dataStr);
+                console.log('lexer sebelum:');
+                console.log(parse_1.data.token);
                 parse_1.lexer.lexer();
-                parse_1.baris.pecahBaris();
-                console.group("grammar");
-                for (let i = 0; i < parse_1.data.barisAr.length; i++) {
-                    let barisObj = parse_1.data.barisAr[i];
-                    parse_1.data.barisObj = barisObj;
-                    console.log(parse_1.baris.getLine(barisObj.token));
-                    parse_1.grammar.grammar();
-                }
-                console.groupEnd();
-                console.group("hasil:");
-                for (let i = 0; i < parse_1.data.barisAr.length; i++) {
-                    console.log(parse_1.data.barisAr[i].baris);
-                    console.log(parse_1.data.barisAr[i].token);
-                    console.log(parse_1.data.barisAr[i].terjemah);
-                    console.log("");
-                }
-                console.groupEnd();
+                console.log('lexer sesudah:');
+                console.log(parse_1.data.token);
+                parse_1.data.barisObj = {
+                    baris: str,
+                    n: 0,
+                    terjemah: '',
+                    token: parse_1.data.token
+                };
+                console.log('sebelum:');
+                console.log(parse_1.data.barisObj);
+                parse_1.grammar.grammar();
                 console.log("finish");
-                return ha.parse.parse.blijs();
-            }
-            blijs() {
-                let hsl = '';
-                console.log('blijs');
-                hsl += "async function Start() {\n";
-                parse_1.data.barisAr.forEach((barisObj) => {
-                    hsl += barisObj.terjemah + "\n";
-                });
-                hsl += `
-                if (Loop) {
-                    window.Loop = async () => {
-                        await Loop();
-                    }
-                }
-                else {
-                    console.log("Loop doesn't exists");
-                }
-            `;
-                hsl += "}\n";
-                return hsl;
+                console.log(parse_1.data.barisObj);
+                console.groupEnd();
             }
             getToken(idx, token) {
                 if (idx < 0)

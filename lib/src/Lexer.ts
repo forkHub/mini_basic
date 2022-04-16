@@ -1,30 +1,40 @@
 namespace ha.parse {
     class Lexer {
 
+        /**
+         * data diambil dari data.datastr
+         * data disimpan ke data.token
+         * 
+         */
         lexer(): void {
             console.group('lexer start');
 
             while (data.dataStr.length > 0) {
-                if (this.getKeyword3()) { }
-                if (this.getOp()) { }
+                if (this.keyWordDouble()) { }
+                else if (this.getOp()) { }
                 else if (this.getOp2()) { }
-                else if (this.getCmd()) { }
                 else if (this.getKata()) { }
-                else if (this.getLineBreak()) { }
                 else if (this.getNumber()) { }
                 else if (this.getSymbol()) { }
                 else {
+
+                    let token: IToken = {
+                        value: data.dataStr.charAt(0),
+                        type: Kons.TY_SYMBOL,
+                        valueLowerCase: data.dataStr.charAt(0).toLowerCase()
+                    };
+                    data.token.push(token);
+                    data.dataStr = data.dataStr.slice(1);
+
                     console.group('found unknown character');
                     console.log(data.dataStr.slice(0, 10));
                     console.log(data.dataStr.charCodeAt(0));
                     console.log(data.dataStr.charAt(0));
                     console.groupEnd();
-                    // break;
-                    throw Error('');
                 }
             }
 
-            //
+            //lower case
             data.token.forEach((token: IToken) => {
                 token.valueLowerCase = '';
                 if (token.value) {
@@ -33,7 +43,6 @@ namespace ha.parse {
             })
 
             console.groupEnd();
-            // console.log(data.token);
         }
 
         getOp(): boolean {
@@ -62,24 +71,6 @@ namespace ha.parse {
                     data.token.push({
                         value: kata,
                         type: Kons.TY_OP2
-                    });
-                    data.dataStr = data.dataStr.slice(kata.length);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        //TODO: dihapus
-        getCmd(): boolean {
-            for (let i: number = 0; i < data.cmd.length; i++) {
-                let kata: string = data.cmd[i];
-
-                if (data.dataStr.slice(0, kata.length).toLowerCase() == kata.toLowerCase()) {
-                    data.token.push({
-                        value: kata,
-                        type: Kons.TY_KATA
                     });
                     data.dataStr = data.dataStr.slice(kata.length);
                     return true;
@@ -125,19 +116,10 @@ namespace ha.parse {
             return false;
         }
 
-        getComment(): boolean {
-            if (data.dataStr.slice(0, 2) == '//') {
-                data.dataStr = '';
-                return true;
-            }
+        keyWordDouble(): boolean {
 
-            return false;
-        }
-
-        getKeyword3(): boolean {
-
-            for (let i: number = 0; i < data.kataKunci3.length; i++) {
-                let kata: string = data.kataKunci3[i];
+            for (let i: number = 0; i < data.kataKunciDouble.length; i++) {
+                let kata: string = data.kataKunciDouble[i];
 
                 if (data.dataStr.slice(0, kata.length).toLowerCase() == kata.toLowerCase()) {
 
@@ -198,6 +180,7 @@ namespace ha.parse {
             return false;
         }
 
+        //TODO: symbol dihapus
         getSymbol(): boolean {
 
             for (let i: number = 0; i < data.symbol.length; i++) {
@@ -337,62 +320,13 @@ namespace ha.parse {
                 else if ("not" == lc) {
                     token.type = Kons.TY_OP
                 }
+                else if ("until" == lc) {
+                    token.type = Kons.TY_UNTIL
+                }
                 else {
                     //console.warn("kata belum didefinisikan: " + lc);
                 }
 
-                return true;
-            }
-
-            return false;
-        }
-
-        getLineBreak(): boolean {
-            // if (data.dataStr.charAt(0) == ';') {
-            //     // console.log('ln');
-            //     data.dataStr = data.dataStr.slice(1, data.dataStr.length);
-            //     // parse.kataAr.push(";");
-            //     data.token.push({
-            //         // token: ';',
-            //         value: '',
-            //         type: Kons.TY_BARIS
-            //     })
-            //     return true;
-            // }
-
-            if (data.dataStr.charCodeAt(0) == 13) {
-                // console.log('ln');
-                data.dataStr = data.dataStr.slice(1, data.dataStr.length);
-                // parse.kataAr.push(";");
-                data.token.push({
-                    // token: ';',
-                    value: '\n',
-                    type: Kons.TY_BARIS
-                })
-                return true;
-            }
-
-            if (data.dataStr.charCodeAt(0) == 10) {
-                // console.log('ln');
-                data.dataStr = data.dataStr.slice(1, data.dataStr.length);
-                // parse.kataAr.push(";");
-                data.token.push({
-                    // token: ';', 
-                    value: '\n',
-                    type: Kons.TY_BARIS
-                });
-                return true;
-            }
-
-            if (data.dataStr.charCodeAt(0) == 9) {
-                // console.log('ln');
-                data.dataStr = data.dataStr.slice(1, data.dataStr.length);
-                // parse.kataAr.push(";");
-                data.token.push({
-                    // token: ';',
-                    value: '\n',
-                    type: Kons.TY_BARIS
-                });
                 return true;
             }
 

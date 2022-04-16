@@ -12,13 +12,8 @@ include "teks"
 ;Const
 ;"false", "true", "null"
 
-if (a == 2) Then test
 If (moveDown(item)) Then Return
-If a==1 Then						;//test If
-
-ElseIf a == 2 Then				;//test Else If
 Else
-
 EndIf
 
 For i= 0 To 10 
