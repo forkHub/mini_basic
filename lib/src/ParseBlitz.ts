@@ -3,72 +3,47 @@ namespace ha.parse {
 
 		init(): void {
 			gm2.init();
-			// await aturan.loads([""]);
 		}
 
-		async parse(str: string): Promise<string> {
+		async parse(str: string): Promise<void> {
 			data.dataStr = str;
-			data.dataStr += ";;";
-			data.dataStr += "\r\n";
 
-			while (data.barisAr.length > 0) {
-				data.barisAr.pop();
+			console.groupCollapsed('parse: ' + str);
+
+			data.dataStr = data.dataStr.trim();
+
+			let idx: number = data.dataStr.indexOf(';');
+			if (idx >= 0) {
+				data.dataStr = data.dataStr.slice(0, idx);
 			}
 
 			while (data.token.length > 0) {
 				data.token.pop();
 			}
 
+			console.log('str ' + data.dataStr);
+
+			console.log('lexer sebelum:');
+			console.log(data.token);
 			lexer.lexer();
-			baris.pecahBaris();
+			console.log('lexer sesudah:');
+			console.log(data.token);
 
-			console.group("grammar");
-			for (let i: number = 0; i < data.barisAr.length; i++) {
-				let barisObj: IBarisObj = data.barisAr[i];
-
-				// grammar.barisObj = barisObj;
-				data.barisObj = barisObj;
-
-				console.log(baris.getLine(barisObj.token));
-				grammar.grammar();
+			data.barisObj = {
+				baris: str,
+				n: 0,
+				terjemah: '',
+				token: data.token
 			}
-			console.groupEnd();
 
-			console.group("hasil:");
-			for (let i: number = 0; i < data.barisAr.length; i++) {
-				console.log(data.barisAr[i].baris);
-				console.log(data.barisAr[i].token);
-				console.log(data.barisAr[i].terjemah);
-				console.log("");
-			}
-			console.groupEnd();
+			console.log('sebelum:');
+			console.log(data.barisObj);
+
+			grammar.grammar();
 
 			console.log("finish");
-
-			return ha.parse.parse.blijs();
-		}
-
-		blijs(): string {
-			let hsl: string = '';
-			console.log('blijs');
-
-			hsl += "async function Start() {\n";
-			data.barisAr.forEach((barisObj: IBarisObj) => {
-				hsl += barisObj.terjemah + "\n";
-			});
-			hsl += `
-                if (Loop) {
-                    window.Loop = async () => {
-                        await Loop();
-                    }
-                }
-                else {
-                    console.log("Loop doesn't exists");
-                }
-            `;
-			hsl += "}\n";
-
-			return hsl;
+			console.log(data.barisObj);
+			console.groupEnd();
 		}
 
 		getToken(idx: number, token: IToken[]): IToken {

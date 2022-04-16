@@ -19,7 +19,9 @@ namespace ha.parse {
 
             for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                if (data.barisObj.token[i].value == ' ') {
+                let value: string = data.barisObj.token[i].value;
+
+                if (value == ' ' || (value == '\t')) {
 
                     // console.log('idx ' + i);
 
@@ -75,7 +77,7 @@ namespace ha.parse {
                 else if (exp.kurungArg2()) { }
                 else if (exp.kurungArg()) { }
                 else if (typeStmt.typeAkses()) { }
-                else if (gm2.checkLog()) { }
+                else if (gm2.checkLog(gm2.aturanExpAr)) { }
 
                 //STMT
                 else if (stmt.modifier()) { }
@@ -113,6 +115,7 @@ namespace ha.parse {
                 else if (stmt.stmtColon()) { }
                 else if (stmt.stmtColon2()) { }
                 else if (stmt.stmtMul()) { }
+                else if (gm2.checkLog(gm2.aturanStmtAr)) { }
 
                 else if (data.barisObj.token.length > 1) {
                     console.log("error:");

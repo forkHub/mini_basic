@@ -1,3 +1,4 @@
+;    fsfdsafda,
 Until Upper(out$) = "Y" Or Upper(out$) = "N"
 mode
 Function IAskQuestion(name$,question$,mode,high=0,low=0,def=0,prtblk=1)

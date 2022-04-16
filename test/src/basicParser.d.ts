@@ -8,10 +8,6 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Baris {
-        pecahBaris(): void;
-        bersih(tokenAr: IToken[]): IToken[];
-        hapusComment(tokenAr: IToken[]): IToken[];
-        valid(token: IToken[]): boolean;
         getLine(token: IToken[]): string;
         getLineBreak(idx: number): number;
     }
@@ -30,14 +26,13 @@ declare namespace ha.parse {
     class Data {
         private _dataStr;
         private _token;
-        private _barisAr;
         private _barisObj;
         readonly config: Config;
         get barisObj(): IBarisObj;
         set barisObj(value: IBarisObj);
         private _kataKunci2;
-        private _kataKunci3;
-        get kataKunci3(): string[];
+        private _kataKunciDouble;
+        get kataKunciDouble(): string[];
         private _op;
         private _op2;
         private _symbol;
@@ -47,7 +42,6 @@ declare namespace ha.parse {
         get dataStr(): string;
         set dataStr(value: string);
         get token(): IToken[];
-        get barisAr(): IBarisObj[];
         get kataKunci2(): string[];
         get op(): string[];
         set op(value: string[]);
@@ -102,14 +96,17 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Grammar2 {
-        private _aturanAr;
-        get aturanAr(): IAturan[];
+        private _aturanExpAr;
+        get aturanExpAr(): IAturan[];
+        private _aturanStmtAr;
+        get aturanStmtAr(): IAturan[];
         constructor();
         def(): IAturan;
+        aturanExp(): void;
+        aturanStmt(): void;
         init(): void;
-        tambahAturan(data: any[]): void;
-        checkLog(): boolean;
-        check(): boolean;
+        checkLog(aturan: IAturan[]): boolean;
+        check(aturanAr: IAturan[]): boolean;
         checkBaris(tokenAr: IToken[], aturan: IAturan): boolean;
         checkKondisi(kond: number[], token: IToken): boolean;
         checkAturan(tokenAr: IToken[], aturan: IAturan, idx: number): boolean;
@@ -179,7 +176,7 @@ declare namespace ha.parse {
         static readonly TY_NEW: number;
         static readonly TY_BACK_SLASH: number;
         static readonly TY_DOT: number;
-        static readonly TY_MIN: number;
+        static readonly TY_UNTIL: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_ARG_KATA: number;
@@ -192,6 +189,7 @@ declare namespace ha.parse {
         static readonly TY_BINOP: number;
         static readonly TY_BINOP_EQ: number;
         static readonly TY_PANGGIL_FUNGSI: number;
+        static readonly TY_MIN: number;
         static readonly TY_EXP: number;
         static readonly TY_STMT: number;
         static readonly TY_STMT_COLON: number;
@@ -249,6 +247,7 @@ declare namespace ha.parse {
         static readonly TY_END_SELECT: number;
         static readonly TY_CASE_DEC: number;
         static readonly TY_SELECT_DEC: number;
+        static readonly TY_UNTIL_DEC: number;
     }
 }
 declare namespace ha.parse {
@@ -256,13 +255,10 @@ declare namespace ha.parse {
         lexer(): void;
         getOp(): boolean;
         getOp2(): boolean;
-        getCmd(): boolean;
         getNumber(): boolean;
-        getComment(): boolean;
-        getKeyword3(): boolean;
+        keyWordDouble(): boolean;
         getSymbol(): boolean;
         getKata(): boolean;
-        getLineBreak(): boolean;
     }
     export var lexer: Lexer;
     export {};
@@ -270,8 +266,7 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Blitz {
         init(): void;
-        parse(str: string): Promise<string>;
-        blijs(): string;
+        parse(str: string): Promise<void>;
         getToken(idx: number, token: IToken[]): IToken;
         tokenToAr(token: IToken): any[];
         tokenToValue(token: IToken, debug?: boolean): string;

@@ -1,9 +1,9 @@
 namespace ha.parse {
     class Data {
-        private _dataStr: string = '';
-        private _token: IToken[] = [];
-        private _barisAr: IBarisObj[] = [];
-        private _barisObj: IBarisObj;
+        private _dataStr: string = '';  //baris
+        private _token: IToken[] = [];  //daftar token dalam satu baris
+        private _barisObj: IBarisObj;   //baris aktif
+
         readonly config: Config = new Config();
 
         public get barisObj(): IBarisObj {
@@ -20,7 +20,7 @@ namespace ha.parse {
 
             "function", "end function", "return",
 
-            "while", "wend",
+            "while", "wend", "repeat", "until",
 
             "const", "global", "local",
 
@@ -40,14 +40,14 @@ namespace ha.parse {
             "//",
         ];
 
-        private _kataKunci3: string[] = [
+        private _kataKunciDouble: string[] = [
             "end function",
             "end type",
             "end select",
         ];
 
-        public get kataKunci3(): string[] {
-            return this._kataKunci3;
+        public get kataKunciDouble(): string[] {
+            return this._kataKunciDouble;
         }
 
         private _op: string[] = [
@@ -110,7 +110,6 @@ namespace ha.parse {
             "Global"
         ];
 
-
         public get op2(): string[] {
             return this._op2;
         }
@@ -126,9 +125,9 @@ namespace ha.parse {
         public get token(): IToken[] {
             return this._token;
         }
-        public get barisAr(): IBarisObj[] {
-            return this._barisAr;
-        }
+        // public get barisAr(): IBarisObj[] {
+        //     return this._barisAr;
+        // }
 
         public get kataKunci2(): string[] {
             return this._kataKunci2;

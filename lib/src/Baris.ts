@@ -2,92 +2,24 @@ namespace ha.parse {
 	class Baris {
 		// private ar: Arr = new Arr();
 
-		pecahBaris(): void {
-			let idx: number = 100000;
-			let idxTerakhir: number = 0;
-			// let ctr: number=
+		// hapusComment(tokenAr: IToken[]): IToken[] {
+		// 	//bersihkan comment
+		// 	let idx: number = -1;
+		// 	for (let i: number = 0; i < tokenAr.length; i++) {
+		// 		if (tokenAr[i].valueLowerCase == ";") {
+		// 			idx = i;
+		// 			break;
+		// 		}
+		// 	}
 
-			console.group('lines');
+		// 	if (idx >= 0) {
+		// 		tokenAr = tokenAr.slice(0, idx);
+		// 	}
 
-			while (idx >= 0) {
-				idx = this.getLineBreak(idxTerakhir);
-				// console.log('line break ' + idx);
+		// 	if (!tokenAr) tokenAr = [];
 
-				if (idx >= 0) {
-					let kiri: IToken[] = ar.ambilTengah(data.token, idxTerakhir, idx);
-					kiri = this.bersih(kiri);
-					// kiri = this.hapusComment(kiri);
-					// kiri = exp.teks()
-
-					if (kiri.length > 0) {
-						data.barisAr.push({
-							n: 0,
-							token: kiri,
-							baris: baris.getLine(kiri)
-						});
-						// this.renderLines(kiri);
-					}
-
-					idxTerakhir = idx + 1;
-				}
-			}
-
-			console.groupEnd();
-		}
-
-		bersih(tokenAr: IToken[]): IToken[] {
-
-			while ((tokenAr.length > 0) && tokenAr[0].type == Kons.TY_BARIS) {
-				tokenAr = tokenAr.slice(1);
-			}
-
-			while ((tokenAr.length > 0) && tokenAr[tokenAr.length - 1].type == Kons.TY_BARIS) {
-				tokenAr = tokenAr.slice(0, tokenAr.length - 1);
-			}
-
-			// tokenAr = this.hapusComment(tokenAr);
-
-			// //bersihkan comment
-			// let idx: number = -1;
-			// for (let i: number = 0; i < tokenAr.length; i++) {
-			// 	if (tokenAr[i].valueLowerCase == ";") {
-			// 		idx = i;
-			// 		break;
-			// 	}
-			// }
-
-			// if (idx >= 0) {
-			// 	tokenAr = tokenAr.slice(0, idx);
-			// }
-
-			if (!tokenAr) tokenAr = [];
-
-			return tokenAr;
-		}
-
-		hapusComment(tokenAr: IToken[]): IToken[] {
-			//bersihkan comment
-			let idx: number = -1;
-			for (let i: number = 0; i < tokenAr.length; i++) {
-				if (tokenAr[i].valueLowerCase == ";") {
-					idx = i;
-					break;
-				}
-			}
-
-			if (idx >= 0) {
-				tokenAr = tokenAr.slice(0, idx);
-			}
-
-			if (!tokenAr) tokenAr = [];
-
-			return tokenAr;
-		}
-
-		valid(token: IToken[]): boolean {
-			token;
-			return true;
-		}
+		// 	return tokenAr;
+		// }
 
 		getLine(token: IToken[]): string {
 			let str: string = '';
