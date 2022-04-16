@@ -45,6 +45,21 @@ namespace ha.parse {
             console.groupEnd();
         }
 
+        getString(): boolean {
+            let char1: string;
+
+            char1 = data.dataStr.charAt(0);
+
+            if (char1 == "\"") {
+                let idx: number = this.kutip2(data.dataStr);
+                if (idx < 0) {
+                    throw Error();
+                }
+            }
+
+            return false;
+        }
+
         getOp(): boolean {
             for (let i: number = 0; i < data.op.length; i++) {
                 let kata: string = data.op[i];
@@ -331,6 +346,29 @@ namespace ha.parse {
             }
 
             return false;
+        }
+
+        kutip2(str: string): number {
+            let idx: number = 0;
+            let mulai: number = 1;
+
+            while (true) {
+                idx = str.indexOf("\"", mulai);
+
+                if (idx < 0) return -1;
+                if (idx == 1) return idx;
+
+                let sebelum: string;
+
+                sebelum = str.charAt(idx - 1);
+                if (sebelum == '\\') {
+                    mulai = idx + 1;
+                }
+                else {
+                    return idx;
+                }
+            }
+
         }
     }
 
