@@ -81,7 +81,6 @@ declare namespace ha.parse {
         panggilfungsiArg(): boolean;
         panggilfungsi(): boolean;
         getQuote2(idx: number): number;
-        teks(): boolean;
     }
     export var exp: Exp;
     export {};
@@ -253,12 +252,14 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Lexer {
         lexer(): void;
+        getString(): boolean;
         getOp(): boolean;
         getOp2(): boolean;
         getNumber(): boolean;
         keyWordDouble(): boolean;
         getSymbol(): boolean;
         getKata(): boolean;
+        kutip2(str: string): number;
     }
     export var lexer: Lexer;
     export {};
@@ -325,4 +326,97 @@ declare namespace ha.parse {
     }
     export var typeStmt: TypeStmt;
     export {};
+}
+declare namespace ha.comp {
+    class BaseComponent {
+        protected _template: string;
+        protected _elHtml: HTMLElement | null;
+        protected _parent: HTMLElement;
+        onRender(): void;
+        onAttach(): void;
+        onBuild(): void;
+        onDetach(): void;
+        mulai(...params: any[]): void;
+        destroy(): void;
+        attach(parent: HTMLElement): void;
+        detach(): boolean;
+        show(el?: HTMLElement): void;
+        hide(el?: HTMLElement): void;
+        getEl(query: string): HTMLElement;
+        build(): void;
+        getTemplate(query: string): HTMLElement;
+        getElFromDoc(query: string): HTMLElement;
+        get elHtml(): HTMLElement;
+    }
+}
+declare namespace ha.comp {
+    class Bind {
+        private bindList;
+        reg(setter: Function, getter: Function): void;
+        update(): void;
+    }
+    export var bind: Bind;
+    export {};
+}
+declare namespace ha.comp {
+    class Dialog extends BaseComponent {
+        constructor();
+        init(): void;
+        tampil(pesan?: string, def?: boolean): void;
+        get okTbl(): HTMLButtonElement;
+        get p(): HTMLParagraphElement;
+    }
+    export var dialog: Dialog;
+    export {};
+}
+declare namespace ha.comp {
+    class Loading extends BaseComponent {
+        constructor();
+        tampil(): void;
+    }
+    export var loading: Loading;
+    export {};
+}
+declare namespace ha.comp {
+    class Logger2 {
+        private _aktif;
+        get aktif(): boolean;
+        set aktif(value: boolean);
+        constructor();
+        group(msg: any): void;
+        groupEnd(): void;
+        log(msg: any): void;
+    }
+    export var log: Logger2;
+    export {};
+}
+declare namespace ha.comp {
+    export class MenuPopup {
+        private view;
+        constructor();
+        tampil(tombol: ITombol[]): void;
+        buatClass(label: string): string;
+        buatTombol(t: ITombol): void;
+    }
+    interface ITombol {
+        label: string;
+        f: Function;
+    }
+    export {};
+}
+declare namespace ha.comp {
+    class Util {
+        static readonly sUserId: string;
+        static readonly sLevel: string;
+        static readonly sFilter: string;
+        static readonly storageId: string;
+        static getEl(query: string, parent?: HTMLElement, err?: boolean): HTMLElement;
+        static error(e: Error): void;
+        static kirimWa(teks: string): string;
+        static getUrl(url: string, params: any[]): string;
+        static AjaxLogin(type: string, urlServer: string, dataStr: string, loginUrl: string, pf?: (p: ProgressEvent) => void): Promise<XMLHttpRequest>;
+        static Ajax2(type: string, url: string, dataStr: string, pf?: (p: ProgressEvent) => void): Promise<string>;
+        static sql(query: string): Promise<any[]>;
+        static Ajax(type: string, url: string, dataStr: string, pf?: (p: ProgressEvent) => void): Promise<XMLHttpRequest>;
+    }
 }

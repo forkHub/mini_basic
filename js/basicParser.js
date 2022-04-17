@@ -1140,27 +1140,6 @@ var ha;
                 }
                 return -1;
             }
-            teks() {
-                let idx = 0;
-                let idx2 = 0;
-                idx = this.getQuote2(0);
-                if (idx == -1) {
-                    return false;
-                }
-                idx2 = this.getQuote2(idx + 1);
-                if (idx2 == -1) {
-                    return false;
-                }
-                let tokenBaru = {
-                    token: [],
-                    type: parse.Kons.TY_TEKS
-                };
-                tokenBaru.token = parse.ar.ambilTengah(parse.data.barisObj.token, idx, idx2);
-                console.log("teks:");
-                console.log(parse.parse.tokenToValue(tokenBaru));
-                parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, idx, idx2, tokenBaru);
-                return true;
-            }
         }
         parse.exp = new Exp();
     })(parse = ha.parse || (ha.parse = {}));
@@ -1184,7 +1163,6 @@ var ha;
                 console.group('grammar');
                 while (parse.data.barisObj.token.length > 1) {
                     if (false) { }
-                    else if (parse.exp.teks()) { }
                     else if (parse.exp.hapusComment()) { }
                     else if (this.hapusSpace()) { }
                     else if (parse.exp.exp()) { }
@@ -2018,6 +1996,7 @@ var ha;
                 console.group('lexer start');
                 while (parse.data.dataStr.length > 0) {
                     if (this.keyWordDouble()) { }
+                    else if (this.getString()) { }
                     else if (this.getOp()) { }
                     else if (this.getOp2()) { }
                     else if (this.getKata()) { }
@@ -2045,6 +2024,33 @@ var ha;
                     }
                 });
                 console.groupEnd();
+            }
+            getString() {
+                let char1;
+                console.log('get string');
+                char1 = parse.data.dataStr.charAt(0);
+                if (char1 == "\"") {
+                    let idx = this.kutip2(parse.data.dataStr);
+                    if (idx < 0) {
+                        ha.comp.log.log("string tidak ketemu");
+                        throw Error();
+                    }
+                    else {
+                        console.log('data.token: ');
+                        console.log(parse.data.token);
+                        console.log('idx ' + idx);
+                        console.log('datastr ' + parse.data.dataStr);
+                        console.log('hasil ' + parse.data.dataStr.slice(0, idx + 1));
+                        parse.data.token.push({
+                            value: parse.data.dataStr.slice(0, idx + 1),
+                            type: parse.Kons.TY_TEKS
+                        });
+                        parse.data.dataStr = parse.data.dataStr.slice(idx + 1);
+                        console.log('sisa: ' + parse.data.dataStr);
+                        return true;
+                    }
+                }
+                return false;
             }
             getOp() {
                 for (let i = 0; i < parse.data.op.length; i++) {
@@ -2268,6 +2274,17 @@ var ha;
                 }
                 return false;
             }
+            kutip2(str) {
+                let idx = 0;
+                let mulai = 1;
+                while (true) {
+                    idx = str.indexOf("\"", mulai);
+                    if (idx <= 0)
+                        return -1;
+                    if (idx >= 1)
+                        return idx;
+                }
+            }
         }
         parse.lexer = new Lexer();
     })(parse = ha.parse || (ha.parse = {}));
@@ -2284,10 +2301,6 @@ var ha;
                 parse_1.data.dataStr = str;
                 console.groupCollapsed('parse: ' + str);
                 parse_1.data.dataStr = parse_1.data.dataStr.trim();
-                let idx = parse_1.data.dataStr.indexOf(';');
-                if (idx >= 0) {
-                    parse_1.data.dataStr = parse_1.data.dataStr.slice(0, idx);
-                }
                 while (parse_1.data.token.length > 0) {
                     parse_1.data.token.pop();
                 }
@@ -3431,4 +3444,407 @@ var ha;
         }
         parse.typeStmt = new TypeStmt();
     })(parse = ha.parse || (ha.parse = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var comp;
+    (function (comp) {
+        class BaseComponent {
+            _template = '';
+            _elHtml = document.createElement('div');
+            _parent;
+            onRender() {
+            }
+            onAttach() {
+            }
+            onBuild() {
+            }
+            onDetach() {
+            }
+            mulai(...params) {
+                params;
+            }
+            destroy() {
+                this.detach();
+                while (this._elHtml.firstChild) {
+                    this._elHtml.removeChild(this._elHtml.firstChild);
+                }
+                this._elHtml = null;
+            }
+            attach(parent) {
+                parent.appendChild(this._elHtml);
+                this._parent = parent;
+                this.onAttach();
+            }
+            detach() {
+                if (this._elHtml.parentElement) {
+                    this._elHtml.parentElement.removeChild(this._elHtml);
+                    this.onDetach();
+                    return true;
+                }
+                this.onDetach();
+                return false;
+            }
+            show(el) {
+                if (!el) {
+                    el = this._elHtml;
+                }
+                el.style.display = 'block';
+            }
+            hide(el) {
+                if (!el) {
+                    el = this._elHtml;
+                }
+                el.style.display = 'none';
+            }
+            getEl(query) {
+                let el;
+                el = this._elHtml.querySelector(query);
+                if (el) {
+                    return el;
+                }
+                else {
+                    console.log(this._elHtml);
+                    console.log(query);
+                    throw new Error('query not found ');
+                }
+            }
+            build() {
+                let div = document.createElement('div');
+                let el;
+                div.innerHTML = this._template;
+                el = div.firstElementChild;
+                this._elHtml = el;
+                if (!this._elHtml)
+                    throw new Error('');
+                this.onBuild();
+            }
+            getTemplate(query) {
+                let template = document.body.querySelector('template').content;
+                return template.querySelector(query).cloneNode(true);
+            }
+            getElFromDoc(query) {
+                let el;
+                el = document.querySelector(query);
+                if (!el)
+                    throw new Error();
+                return el;
+            }
+            get elHtml() {
+                return this._elHtml;
+            }
+        }
+        comp.BaseComponent = BaseComponent;
+    })(comp = ha.comp || (ha.comp = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var comp;
+    (function (comp) {
+        class Bind {
+            bindList = [];
+            reg(setter, getter) {
+                let bindObj = {
+                    data: '',
+                    setter: setter,
+                    getter: getter
+                };
+                this.bindList.push(bindObj);
+                let data = bindObj.getter();
+                bindObj.data = data;
+            }
+            update() {
+                this.bindList.forEach((item) => {
+                    let data = item.getter();
+                    if (item.data != data) {
+                        item.setter();
+                        item.data = data;
+                    }
+                    else {
+                    }
+                });
+            }
+        }
+        comp.bind = new Bind();
+    })(comp = ha.comp || (ha.comp = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var comp;
+    (function (comp) {
+        class Dialog extends comp.BaseComponent {
+            constructor() {
+                super();
+                this._template = `
+				<div class='comp dialog'>
+					<div class='box'>
+						<p class='deskripsi'>Contoh dialog </p>
+						<button class="btn btn-primary ok">OK</button>
+					</div>
+				</div>
+				`;
+                this.build();
+            }
+            init() {
+                this.detach();
+            }
+            tampil(pesan = '', def = true) {
+                this.p.innerHTML = pesan;
+                if (def) {
+                    this.okTbl.onclick = () => {
+                        this.detach();
+                    };
+                }
+                this.attach(document.body);
+                this._elHtml.style.display = 'block';
+            }
+            get okTbl() {
+                return this.getEl('button.ok');
+            }
+            get p() {
+                return this.getEl('p');
+            }
+        }
+        comp.dialog = new Dialog();
+    })(comp = ha.comp || (ha.comp = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var comp;
+    (function (comp) {
+        class Loading extends comp.BaseComponent {
+            constructor() {
+                super();
+                this._template = `
+				<div class='loading'>
+					<div class='box'>
+						<img src=''/>
+						<p>Memuat</p> 
+					</div>
+				</div>
+			`;
+                this.build();
+            }
+            tampil() {
+                console.log('loading tampil');
+                this.attach(document.body);
+            }
+        }
+        comp.loading = new Loading();
+        console.log('exporting loading: ' + comp.loading);
+    })(comp = ha.comp || (ha.comp = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var comp;
+    (function (comp) {
+        class Logger2 {
+            _aktif = true;
+            get aktif() {
+                return this._aktif;
+            }
+            set aktif(value) {
+                this._aktif = value;
+            }
+            constructor() {
+            }
+            group(msg) {
+                if (this._aktif) {
+                    console.group(msg);
+                    msg;
+                }
+            }
+            groupEnd() {
+                if (this._aktif) {
+                    console.groupEnd();
+                }
+            }
+            log(msg) {
+                if (this._aktif) {
+                    console.log(msg);
+                    msg;
+                }
+            }
+        }
+        comp.log = new Logger2();
+    })(comp = ha.comp || (ha.comp = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var comp;
+    (function (comp) {
+        class MenuPopup {
+            view = new View();
+            constructor() {
+            }
+            tampil(tombol) {
+                while (this.view.box.firstChild) {
+                    this.view.box.removeChild(this.view.box.firstChild);
+                }
+                tombol.forEach((item) => {
+                    this.buatTombol(item);
+                });
+                this.view.attach(document.body);
+            }
+            buatClass(label) {
+                let hasil;
+                hasil = label.toLowerCase();
+                while (hasil.indexOf(' ') > -1) {
+                    hasil = hasil.replace(' ', '-');
+                }
+                return hasil;
+            }
+            buatTombol(t) {
+                let button = document.createElement('button');
+                button.classList.add("btn");
+                button.classList.add("btn-primary");
+                button.classList.add(this.buatClass(t.label));
+                button.style.display = 'block';
+                button.style.margin = 'auto';
+                button.style.marginBottom = '8px';
+                button.textContent = t.label;
+                button.onclick = (e) => {
+                    e.stopPropagation();
+                    this.view.detach();
+                    t.f();
+                };
+                this.view.box.appendChild(button);
+            }
+        }
+        comp.MenuPopup = MenuPopup;
+        class View extends comp.BaseComponent {
+            constructor() {
+                super();
+                this._template = `
+				<div class='menu-popup' style="position:fixed; top:0px; left:0px; right:0px; bottom:0px; z-index:1000; background-color: rgba(0,0,0,.3)">
+					<div class='box cont' style="position:fixed; bottom:0px; left:0px; right:0px">
+	
+					</div>
+				</div>
+			`;
+                this.build();
+                this.box.style.backgroundColor = 'white';
+                this.box.style.padding = '8px';
+                this.box.style.textAlign = 'center';
+                this._elHtml.onclick = () => {
+                    this.detach();
+                };
+            }
+            get box() {
+                return this.getEl('div.box.cont');
+            }
+        }
+    })(comp = ha.comp || (ha.comp = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var comp;
+    (function (comp) {
+        class Util {
+            static sUserId = 'user_id';
+            static sLevel = 'level';
+            static sFilter = 'filter';
+            static storageId = 'xyz.hagarden.tugas';
+            static getEl(query, parent = null, err = true) {
+                let el;
+                if (!parent)
+                    parent = document.body;
+                el = parent.querySelector(query);
+                if (el) {
+                    return el;
+                }
+                else {
+                    console.log(parent);
+                    console.log(query);
+                    if (err) {
+                        throw new Error('query not found ');
+                    }
+                    else {
+                        return null;
+                    }
+                }
+            }
+            static error(e) {
+                console.error(e);
+                comp.dialog.tampil(e.message);
+            }
+            static kirimWa(teks) {
+                return "whatsapp://send?text=" + teks;
+            }
+            static getUrl(url, params) {
+                let urlHasil = url;
+                console.group('get url');
+                console.log('url: ' + url);
+                console.log('params: ' + JSON.stringify(params));
+                params.forEach((item) => {
+                    console.log('reg: ' + urlHasil.search(/\:[a-zA-Z_0-9]+/));
+                    urlHasil = urlHasil.replace(/\:[a-zA-Z_0-9]+/, item + '');
+                    console.log('item: ' + item);
+                    console.log('url: ' + urlHasil);
+                });
+                console.log('url hasil: ' + urlHasil);
+                console.groupEnd();
+                return urlHasil;
+            }
+            static async AjaxLogin(type, urlServer, dataStr, loginUrl, pf = null) {
+                let xml;
+                xml = await this.Ajax(type, urlServer, dataStr, pf);
+                if (401 == xml.status) {
+                    window.top.location.href = loginUrl;
+                    return null;
+                }
+                else {
+                    return xml;
+                }
+            }
+            static async Ajax2(type, url, dataStr, pf = null) {
+                let x = await this.Ajax(type, url, dataStr, pf);
+                if (x.status == 200 || x.status == 0) {
+                    return x.responseText;
+                }
+                console.log('error status code: ' + x.status);
+                throw Error(x.responseText);
+            }
+            static async sql(query) {
+                query;
+                return [];
+            }
+            static async Ajax(type, url, dataStr, pf = null) {
+                return new Promise((resolve, reject) => {
+                    try {
+                        console.group('send data');
+                        console.log("type " + type);
+                        comp.loading.attach(document.body);
+                        let xhr = new XMLHttpRequest();
+                        xhr.onload = () => {
+                            comp.loading.detach();
+                            resolve(xhr);
+                        };
+                        xhr.onerror = (e) => {
+                            console.log('xhr error');
+                            console.log(e);
+                            comp.loading.detach();
+                            reject(new Error(e.message));
+                        };
+                        xhr.onprogress = (p) => {
+                            if (pf) {
+                                pf(p);
+                            }
+                        };
+                        xhr.open(type, url + "", true);
+                        xhr.setRequestHeader('Content-type', 'application/json');
+                        xhr.send(dataStr);
+                        console.groupEnd();
+                    }
+                    catch (e) {
+                        console.log('Util error');
+                        console.log(e);
+                        comp.loading.detach();
+                        reject(new Error(e.message));
+                    }
+                });
+            }
+        }
+        comp.Util = Util;
+    })(comp = ha.comp || (ha.comp = {}));
 })(ha || (ha = {}));

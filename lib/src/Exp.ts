@@ -1116,6 +1116,7 @@ namespace ha.parse {
             return -1;
         }
 
+        /*
         teks(): boolean {
             let idx: number = 0;
             let idx2: number = 0;
@@ -1166,6 +1167,7 @@ namespace ha.parse {
 
             return true;
         }
+        */
 
     }
 

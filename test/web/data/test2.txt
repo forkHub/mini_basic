@@ -1,3 +1,7 @@
+"  lsafalfkasfs al ", test
+test " ldkaf saf "
+test, " ldkaf saf "
+
 ;    fsfdsafda,
 Until Upper(out$) = "Y" Or Upper(out$) = "N"
 mode

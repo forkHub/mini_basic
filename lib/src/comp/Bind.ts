@@ -31,5 +31,11 @@ namespace ha.comp {
 		}
 	}
 
+	interface IBindObj {
+		getter: Function;
+		setter: Function;
+		data: any;
+	}
+
 	export var bind: Bind = new Bind();
 }

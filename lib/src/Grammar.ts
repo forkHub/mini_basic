@@ -46,16 +46,11 @@ namespace ha.parse {
         grammar(): void {
             console.group('grammar');
 
-            //TODO: else if diganti
-            /*
-                buat optimisasi
-            */
-            // exp.hapusComment();
             while (data.barisObj.token.length > 1) {
                 if (false) { }
 
                 //BASIC
-                else if (exp.teks()) { }
+                // else if (exp.teks()) { }
                 else if (exp.hapusComment()) { }
                 else if (this.hapusSpace()) { }
                 else if (exp.exp()) { }

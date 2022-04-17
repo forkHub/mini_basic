@@ -12,10 +12,10 @@ namespace ha.parse {
 
 			data.dataStr = data.dataStr.trim();
 
-			let idx: number = data.dataStr.indexOf(';');
-			if (idx >= 0) {
-				data.dataStr = data.dataStr.slice(0, idx);
-			}
+			// let idx: number = data.dataStr.indexOf(';');
+			// if (idx >= 0) {
+			// 	data.dataStr = data.dataStr.slice(0, idx);
+			// }
 
 			while (data.token.length > 0) {
 				data.token.pop();

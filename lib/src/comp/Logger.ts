@@ -1,6 +1,6 @@
 namespace ha.comp {
     class Logger2 {
-        private _aktif: boolean = false;
+        private _aktif: boolean = true;
         public get aktif(): boolean {
             return this._aktif;
         }

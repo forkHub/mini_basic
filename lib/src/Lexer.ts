@@ -11,6 +11,7 @@ namespace ha.parse {
 
             while (data.dataStr.length > 0) {
                 if (this.keyWordDouble()) { }
+                else if (this.getString()) { }
                 else if (this.getOp()) { }
                 else if (this.getOp2()) { }
                 else if (this.getKata()) { }
@@ -48,12 +49,33 @@ namespace ha.parse {
         getString(): boolean {
             let char1: string;
 
+            console.log('get string');
+
             char1 = data.dataStr.charAt(0);
 
             if (char1 == "\"") {
                 let idx: number = this.kutip2(data.dataStr);
                 if (idx < 0) {
+                    ha.comp.log.log("string tidak ketemu");
                     throw Error();
+                }
+                else {
+                    console.log('data.token: ');
+                    console.log(data.token);
+                    console.log('idx ' + idx);
+                    console.log('datastr ' + data.dataStr);
+                    console.log('hasil ' + data.dataStr.slice(0, idx + 1));
+
+                    data.token.push({
+                        value: data.dataStr.slice(0, idx + 1),
+                        type: Kons.TY_TEKS
+                    })
+
+                    data.dataStr = data.dataStr.slice(idx + 1);
+
+                    console.log('sisa: ' + data.dataStr);
+
+                    return true;
                 }
             }
 
@@ -355,18 +377,18 @@ namespace ha.parse {
             while (true) {
                 idx = str.indexOf("\"", mulai);
 
-                if (idx < 0) return -1;
-                if (idx == 1) return idx;
+                if (idx <= 0) return -1;
+                if (idx >= 1) return idx;
 
-                let sebelum: string;
+                // let sebelum: string;
 
-                sebelum = str.charAt(idx - 1);
-                if (sebelum == '\\') {
-                    mulai = idx + 1;
-                }
-                else {
-                    return idx;
-                }
+                // sebelum = str.charAt(idx - 1);
+                // if (sebelum == '\\') {
+                //     mulai = idx + 1;
+                // }
+                // else {
+                //     return idx;
+                // }
             }
 
         }
