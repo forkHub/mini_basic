@@ -22,6 +22,8 @@ namespace ha.parse {
         static readonly TY_DOT: number = 19;
         static readonly TY_UNTIL: number = 20;
         static readonly TY_MODIFIER: number = 21;
+        static readonly TY_FOR: number = 22;
+        static readonly TY_EACH: number = 23;
 
         static readonly TY_ARG: number = 100;
         static readonly TY_ARG2: number = 101;
@@ -49,12 +51,14 @@ namespace ha.parse {
         static readonly TY_LABEL: number = 304;
         //HABIS => 305
 
-        static readonly TY_FOR: number = 305;
+        //stmt
+        static readonly TY_FOR_DEC: number = 305;
         static readonly TY_FOR_STEP: number = 306;
         static readonly TY_WEND: number = 307;
         static readonly TY_FUNC_DEC: number = 308;
         static readonly TY_RETURN: number = 310;
         static readonly TY_RETURN_EXP: number = 311;
+        static readonly TY_FOR_EACH: number = 312;
 
         static readonly TY_DIM: number = 400;
         static readonly TY_DIM_ASSINMENT: number = 401;

@@ -115,6 +115,7 @@ namespace ha.parse {
                     if (t0.valueLowerCase == "type") return false;
                     if (t0.valueLowerCase == "field") return false;
                     if (t0.valueLowerCase == ",") return false;
+                    if (t0.type == Kons.TY_EACH) return false;
                 }
 
                 return true;
@@ -240,6 +241,7 @@ namespace ha.parse {
                     if (t0.valueLowerCase == '.') return false;
 
                     if (t0.valueLowerCase == "\\") return false;
+                    if (t0.type == Kons.TY_EACH) return false;
                 }
 
                 return true;
@@ -249,21 +251,22 @@ namespace ha.parse {
 
             for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let token0: IToken = parse.getToken(i - 1, data.barisObj.token);
-                let token1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t0: IToken = parse.getToken(i - 1, data.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
                 // let token2: IToken = parse.getToken(i + 1, data.barisObj.token);
                 // let token3: Itoken = parse.getToken(i + 2, data.barisObj.token);
 
                 let tokenBaru: IToken;
 
-                if (check(token0, token1)) {
+                if (check(t0, t1)) {
                     tokenBaru = {
                         type: Kons.TY_EXP,
-                        token: [token1]
+                        token: [t1]
                     }
 
                     console.log("exp");
                     console.log(parse.tokenToValue(tokenBaru));
+                    // console.log('seb ' + t0.type);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 

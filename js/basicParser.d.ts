@@ -115,6 +115,11 @@ interface IAturan {
     kondisi?: number[][];
     sbl?: number[];
     stl?: number[];
+    aturan?: {
+        kondisi?: number[][];
+        sbl?: number[];
+        stl?: number[];
+    };
 }
 declare namespace ha.parse {
     class IfStmt {
@@ -171,6 +176,8 @@ declare namespace ha.parse {
         static readonly TY_DOT: number;
         static readonly TY_UNTIL: number;
         static readonly TY_MODIFIER: number;
+        static readonly TY_FOR: number;
+        static readonly TY_EACH: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_ARG_KATA: number;
@@ -189,12 +196,13 @@ declare namespace ha.parse {
         static readonly TY_STMT_M: number;
         static readonly TY_PERINTAH: number;
         static readonly TY_LABEL: number;
-        static readonly TY_FOR: number;
+        static readonly TY_FOR_DEC: number;
         static readonly TY_FOR_STEP: number;
         static readonly TY_WEND: number;
         static readonly TY_FUNC_DEC: number;
         static readonly TY_RETURN: number;
         static readonly TY_RETURN_EXP: number;
+        static readonly TY_FOR_EACH: number;
         static readonly TY_DIM: number;
         static readonly TY_DIM_ASSINMENT: number;
         static readonly TY_DIM_DEC: number;

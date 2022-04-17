@@ -372,7 +372,7 @@ namespace ha.parse {
                             token3,
                             token4,
                         ],
-                        type: Kons.TY_FOR
+                        type: Kons.TY_FOR_DEC
                     };
 
                     console.log('for: ');
@@ -407,7 +407,7 @@ namespace ha.parse {
                 if (!t2) return false;
                 if (!t3) return false;
 
-                if (Kons.TY_FOR != t1.type) return false;
+                if (Kons.TY_FOR_DEC != t1.type) return false;
 
                 if ("step" != t2.valueLowerCase) return false;
 

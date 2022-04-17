@@ -67,7 +67,7 @@ namespace ha.parse {
             else if (token.type == Kons.TY_BARIS) {
                 return '';
             }
-            else if (token.type == Kons.TY_FOR) {
+            else if (token.type == Kons.TY_FOR_DEC) {
                 //TODO:
                 //for kata = exp to exp2 => for (let kata = exp; kata <= exp2; kata++) {
                 //0   1    2 3   4  5

@@ -10,7 +10,6 @@ namespace ha.parse {
             return this._aturanStmtAr;
         }
 
-
         constructor() {
 
         }
@@ -194,7 +193,19 @@ namespace ha.parse {
                     kondisi: [
                         [Kons.TY_MOD_DEC, Kons.TY_MOD_DEC_M],
                         [Kons.TY_KOMA],
-                        [, Kons.TY_KATA],
+                        [Kons.TY_KATA],
+                    ],
+                    sbl: [], stl: []
+                },
+                {
+                    nama: 'for each  ',
+                    type: Kons.TY_FOR_EACH,
+                    kondisi: [
+                        [Kons.TY_FOR],
+                        [Kons.TY_KATA, Kons.TY_KATA_DOT],
+                        [Kons.TY_OP],
+                        [Kons.TY_EACH],
+                        [Kons.TY_KATA]
                     ],
                     sbl: [],
                     stl: []
@@ -447,5 +458,10 @@ interface IAturan {
     type?: number,
     kondisi?: number[][],
     sbl?: number[],
-    stl?: number[]
+    stl?: number[],
+    aturan?: {
+        kondisi?: number[][],
+        sbl?: number[],
+        stl?: number[],
+    }
 }

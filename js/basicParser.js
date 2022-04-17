@@ -352,6 +352,8 @@ var ha;
                             return false;
                         if (t0.valueLowerCase == ",")
                             return false;
+                        if (t0.type == parse.Kons.TY_EACH)
+                            return false;
                     }
                     return true;
                 }
@@ -454,18 +456,20 @@ var ha;
                             return false;
                         if (t0.valueLowerCase == "\\")
                             return false;
+                        if (t0.type == parse.Kons.TY_EACH)
+                            return false;
                     }
                     return true;
                 }
                 let ada = false;
                 for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let token0 = parse.parse.getToken(i - 1, parse.data.barisObj.token);
-                    let token1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
+                    let t0 = parse.parse.getToken(i - 1, parse.data.barisObj.token);
+                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
                     let tokenBaru;
-                    if (check(token0, token1)) {
+                    if (check(t0, t1)) {
                         tokenBaru = {
                             type: parse.Kons.TY_EXP,
-                            token: [token1]
+                            token: [t1]
                         };
                         console.log("exp");
                         console.log(parse.parse.tokenToValue(tokenBaru));
@@ -1267,7 +1271,19 @@ var ha;
                         kondisi: [
                             [parse.Kons.TY_MOD_DEC, parse.Kons.TY_MOD_DEC_M],
                             [parse.Kons.TY_KOMA],
-                            [, parse.Kons.TY_KATA],
+                            [parse.Kons.TY_KATA],
+                        ],
+                        sbl: [], stl: []
+                    },
+                    {
+                        nama: 'for each  ',
+                        type: parse.Kons.TY_FOR_EACH,
+                        kondisi: [
+                            [parse.Kons.TY_FOR],
+                            [parse.Kons.TY_KATA, parse.Kons.TY_KATA_DOT],
+                            [parse.Kons.TY_OP],
+                            [parse.Kons.TY_EACH],
+                            [parse.Kons.TY_KATA]
                         ],
                         sbl: [],
                         stl: []
@@ -1813,6 +1829,8 @@ var ha;
             static TY_DOT = 19;
             static TY_UNTIL = 20;
             static TY_MODIFIER = 21;
+            static TY_FOR = 22;
+            static TY_EACH = 23;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
             static TY_ARG_KATA = 102;
@@ -1831,12 +1849,13 @@ var ha;
             static TY_STMT_M = 302;
             static TY_PERINTAH = 303;
             static TY_LABEL = 304;
-            static TY_FOR = 305;
+            static TY_FOR_DEC = 305;
             static TY_FOR_STEP = 306;
             static TY_WEND = 307;
             static TY_FUNC_DEC = 308;
             static TY_RETURN = 310;
             static TY_RETURN_EXP = 311;
+            static TY_FOR_EACH = 312;
             static TY_DIM = 400;
             static TY_DIM_ASSINMENT = 401;
             static TY_DIM_DEC = 402;
@@ -2069,6 +2088,7 @@ var ha;
                         token.type = parse.Kons.TY_ENDTYPE;
                     }
                     else if ("each" == lc) {
+                        token.type = parse.Kons.TY_EACH;
                     }
                     else if ("return" == lc) {
                         token.type = parse.Kons.TY_RETURN;
@@ -2126,6 +2146,9 @@ var ha;
                     }
                     else if ("const" == lc) {
                         token.type = parse.Kons.TY_MODIFIER;
+                    }
+                    else if ("for" == lc) {
+                        token.type = parse.Kons.TY_FOR;
                     }
                     else {
                     }
@@ -2550,7 +2573,7 @@ var ha;
                                 token3,
                                 token4,
                             ],
-                            type: parse.Kons.TY_FOR
+                            type: parse.Kons.TY_FOR_DEC
                         };
                         console.log('for: ');
                         console.log(parse.parse.tokenToAr(tokenBaru));
@@ -2569,7 +2592,7 @@ var ha;
                         return false;
                     if (!t3)
                         return false;
-                    if (parse.Kons.TY_FOR != t1.type)
+                    if (parse.Kons.TY_FOR_DEC != t1.type)
                         return false;
                     if ("step" != t2.valueLowerCase)
                         return false;
@@ -2926,7 +2949,7 @@ var ha;
                 else if (token.type == parse.Kons.TY_BARIS) {
                     return '';
                 }
-                else if (token.type == parse.Kons.TY_FOR) {
+                else if (token.type == parse.Kons.TY_FOR_DEC) {
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_FOR_STEP) {

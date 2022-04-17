@@ -243,8 +243,6 @@ namespace ha.parse {
 
             if (hsl) {
                 data.dataStr = data.dataStr.slice(hsl[0].length);
-                // console.debug('kata: ' + hsl);
-                // parse.kataAr.push(hsl + '')
 
                 value = hsl + '';
 
@@ -261,14 +259,9 @@ namespace ha.parse {
                 data.token.push(token);
 
                 if (data.kataKunci2.indexOf(token.valueLowerCase) >= 0) {
-                    // if (token.valueLowerCase == "if") {
-                    // console.log(token.valueLowerCase);
-                    // throw Error('');
                     token.type = Kons.TY_RES_WORD;
-                    // }
                 }
 
-                //TODO: reserved word
                 let lc: string = token.valueLowerCase;
                 if ("type" == lc) {
                     token.type = Kons.TY_TYPE;
@@ -280,7 +273,7 @@ namespace ha.parse {
                     token.type = Kons.TY_ENDTYPE;
                 }
                 else if ("each" == lc) {
-                    //TODO:
+                    token.type = Kons.TY_EACH;
                 }
                 else if ("return" == lc) {
                     token.type = Kons.TY_RETURN;
@@ -338,6 +331,9 @@ namespace ha.parse {
                 }
                 else if ("const" == lc) {
                     token.type = Kons.TY_MODIFIER
+                }
+                else if ("for" == lc) {
+                    token.type = Kons.TY_FOR
                 }
                 else {
                     //console.warn("kata belum didefinisikan: " + lc);
