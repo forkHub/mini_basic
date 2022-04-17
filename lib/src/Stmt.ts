@@ -606,6 +606,7 @@ namespace ha.parse {
             return ada;
         }
 
+        //TODO: dihapus karena new sudah ada
         new2(): boolean {
             for (let i: number = 0; i <= data.barisObj.token.length - 2; i++) {
 
@@ -634,6 +635,7 @@ namespace ha.parse {
             return false;
         }
 
+        //TODO: dipindah ke grammar 2
         perintah(): boolean {
 
             //kata arg 

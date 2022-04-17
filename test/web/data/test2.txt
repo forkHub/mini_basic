@@ -1,3 +1,4 @@
+Else If KeyDown(205)
 For c.ChaseCam=Each ChaseCam
 player1.Player=CreatePlayer( 0,10,0 )
 global light,castle,land,ground,water,sky

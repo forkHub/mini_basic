@@ -175,6 +175,9 @@ namespace ha.parse {
                     else if ("end select" == lc) {
                         token.type = Kons.TY_END_SELECT
                     }
+                    else if ("else if" == lc) {
+                        token.type = Kons.TY_ELSE_IF
+                    }
                     else {
                         console.warn("kata belum didefinisikan: " + lc);
                     }

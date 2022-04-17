@@ -20,7 +20,11 @@ namespace ha.parse {
                 if (!t1) return false;
                 if (!t2) return false;
 
-                if (t1.valueLowerCase != "if") return false;
+                if (t1.valueLowerCase != "if") {
+                    if (t1.type != Kons.TY_ELSE_IF) {
+                        return false;
+                    }
+                }
 
                 if (t2.type != Kons.TY_EXP) {
                     if (t2.type != Kons.TY_DIM_ASSINMENT) {

@@ -180,6 +180,7 @@ declare namespace ha.parse {
         static readonly TY_BEFORE: number;
         static readonly TY_AFTER: number;
         static readonly TY_LAST: number;
+        static readonly TY_ELSE_IF: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_ARG_KATA: number;

@@ -140,6 +140,7 @@ var ha;
                 "end function",
                 "end type",
                 "end select",
+                "else if"
             ];
             get kataKunciDouble() {
                 return this._kataKunciDouble;
@@ -1521,8 +1522,11 @@ var ha;
                         return false;
                     if (!t2)
                         return false;
-                    if (t1.valueLowerCase != "if")
-                        return false;
+                    if (t1.valueLowerCase != "if") {
+                        if (t1.type != parse.Kons.TY_ELSE_IF) {
+                            return false;
+                        }
+                    }
                     if (t2.type != parse.Kons.TY_EXP) {
                         if (t2.type != parse.Kons.TY_DIM_ASSINMENT) {
                             return false;
@@ -1889,6 +1893,7 @@ var ha;
             static TY_BEFORE = 27;
             static TY_AFTER = 28;
             static TY_LAST = 29;
+            static TY_ELSE_IF = 30;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
             static TY_ARG_KATA = 102;
@@ -2068,6 +2073,9 @@ var ha;
                         }
                         else if ("end select" == lc) {
                             token.type = parse.Kons.TY_END_SELECT;
+                        }
+                        else if ("else if" == lc) {
+                            token.type = parse.Kons.TY_ELSE_IF;
                         }
                         else {
                             console.warn("kata belum didefinisikan: " + lc);

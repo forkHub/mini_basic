@@ -44,6 +44,7 @@ namespace ha.parse {
             "end function",
             "end type",
             "end select",
+            "else if"
         ];
 
         public get kataKunciDouble(): string[] {

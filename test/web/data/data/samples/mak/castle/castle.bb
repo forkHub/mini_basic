@@ -165,7 +165,8 @@ Function UpdateBullet( b.Bullet )
 			TFormPoint( ex,ey,ez,0,land )
 			hi#=TerrainHeight( land,TFormedX(),TFormedZ() )
 			If hi>0
-				hi=hi-.02:If hi<0 Then hi=0
+				hi=hi-.02
+				If hi<0 Then hi=0
 				ModifyTerrain land,TFormedX(),TFormedZ(),hi,True
 			EndIf
 			CreateSpark( b )
@@ -258,7 +259,7 @@ Function UpdatePlayer( p.Player )
 	EndIf
 
 	Goto skip	
-	ex#=EntityX(p\entity):ez#=EntityZ(p\entity)
+	ex#=EntityX(p\entity)\nez#=EntityZ(p\entity)
 	PositionEntity p\entity,ex,TerrainY( land,ex,0,ez )+1.5,ez
 	Return
 	.skip
@@ -365,44 +366,62 @@ Function LoadSkyBox( file$ )
 	;front face
 	b=LoadBrush( file$+"_FR.jpg",49 )
 	s=CreateSurface( m,b )
-	AddVertex s,-1,+1,-1,0,0:AddVertex s,+1,+1,-1,1,0
-	AddVertex s,+1,-1,-1,1,1:AddVertex s,-1,-1,-1,0,1
-	AddTriangle s,0,1,2:AddTriangle s,0,2,3
+	AddVertex s,-1,+1,-1,0,0
+	AddVertex s,+1,+1,-1,1,0
+	AddVertex s,+1,-1,-1,1,1
+	AddVertex s,-1,-1,-1,0,1
+	AddTriangle s,0,1,2
+	AddTriangle s,0,2,3
 	FreeBrush b
 	;right face
 	b=LoadBrush( file$+"_LF.jpg",49 )
 	s=CreateSurface( m,b )
-	AddVertex s,+1,+1,-1,0,0:AddVertex s,+1,+1,+1,1,0
-	AddVertex s,+1,-1,+1,1,1:AddVertex s,+1,-1,-1,0,1
-	AddTriangle s,0,1,2:AddTriangle s,0,2,3
+	AddVertex s,+1,+1,-1,0,0
+	AddVertex s,+1,+1,+1,1,0
+	AddVertex s,+1,-1,+1,1,1
+	AddVertex s,+1,-1,-1,0,1
+	AddTriangle s,0,1,2
+	AddTriangle s,0,2,3
 	FreeBrush b
 	;back face
 	b=LoadBrush( file$+"_BK.jpg",49 )
 	s=CreateSurface( m,b )
-	AddVertex s,+1,+1,+1,0,0:AddVertex s,-1,+1,+1,1,0
-	AddVertex s,-1,-1,+1,1,1:AddVertex s,+1,-1,+1,0,1
-	AddTriangle s,0,1,2:AddTriangle s,0,2,3
+	AddVertex s,+1,+1,+1,0,0
+	AddVertex s,-1,+1,+1,1,0
+	AddVertex s,-1,-1,+1,1,1
+	AddVertex s,+1,-1,+1,0,1
+	AddTriangle s,0,1,2
+	AddTriangle s,0,2,3
 	FreeBrush b
 	;left face
 	b=LoadBrush( file$+"_RT.jpg",49 )
 	s=CreateSurface( m,b )
-	AddVertex s,-1,+1,+1,0,0:AddVertex s,-1,+1,-1,1,0
-	AddVertex s,-1,-1,-1,1,1:AddVertex s,-1,-1,+1,0,1
-	AddTriangle s,0,1,2:AddTriangle s,0,2,3
+	AddVertex s,-1,+1,+1,0,0
+	AddVertex s,-1,+1,-1,1,0
+	AddVertex s,-1,-1,-1,1,1
+	AddVertex s,-1,-1,+1,0,1
+	AddTriangle s,0,1,2
+	AddTriangle s,0,2,3
 	FreeBrush b
 	;top face
 	b=LoadBrush( file$+"_UP.jpg",49 )
 	s=CreateSurface( m,b )
-	AddVertex s,-1,+1,+1,0,1:AddVertex s,+1,+1,+1,0,0
-	AddVertex s,+1,+1,-1,1,0:AddVertex s,-1,+1,-1,1,1
-	AddTriangle s,0,1,2:AddTriangle s,0,2,3
+	AddVertex s,-1,+1,+1,0,1
+	AddVertex s,+1,+1,+1,0,0
+	AddVertex s,+1,+1,-1,1,0
+	AddVertex s,-1,+1,-1,1,1
+	AddTriangle s,0,1,2
+	AddTriangle s,0,2,3
 	FreeBrush b
 	;bottom face	
 	b=LoadBrush( file$+"_DN.jpg",49 )
 	s=CreateSurface( m,b )
-	AddVertex s,-1,-1,-1,1,0:AddVertex s,+1,-1,-1,1,1
-	AddVertex s,+1,-1,+1,0,1:AddVertex s,-1,-1,+1,0,0
-	AddTriangle s,0,1,2:AddTriangle s,0,2,3
+	AddVertex s,-1,-1,-1,1,0
+	AddVertex s,+1,-1,-1,1,1
+	AddVertex s,+1,-1,+1,0,1
+	AddVertex s,-1,-1,+1,0,0
+	AddTriangle s,0,1,2
+	AddTriangle s,0,2,3
 	FreeBrush b
 	ScaleMesh m,100,100,100
 	FlipMesh m
