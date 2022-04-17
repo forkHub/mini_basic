@@ -64,8 +64,8 @@ namespace ha.parse {
                 else if (exp.min()) { }
                 // else if (exp.binopIf()) { }
                 else if (exp.binop()) { }
-                else if (exp.binopEq()) { }
-                else if (exp.binopLogic()) { }
+                // else if (exp.binopEq()) { }
+                // else if (exp.binopLogic()) { }
                 else if (exp.not()) { }
                 else if (exp.arg2()) { }
                 else if (exp.args(data.barisObj.token)) { }

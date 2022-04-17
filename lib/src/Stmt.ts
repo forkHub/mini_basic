@@ -337,7 +337,7 @@ namespace ha.parse {
 
                 if ("for" != t1.valueLowerCase) return false;
 
-                if (Kons.TY_BINOP_EQ != t2.type) return false;
+                // if (Kons.TY_BINOP_EQ != t2.type) return false;
 
                 if ("to" != t3.valueLowerCase) return false;
 
@@ -671,7 +671,7 @@ namespace ha.parse {
                 if (t3) {
                     if (t3.valueLowerCase == '=') return false;
                     if (t3.type == Kons.TY_OP) return false;
-                    if (t3.type == Kons.TY_OP2) return false;
+                    // if (t3.type == Kons.TY_OP2) return false;
                     if (t3.type == Kons.TY_KOMA) return false;
                 }
 

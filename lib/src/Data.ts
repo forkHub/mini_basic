@@ -63,17 +63,20 @@ namespace ha.parse {
             ">",
             "<",
             "!=",
+            "&&",
+            "||",
+            "="
 
             // "not",
             // "mod"
         ];
 
-        private _op2: string[] = [
-            "&&",
-            "||",
-            // "and",
-            // "or"
-        ];
+        // private _op2: string[] = [
+        //     "&&",
+        //     "||",
+        //     // "and",
+        //     // "or"
+        // ];
 
 
         private _symbol: string[] = [
@@ -110,9 +113,9 @@ namespace ha.parse {
             "Global"
         ];
 
-        public get op2(): string[] {
-            return this._op2;
-        }
+        // public get op2(): string[] {
+        //     return this._op2;
+        // }
         public get symbol(): string[] {
             return this._symbol;
         }

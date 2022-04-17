@@ -5,7 +5,7 @@ namespace ha.parse {
             if (Kons.TY_PERINTAH == type) return true;
             if (Kons.TY_RETURN == type) return true;
             if (Kons.TY_RETURN_EXP == type) return true;
-            if (Kons.TY_BINOP_EQ == type) return true;
+            // if (Kons.TY_BINOP_EQ == type) return true;
             if (Kons.TY_EXP == type) return true;
 
             return false;
@@ -24,15 +24,15 @@ namespace ha.parse {
 
                 if (t2.type != Kons.TY_EXP) {
                     if (t2.type != Kons.TY_DIM_ASSINMENT) {
-                        if (t2.type != Kons.TY_BINOP_EQ) {
-                            return false;
-                        }
+                        // if (t2.type != Kons.TY_BINOP_EQ) {
+                        return false;
+                        // }
                     }
                 }
 
                 if (t3) {
                     if (t3.type == Kons.TY_OP) return false;
-                    if (t3.type == Kons.TY_OP2) return false;
+                    // if (t3.type == Kons.TY_OP2) return false;
                     if (t3.valueLowerCase == "=") return false;
                 }
 

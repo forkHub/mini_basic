@@ -7,7 +7,7 @@ namespace ha.parse {
         static readonly TY_TEKS: number = 4;
         static readonly TY_RES_WORD: number = 5;
         static readonly TY_OP: number = 6;
-        static readonly TY_OP2: number = 7;
+        // static readonly TY_OP2: number = 7;
         static readonly TY_SYMBOL: number = 8;
         static readonly TY_TRUE: number = 9;
         static readonly TY_FALSE: number = 10;
@@ -16,7 +16,7 @@ namespace ha.parse {
         static readonly TY_KOMA: number = 13;
         static readonly TY_KURUNG_BUKA: number = 14;
         static readonly TY_KURUNG_TUTUP: number = 15;
-        static readonly TY_EQ: number = 16;
+        // static readonly TY_EQ: number = 16;
         static readonly TY_NEW: number = 17;
         static readonly TY_BACK_SLASH: number = 18;
         static readonly TY_DOT: number = 19;
@@ -36,7 +36,7 @@ namespace ha.parse {
         //exp2
         static readonly TY_KATA_DOT: number = 200;
         static readonly TY_BINOP: number = 201;
-        static readonly TY_BINOP_EQ: number = 202;
+        // static readonly TY_BINOP_EQ: number = 202;
         static readonly TY_PANGGIL_FUNGSI: number = 203;
         static readonly TY_MIN: number = 205;
         static readonly TY_EXP: number = 240;

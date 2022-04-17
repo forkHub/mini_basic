@@ -26,6 +26,21 @@ namespace ha.parse {
         }
 
         aturanExp(): void {
+            this._aturanExpAr = this._aturanExpAr.concat([
+                {
+                    nama: 'binop baru',
+                    type: Kons.TY_BINOP,
+                    kondisi: [
+                        [Kons.TY_KATA, Kons.TY_EXP, Kons.TY_KATA_DOT],
+                        [Kons.TY_OP],
+                        [Kons.TY_KATA, Kons.TY_EXP]
+                    ],
+                    sbl: [Kons.TY_MODIFIER, Kons.TY_OP, Kons.TY_BACK_SLASH],
+                    stl: [Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE]
+                }
+
+            ])
+
             //arg kata 
             {
                 this.aturanExpAr.push({
@@ -36,9 +51,9 @@ namespace ha.parse {
                         [Kons.TY_KOMA],
                         [Kons.TY_KATA]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH, Kons.TY_EQ, Kons.TY_MODIFIER, Kons.TY_MODIFIER],
+                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_BACK_SLASH, Kons.TY_MODIFIER, Kons.TY_MODIFIER],
                     stl: [
-                        Kons.TY_OP, Kons.TY_OP2,
+                        Kons.TY_OP,
                         Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
                     ]
                 })
@@ -51,10 +66,10 @@ namespace ha.parse {
                         [Kons.TY_KOMA],
                         [Kons.TY_KATA]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_EQ],
-                    stl: [Kons.TY_OP, Kons.TY_OP2,
-                        ,
-                    Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
+                    sbl: [Kons.TY_KOMA,],
+                    stl: [
+                        Kons.TY_OP,
+                        Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
                     ]
                 })
 
@@ -67,24 +82,24 @@ namespace ha.parse {
                     nama: 'arg kata exp',
                     type: Kons.TY_ARG2,
                     kondisi: [
-                        [Kons.TY_KATA, Kons.TY_BINOP_EQ],
+                        [Kons.TY_KATA,],
                         [Kons.TY_KOMA],
-                        [Kons.TY_EXP, , Kons.TY_BINOP_EQ]
+                        [Kons.TY_EXP, ,]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH, Kons.TY_EQ],
-                    stl: [Kons.TY_OP, Kons.TY_OP2]
+                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_BACK_SLASH,],
+                    stl: [Kons.TY_OP]
                 })
 
                 this.aturanExpAr.push({
                     nama: 'exp , kata',
                     type: Kons.TY_ARG2,
                     kondisi: [
-                        [Kons.TY_EXP, Kons.TY_BINOP_EQ],
+                        [Kons.TY_EXP,],
                         [Kons.TY_KOMA],
-                        [Kons.TY_KATA, Kons.TY_BINOP_EQ]
+                        [Kons.TY_KATA,]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_BACK_SLASH, Kons.TY_EQ],
-                    stl: [Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH]
+                    sbl: [Kons.TY_KOMA, Kons.TY_BACK_SLASH,],
+                    stl: [Kons.TY_OP, Kons.TY_BACK_SLASH]
                 })
 
             }
@@ -94,28 +109,28 @@ namespace ha.parse {
                 nama: 'arg campur',
                 type: Kons.TY_ARG,
                 kondisi: [
-                    [Kons.TY_ARG_KATA_M, Kons.TY_ARG_KATA, Kons.TY_ARG2, Kons.TY_ARG, Kons.TY_EQ],
+                    [Kons.TY_ARG_KATA_M, Kons.TY_ARG_KATA, Kons.TY_ARG2, Kons.TY_ARG,],
                     [Kons.TY_KOMA],
-                    [Kons.TY_EXP, Kons.TY_KATA, Kons.TY_BINOP_EQ]
+                    [Kons.TY_EXP, Kons.TY_KATA,]
                 ],
                 sbl: [Kons.TY_KOMA],
-                stl: [Kons.TY_OP, Kons.TY_OP2]
+                stl: [Kons.TY_OP]
             })
 
             //exp binop 
-            this._aturanExpAr = this.aturanExpAr.concat([
-                {
-                    nama: 'binop kata',
-                    type: Kons.TY_BINOP,
-                    kondisi: [
-                        [Kons.TY_KATA, Kons.TY_EXP],
-                        [Kons.TY_OP, Kons.TY_OP2],
-                        [Kons.TY_KATA, Kons.TY_EXP]
-                    ],
-                    sbl: [Kons.TY_EQ, Kons.TY_OP, Kons.TY_OP2],
-                    stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
-                },
-            ])
+            // this._aturanExpAr = this.aturanExpAr.concat([
+            //     {
+            //         nama: 'binop kata',
+            //         type: Kons.TY_BINOP,
+            //         kondisi: [
+            //             [Kons.TY_KATA, Kons.TY_EXP],
+            //             [Kons.TY_OP],
+            //             [Kons.TY_KATA, Kons.TY_EXP]
+            //         ],
+            //         sbl: [, Kons.TY_OP,],
+            //         stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
+            //     },
+            // ])
         }
 
         aturanStmt(): void {
@@ -128,7 +143,7 @@ namespace ha.parse {
                         [Kons.TY_KATA],
                         [Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M],
                     ],
-                    sbl: [Kons.TY_EQ, Kons.TY_OP, Kons.TY_OP2],
+                    sbl: [, Kons.TY_OP,],
                     stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
                 },
                 {
@@ -157,10 +172,10 @@ namespace ha.parse {
                     kondisi: [
                         [Kons.TY_MOD_ISI],
                         [Kons.TY_KOMA],
-                        [Kons.TY_BINOP_EQ, Kons.TY_KATA],
+                        [Kons.TY_KATA, Kons.TY_EXP],
                     ],
                     sbl: [],
-                    stl: []
+                    stl: [Kons.TY_OP]
                 },
                 {
                     nama: 'mod isi tambahan argument2  ',
@@ -168,10 +183,10 @@ namespace ha.parse {
                     kondisi: [
                         [Kons.TY_MOD_ISI_M],
                         [Kons.TY_KOMA],
-                        [Kons.TY_BINOP_EQ, Kons.TY_KATA],
+                        [Kons.TY_EXP, Kons.TY_KATA],
                     ],
                     sbl: [],
-                    stl: []
+                    stl: [Kons.TY_OP]
                 },
                 {
                     nama: 'mod, arg  ',
@@ -179,7 +194,7 @@ namespace ha.parse {
                     kondisi: [
                         [Kons.TY_MOD_DEC, Kons.TY_MOD_DEC_M],
                         [Kons.TY_KOMA],
-                        [Kons.TY_BINOP_EQ, Kons.TY_KATA],
+                        [, Kons.TY_KATA],
                     ],
                     sbl: [],
                     stl: []
@@ -225,7 +240,7 @@ namespace ha.parse {
                     type: Kons.TY_DIM_PROP_ASSINMENT,
                     kondisi: [
                         [Kons.TY_TYPE_ACCESS_DIM],
-                        [Kons.TY_EQ],
+                        [],
                         [Kons.TY_EXP, Kons.TY_KATA]
                     ],
                     sbl: [],

@@ -157,10 +157,9 @@ var ha;
                 ">",
                 "<",
                 "!=",
-            ];
-            _op2 = [
                 "&&",
                 "||",
+                "="
             ];
             _symbol = [
                 '"',
@@ -191,9 +190,6 @@ var ha;
                 "Include",
                 "Global"
             ];
-            get op2() {
-                return this._op2;
-            }
             get symbol() {
                 return this._symbol;
             }
@@ -261,8 +257,6 @@ var ha;
             }
             isExpBinopLogic(type) {
                 if (type == parse.Kons.TY_EXP)
-                    return true;
-                if (type == parse.Kons.TY_BINOP_EQ)
                     return true;
                 if (type == parse.Kons.TY_BINOP)
                     return true;
@@ -442,7 +436,8 @@ var ha;
                         parse.Kons.TY_FALSE,
                         parse.Kons.TY_TRUE,
                         parse.Kons.TY_NULL,
-                        parse.Kons.TY_TYPE_ACCESS_DIM
+                        parse.Kons.TY_TYPE_ACCESS_DIM,
+                        parse.Kons.TY_DIM_ASSINMENT
                     ];
                     if (ar.indexOf(t1.type) < 0)
                         return false;
@@ -577,9 +572,7 @@ var ha;
                     if (t3.valueLowerCase != ')')
                         return false;
                     if (t2.type != parse.Kons.TY_EXP) {
-                        if (t2.type != parse.Kons.TY_BINOP_EQ) {
-                            return false;
-                        }
+                        return false;
                     }
                     return true;
                 }
@@ -717,114 +710,6 @@ var ha;
                 }
                 return ada;
             }
-            binopEq() {
-                let ada = false;
-                function check(t0, t1, t2, t3, t4) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (t1.type != parse.Kons.TY_KATA) {
-                        if (t1.type != parse.Kons.TY_EXP) {
-                            if (t1.type != parse.Kons.TY_KATA_DOT) {
-                                return false;
-                            }
-                        }
-                    }
-                    if (t2.valueLowerCase != "=")
-                        return false;
-                    if (t3.type != parse.Kons.TY_EXP)
-                        return false;
-                    if (t0) {
-                        if (t0.valueLowerCase == 'global')
-                            return false;
-                        if (t0.valueLowerCase == 'local')
-                            return false;
-                        if (t0.valueLowerCase == 'const')
-                            return false;
-                        if (t0.valueLowerCase == '\\')
-                            return false;
-                    }
-                    if (t4) {
-                        if (t4.type == parse.Kons.TY_OP)
-                            return false;
-                        if (t4.valueLowerCase == '=')
-                            return false;
-                    }
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t0 = parse.parse.getToken(i - 1, parse.data.barisObj.token);
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let t4 = parse.parse.getToken(i + 3, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t0, t1, t2, t3, t4)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_BINOP_EQ,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("binop eq");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.binopLogic();
-                }
-                return ada;
-            }
-            binopLogic() {
-                let ada = false;
-                function check(t0, t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (parse.exp.isExpBinopLogic(t1.type) == false)
-                        return false;
-                    if (t2.type != parse.Kons.TY_OP2)
-                        return false;
-                    if (parse.exp.isExpBinopLogic(t3.type) == false)
-                        return false;
-                    if (t0) {
-                        if (t0.valueLowerCase == '=')
-                            return false;
-                        if (t0.type == parse.Kons.TY_OP)
-                            return false;
-                        if (t0.type == parse.Kons.TY_OP2)
-                            return false;
-                    }
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t0 = parse.parse.getToken(i - 1, parse.data.barisObj.token);
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t0, t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_BINOP,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("binop logik");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.exp();
-                }
-                return ada;
-            }
             not() {
                 let ada = false;
                 for (let i = 0; i < parse.data.barisObj.token.length; i++) {
@@ -925,16 +810,12 @@ var ha;
                     if (!t3)
                         return false;
                     if (t1.type != parse.Kons.TY_EXP) {
-                        if (t1.type != parse.Kons.TY_BINOP_EQ) {
-                            return false;
-                        }
+                        return false;
                     }
                     if (t2.valueLowerCase != ',')
                         return false;
                     if (t3.type != parse.Kons.TY_EXP) {
-                        if (t3.type != parse.Kons.TY_BINOP_EQ) {
-                            return false;
-                        }
+                        return false;
                     }
                     if (t0) {
                         if (t0.valueLowerCase == ",")
@@ -945,15 +826,11 @@ var ha;
                             return false;
                         if (t0.type == parse.Kons.TY_OP)
                             return false;
-                        if (t0.type == parse.Kons.TY_EQ)
-                            return false;
                     }
                     if (t4) {
                         if (t4.valueLowerCase == '+')
                             return false;
                         if (t4.type == parse.Kons.TY_OP)
-                            return false;
-                        if (t4.type == parse.Kons.TY_OP2)
                             return false;
                     }
                     return true;
@@ -995,9 +872,7 @@ var ha;
                     if (t2.value != ',')
                         return false;
                     if (t3.type != parse.Kons.TY_EXP) {
-                        if (t3.type != parse.Kons.TY_BINOP_EQ) {
-                            return false;
-                        }
+                        return false;
                     }
                     if (t4) {
                         if (t4.valueLowerCase == "+")
@@ -1005,8 +880,6 @@ var ha;
                         if (t4.valueLowerCase == "-")
                             return false;
                         if (t4.type == parse.Kons.TY_OP)
-                            return false;
-                        if (t4.type == parse.Kons.TY_OP2)
                             return false;
                     }
                     return true;
@@ -1179,8 +1052,6 @@ var ha;
                     else if (parse.exp.panggilfungsiArg()) { }
                     else if (parse.exp.min()) { }
                     else if (parse.exp.binop()) { }
-                    else if (parse.exp.binopEq()) { }
-                    else if (parse.exp.binopLogic()) { }
                     else if (parse.exp.not()) { }
                     else if (parse.exp.arg2()) { }
                     else if (parse.exp.args(parse.data.barisObj.token)) { }
@@ -1257,6 +1128,19 @@ var ha;
                 };
             }
             aturanExp() {
+                this._aturanExpAr = this._aturanExpAr.concat([
+                    {
+                        nama: 'binop baru',
+                        type: parse.Kons.TY_BINOP,
+                        kondisi: [
+                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP, parse.Kons.TY_KATA_DOT],
+                            [parse.Kons.TY_OP],
+                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP]
+                        ],
+                        sbl: [parse.Kons.TY_MODIFIER, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH],
+                        stl: [parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE]
+                    }
+                ]);
                 {
                     this.aturanExpAr.push({
                         nama: 'arg_kata',
@@ -1266,9 +1150,9 @@ var ha;
                             [parse.Kons.TY_KOMA],
                             [parse.Kons.TY_KATA]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_EQ, parse.Kons.TY_MODIFIER, parse.Kons.TY_MODIFIER],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_MODIFIER, parse.Kons.TY_MODIFIER],
                         stl: [
-                            parse.Kons.TY_OP, parse.Kons.TY_OP2,
+                            parse.Kons.TY_OP,
                             parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
                         ]
                     });
@@ -1280,9 +1164,9 @@ var ha;
                             [parse.Kons.TY_KOMA],
                             [parse.Kons.TY_KATA]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_EQ],
-                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2,
-                            ,
+                        sbl: [parse.Kons.TY_KOMA,],
+                        stl: [
+                            parse.Kons.TY_OP,
                             parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
                         ]
                     });
@@ -1292,49 +1176,36 @@ var ha;
                         nama: 'arg kata exp',
                         type: parse.Kons.TY_ARG2,
                         kondisi: [
-                            [parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ],
+                            [parse.Kons.TY_KATA,],
                             [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_EXP, , parse.Kons.TY_BINOP_EQ]
+                            [parse.Kons.TY_EXP, ,]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_EQ],
-                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH,],
+                        stl: [parse.Kons.TY_OP]
                     });
                     this.aturanExpAr.push({
                         nama: 'exp , kata',
                         type: parse.Kons.TY_ARG2,
                         kondisi: [
-                            [parse.Kons.TY_EXP, parse.Kons.TY_BINOP_EQ],
+                            [parse.Kons.TY_EXP,],
                             [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ]
+                            [parse.Kons.TY_KATA,]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_EQ],
-                        stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH]
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH,],
+                        stl: [parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH]
                     });
                 }
                 this.aturanExpAr.push({
                     nama: 'arg campur',
                     type: parse.Kons.TY_ARG,
                     kondisi: [
-                        [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG, parse.Kons.TY_EQ],
+                        [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG,],
                         [parse.Kons.TY_KOMA],
-                        [parse.Kons.TY_EXP, parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ]
+                        [parse.Kons.TY_EXP, parse.Kons.TY_KATA,]
                     ],
                     sbl: [parse.Kons.TY_KOMA],
-                    stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
+                    stl: [parse.Kons.TY_OP]
                 });
-                this._aturanExpAr = this.aturanExpAr.concat([
-                    {
-                        nama: 'binop kata',
-                        type: parse.Kons.TY_BINOP,
-                        kondisi: [
-                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP],
-                            [parse.Kons.TY_OP, parse.Kons.TY_OP2],
-                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP]
-                        ],
-                        sbl: [parse.Kons.TY_EQ, parse.Kons.TY_OP, parse.Kons.TY_OP2],
-                        stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
-                    },
-                ]);
             }
             aturanStmt() {
                 this._aturanStmtAr = this.aturanStmtAr.concat([
@@ -1345,7 +1216,7 @@ var ha;
                             [parse.Kons.TY_KATA],
                             [parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M],
                         ],
-                        sbl: [parse.Kons.TY_EQ, parse.Kons.TY_OP, parse.Kons.TY_OP2],
+                        sbl: [, parse.Kons.TY_OP,],
                         stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
                     },
                     {
@@ -1374,10 +1245,10 @@ var ha;
                         kondisi: [
                             [parse.Kons.TY_MOD_ISI],
                             [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_BINOP_EQ, parse.Kons.TY_KATA],
+                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP],
                         ],
                         sbl: [],
-                        stl: []
+                        stl: [parse.Kons.TY_OP]
                     },
                     {
                         nama: 'mod isi tambahan argument2  ',
@@ -1385,10 +1256,10 @@ var ha;
                         kondisi: [
                             [parse.Kons.TY_MOD_ISI_M],
                             [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_BINOP_EQ, parse.Kons.TY_KATA],
+                            [parse.Kons.TY_EXP, parse.Kons.TY_KATA],
                         ],
                         sbl: [],
-                        stl: []
+                        stl: [parse.Kons.TY_OP]
                     },
                     {
                         nama: 'mod, arg  ',
@@ -1396,7 +1267,7 @@ var ha;
                         kondisi: [
                             [parse.Kons.TY_MOD_DEC, parse.Kons.TY_MOD_DEC_M],
                             [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_BINOP_EQ, parse.Kons.TY_KATA],
+                            [, parse.Kons.TY_KATA],
                         ],
                         sbl: [],
                         stl: []
@@ -1440,7 +1311,7 @@ var ha;
                         type: parse.Kons.TY_DIM_PROP_ASSINMENT,
                         kondisi: [
                             [parse.Kons.TY_TYPE_ACCESS_DIM],
-                            [parse.Kons.TY_EQ],
+                            [],
                             [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
                         ],
                         sbl: [],
@@ -1571,8 +1442,6 @@ var ha;
                     return true;
                 if (parse.Kons.TY_RETURN_EXP == type)
                     return true;
-                if (parse.Kons.TY_BINOP_EQ == type)
-                    return true;
                 if (parse.Kons.TY_EXP == type)
                     return true;
                 return false;
@@ -1588,15 +1457,11 @@ var ha;
                         return false;
                     if (t2.type != parse.Kons.TY_EXP) {
                         if (t2.type != parse.Kons.TY_DIM_ASSINMENT) {
-                            if (t2.type != parse.Kons.TY_BINOP_EQ) {
-                                return false;
-                            }
+                            return false;
                         }
                     }
                     if (t3) {
                         if (t3.type == parse.Kons.TY_OP)
-                            return false;
-                        if (t3.type == parse.Kons.TY_OP2)
                             return false;
                         if (t3.valueLowerCase == "=")
                             return false;
@@ -1935,7 +1800,6 @@ var ha;
             static TY_TEKS = 4;
             static TY_RES_WORD = 5;
             static TY_OP = 6;
-            static TY_OP2 = 7;
             static TY_SYMBOL = 8;
             static TY_TRUE = 9;
             static TY_FALSE = 10;
@@ -1944,7 +1808,6 @@ var ha;
             static TY_KOMA = 13;
             static TY_KURUNG_BUKA = 14;
             static TY_KURUNG_TUTUP = 15;
-            static TY_EQ = 16;
             static TY_NEW = 17;
             static TY_BACK_SLASH = 18;
             static TY_DOT = 19;
@@ -1960,7 +1823,6 @@ var ha;
             static TY_KURUNG_ARG2 = 157;
             static TY_KATA_DOT = 200;
             static TY_BINOP = 201;
-            static TY_BINOP_EQ = 202;
             static TY_PANGGIL_FUNGSI = 203;
             static TY_MIN = 205;
             static TY_EXP = 240;
@@ -2037,7 +1899,6 @@ var ha;
                     if (this.keyWordDouble()) { }
                     else if (this.getString()) { }
                     else if (this.getOp()) { }
-                    else if (this.getOp2()) { }
                     else if (this.getKata()) { }
                     else if (this.getNumber()) { }
                     else if (this.getSymbol()) { }
@@ -2091,20 +1952,6 @@ var ha;
                         parse.data.token.push({
                             value: kata,
                             type: parse.Kons.TY_OP
-                        });
-                        parse.data.dataStr = parse.data.dataStr.slice(kata.length);
-                        return true;
-                    }
-                }
-                return false;
-            }
-            getOp2() {
-                for (let i = 0; i < parse.data.op2.length; i++) {
-                    let kata = parse.data.op2[i];
-                    if (parse.data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
-                        parse.data.token.push({
-                            value: kata,
-                            type: parse.Kons.TY_OP2
                         });
                         parse.data.dataStr = parse.data.dataStr.slice(kata.length);
                         return true;
@@ -2178,7 +2025,7 @@ var ha;
                             token.type = parse.Kons.TY_KURUNG_TUTUP;
                         }
                         else if ("=" == lc) {
-                            token.type = parse.Kons.TY_EQ;
+                            token.type = parse.Kons.TY_OP;
                         }
                         else if ("\\" == lc) {
                             token.type = parse.Kons.TY_BACK_SLASH;
@@ -2254,13 +2101,13 @@ var ha;
                         token.type = parse.Kons.TY_NEW;
                     }
                     else if ("and" == lc) {
-                        token.type = parse.Kons.TY_OP2;
+                        token.type = parse.Kons.TY_OP;
                     }
                     else if ("or" == lc) {
-                        token.type = parse.Kons.TY_OP2;
+                        token.type = parse.Kons.TY_OP;
                     }
                     else if ("xor" == lc) {
-                        token.type = parse.Kons.TY_OP2;
+                        token.type = parse.Kons.TY_OP;
                     }
                     else if ("mod" == lc) {
                         token.type = parse.Kons.TY_OP;
@@ -2275,6 +2122,9 @@ var ha;
                         token.type = parse.Kons.TY_MODIFIER;
                     }
                     else if ("local" == lc) {
+                        token.type = parse.Kons.TY_MODIFIER;
+                    }
+                    else if ("const" == lc) {
                         token.type = parse.Kons.TY_MODIFIER;
                     }
                     else {
@@ -2681,8 +2531,6 @@ var ha;
                         return false;
                     if ("for" != t1.valueLowerCase)
                         return false;
-                    if (parse.Kons.TY_BINOP_EQ != t2.type)
-                        return false;
                     if ("to" != t3.valueLowerCase)
                         return false;
                     if (parse.Kons.TY_EXP != t4.type)
@@ -2916,8 +2764,6 @@ var ha;
                         if (t3.valueLowerCase == '=')
                             return false;
                         if (t3.type == parse.Kons.TY_OP)
-                            return false;
-                        if (t3.type == parse.Kons.TY_OP2)
                             return false;
                         if (t3.type == parse.Kons.TY_KOMA)
                             return false;
@@ -3197,9 +3043,6 @@ var ha;
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_IF_THEN) {
-                    return '';
-                }
-                else if (token.type == parse.Kons.TY_BINOP_EQ) {
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_IF_THEN_P2) {

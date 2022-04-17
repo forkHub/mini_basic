@@ -13,7 +13,7 @@ namespace ha.parse {
                 if (this.keyWordDouble()) { }
                 else if (this.getString()) { }
                 else if (this.getOp()) { }
-                else if (this.getOp2()) { }
+                // else if (this.getOp2()) { }
                 else if (this.getKata()) { }
                 else if (this.getNumber()) { }
                 else if (this.getSymbol()) { }
@@ -100,22 +100,22 @@ namespace ha.parse {
             return false;
         }
 
-        getOp2(): boolean {
-            for (let i: number = 0; i < data.op2.length; i++) {
-                let kata: string = data.op2[i];
+        // getOp2(): boolean {
+        //     for (let i: number = 0; i < data.op2.length; i++) {
+        //         let kata: string = data.op2[i];
 
-                if (data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
-                    data.token.push({
-                        value: kata,
-                        type: Kons.TY_OP2
-                    });
-                    data.dataStr = data.dataStr.slice(kata.length);
-                    return true;
-                }
-            }
+        //         if (data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
+        //             data.token.push({
+        //                 value: kata,
+        //                 type: Kons.TY_OP2
+        //             });
+        //             data.dataStr = data.dataStr.slice(kata.length);
+        //             return true;
+        //         }
+        //     }
 
-            return false;
-        }
+        //     return false;
+        // }
 
         getNumber(): boolean {
             let id: RegExp = /^[0-9]*\.?[0-9]+/;
@@ -188,7 +188,6 @@ namespace ha.parse {
             return false;
         }
 
-        //TODO: symbol dihapus
         getSymbol(): boolean {
 
             for (let i: number = 0; i < data.symbol.length; i++) {
@@ -220,7 +219,7 @@ namespace ha.parse {
                         token.type = Kons.TY_KURUNG_TUTUP
                     }
                     else if ("=" == lc) {
-                        token.type = Kons.TY_EQ
+                        token.type = Kons.TY_OP
                     }
                     else if ("\\" == lc) {
                         token.type = Kons.TY_BACK_SLASH
@@ -314,13 +313,13 @@ namespace ha.parse {
                     token.type = Kons.TY_NEW
                 }
                 else if ("and" == lc) {
-                    token.type = Kons.TY_OP2
+                    token.type = Kons.TY_OP
                 }
                 else if ("or" == lc) {
-                    token.type = Kons.TY_OP2
+                    token.type = Kons.TY_OP
                 }
                 else if ("xor" == lc) {
-                    token.type = Kons.TY_OP2
+                    token.type = Kons.TY_OP
                 }
                 else if ("mod" == lc) {
                     token.type = Kons.TY_OP
@@ -335,6 +334,9 @@ namespace ha.parse {
                     token.type = Kons.TY_MODIFIER
                 }
                 else if ("local" == lc) {
+                    token.type = Kons.TY_MODIFIER
+                }
+                else if ("const" == lc) {
                     token.type = Kons.TY_MODIFIER
                 }
                 else {

@@ -34,10 +34,8 @@ declare namespace ha.parse {
         private _kataKunciDouble;
         get kataKunciDouble(): string[];
         private _op;
-        private _op2;
         private _symbol;
         private _cmd;
-        get op2(): string[];
         get symbol(): string[];
         get dataStr(): string;
         set dataStr(value: string);
@@ -72,8 +70,6 @@ declare namespace ha.parse {
         kurungArg2(): boolean;
         kurungArg(): boolean;
         binop(): boolean;
-        binopEq(): boolean;
-        binopLogic(): boolean;
         not(): boolean;
         min(): boolean;
         arg2(): boolean;
@@ -162,7 +158,6 @@ declare namespace ha.parse {
         static readonly TY_TEKS: number;
         static readonly TY_RES_WORD: number;
         static readonly TY_OP: number;
-        static readonly TY_OP2: number;
         static readonly TY_SYMBOL: number;
         static readonly TY_TRUE: number;
         static readonly TY_FALSE: number;
@@ -171,7 +166,6 @@ declare namespace ha.parse {
         static readonly TY_KOMA: number;
         static readonly TY_KURUNG_BUKA: number;
         static readonly TY_KURUNG_TUTUP: number;
-        static readonly TY_EQ: number;
         static readonly TY_NEW: number;
         static readonly TY_BACK_SLASH: number;
         static readonly TY_DOT: number;
@@ -187,7 +181,6 @@ declare namespace ha.parse {
         static readonly TY_KURUNG_ARG2: number;
         static readonly TY_KATA_DOT: number;
         static readonly TY_BINOP: number;
-        static readonly TY_BINOP_EQ: number;
         static readonly TY_PANGGIL_FUNGSI: number;
         static readonly TY_MIN: number;
         static readonly TY_EXP: number;
@@ -256,7 +249,6 @@ declare namespace ha.parse {
         lexer(): void;
         getString(): boolean;
         getOp(): boolean;
-        getOp2(): boolean;
         getNumber(): boolean;
         keyWordDouble(): boolean;
         getSymbol(): boolean;

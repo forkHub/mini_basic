@@ -28,7 +28,7 @@ namespace ha.parse {
 
         isExpBinopLogic(type: number): boolean {
             if (type == Kons.TY_EXP) return true;
-            if (type == Kons.TY_BINOP_EQ) return true;
+            // if (type == Kons.TY_BINOP_EQ) return true;
             if (type == Kons.TY_BINOP) return true;
             if (type == Kons.TY_DIM_ASSINMENT) return true;
 
@@ -221,7 +221,8 @@ namespace ha.parse {
                     Kons.TY_FALSE,
                     Kons.TY_TRUE,
                     Kons.TY_NULL,
-                    Kons.TY_TYPE_ACCESS_DIM
+                    Kons.TY_TYPE_ACCESS_DIM,
+                    Kons.TY_DIM_ASSINMENT
                 ];
 
                 if (ar.indexOf(t1.type) < 0) return false;
@@ -403,9 +404,9 @@ namespace ha.parse {
                 if (t1.valueLowerCase != '(') return false;
                 if (t3.valueLowerCase != ')') return false;
                 if (t2.type != Kons.TY_EXP) {
-                    if (t2.type != Kons.TY_BINOP_EQ) {
-                        return false;
-                    }
+                    // if (t2.type != Kons.TY_BINOP_EQ) {
+                    return false;
+                    // }
                 }
 
                 //optional
@@ -534,6 +535,7 @@ namespace ha.parse {
             return ada;
         }
 
+        //TODO: diganti yang lebih generic, include kata
         binop(): boolean {
             let ada: boolean = false;
 
@@ -581,6 +583,7 @@ namespace ha.parse {
             return ada;
         }
 
+        /*
         binopEq(): boolean {
             let ada: boolean = false;
 
@@ -645,12 +648,14 @@ namespace ha.parse {
             }
 
             if (ada) {
-                this.binopLogic();
+                // this.binopLogic();
             }
 
             return ada;
         }
+        */
 
+        /*
         binopLogic(): boolean {
             let ada: boolean = false;
 
@@ -703,6 +708,7 @@ namespace ha.parse {
 
             return ada;
         }
+        */
 
         not(): boolean {
             let ada: boolean = false;
@@ -823,17 +829,17 @@ namespace ha.parse {
                 if (!t3) return false;
 
                 if (t1.type != Kons.TY_EXP) {
-                    if (t1.type != Kons.TY_BINOP_EQ) {
-                        return false;
-                    }
+                    // if (t1.type != Kons.TY_BINOP_EQ) {
+                    return false;
+                    // }
                 }
 
                 if (t2.valueLowerCase != ',') return false;
 
                 if (t3.type != Kons.TY_EXP) {
-                    if (t3.type != Kons.TY_BINOP_EQ) {
-                        return false;
-                    }
+                    // if (t3.type != Kons.TY_BINOP_EQ) {
+                    return false;
+                    // }
                 }
 
                 if (t0) {
@@ -841,13 +847,13 @@ namespace ha.parse {
                     if (t0.valueLowerCase == "-") return false;
                     if (t0.valueLowerCase == "+") return false;
                     if (t0.type == Kons.TY_OP) return false;
-                    if (t0.type == Kons.TY_EQ) return false;
+                    // if (t0.type == Kons.TY_EQ) return false;
                 }
 
                 if (t4) {
                     if (t4.valueLowerCase == '+') return false;
                     if (t4.type == Kons.TY_OP) return false;
-                    if (t4.type == Kons.TY_OP2) return false;
+                    // if (t4.type == Kons.TY_OP2) return false;
                 }
 
                 return true;
@@ -901,16 +907,16 @@ namespace ha.parse {
 
                 if (t2.value != ',') return false;
                 if (t3.type != Kons.TY_EXP) {
-                    if (t3.type != Kons.TY_BINOP_EQ) {
-                        return false;
-                    }
+                    // if (t3.type != Kons.TY_BINOP_EQ) {
+                    return false;
+                    // }
                 }
 
                 if (t4) {
                     if (t4.valueLowerCase == "+") return false;
                     if (t4.valueLowerCase == "-") return false;
                     if (t4.type == Kons.TY_OP) return false;
-                    if (t4.type == Kons.TY_OP2) return false;
+                    // if (t4.type == Kons.TY_OP2) return false;
                 }
 
                 return true;

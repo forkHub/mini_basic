@@ -219,10 +219,10 @@ namespace ha.parse {
                 //TODO:
                 return '';
             }
-            else if (token.type == Kons.TY_BINOP_EQ) {
-                //TODO:
-                return '';
-            }
+            // else if (token.type == Kons.TY_BINOP_EQ) {
+            //     //TODO:
+            //     return '';
+            // }
             else if (token.type == Kons.TY_IF_THEN_P2) {
                 return '';
             }
