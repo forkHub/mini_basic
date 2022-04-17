@@ -335,6 +335,9 @@ namespace ha.parse {
                 else if ("for" == lc) {
                     token.type = Kons.TY_FOR
                 }
+                else if ("delete" == lc) {
+                    token.type = Kons.TY_DELETE
+                }
                 else {
                     //console.warn("kata belum didefinisikan: " + lc);
                 }

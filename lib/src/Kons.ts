@@ -7,7 +7,6 @@ namespace ha.parse {
         static readonly TY_TEKS: number = 4;
         static readonly TY_RES_WORD: number = 5;
         static readonly TY_OP: number = 6;
-        // static readonly TY_OP2: number = 7;
         static readonly TY_SYMBOL: number = 8;
         static readonly TY_TRUE: number = 9;
         static readonly TY_FALSE: number = 10;
@@ -16,7 +15,6 @@ namespace ha.parse {
         static readonly TY_KOMA: number = 13;
         static readonly TY_KURUNG_BUKA: number = 14;
         static readonly TY_KURUNG_TUTUP: number = 15;
-        // static readonly TY_EQ: number = 16;
         static readonly TY_NEW: number = 17;
         static readonly TY_BACK_SLASH: number = 18;
         static readonly TY_DOT: number = 19;
@@ -24,6 +22,12 @@ namespace ha.parse {
         static readonly TY_MODIFIER: number = 21;
         static readonly TY_FOR: number = 22;
         static readonly TY_EACH: number = 23;
+        static readonly TY_DELETE: number = 24;
+        static readonly TY_TYPE: number = 25;
+        static readonly TY_FIELD: number = 26;
+        static readonly TY_BEFORE: number = 27;
+        static readonly TY_AFTER: number = 28;
+        static readonly TY_LAST: number = 29;
 
         static readonly TY_ARG: number = 100;
         static readonly TY_ARG2: number = 101;
@@ -38,7 +42,6 @@ namespace ha.parse {
         //exp2
         static readonly TY_KATA_DOT: number = 200;
         static readonly TY_BINOP: number = 201;
-        // static readonly TY_BINOP_EQ: number = 202;
         static readonly TY_PANGGIL_FUNGSI: number = 203;
         static readonly TY_MIN: number = 205;
         static readonly TY_EXP: number = 240;
@@ -67,15 +70,18 @@ namespace ha.parse {
         static readonly TY_DIM_PROP_ASSINMENT: number = 404;    //dim(n)\prop = exp|kata
 
         static readonly TY_TYPE_NEW_INST: number = 500;
-        static readonly TY_TYPE_NEW_DEF: number = 510;
+        static readonly TY_TYPE_NEW_DEF: number = 501;
+        static readonly TY_ENDTYPE: number = 502;
+        static readonly TY_TYPE_ACCESS: number = 503;
+        static readonly TY_TYPE_ACCESS_DIM: number = 504;
+
         static readonly TY_FIELD_NEW_DEF: number = 520;
-        static readonly TY_TYPE: number = 530;
-        static readonly TY_FIELD: number = 540;
         static readonly TY_FIELD_NEW_DEF_M: number = 545;
-        static readonly TY_ENDTYPE: number = 550;
-        static readonly TY_TYPE_ACCESS: number = 560;
-        static readonly TY_TYPE_ACCESS_DIM: number = 561;
+
         static readonly TY_NEW_INST: number = 570;
+        static readonly TY_DELETE_STMT: number = 571;
+        static readonly TY_BEFORE_STMT: number = 572;
+        static readonly TY_NEXT_STMT: number = 573;
 
         static readonly TY_IF_EXP: number = 600;
         static readonly TY_IF_EXP_P: number = 601;

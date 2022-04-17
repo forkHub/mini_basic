@@ -96,7 +96,6 @@ declare namespace ha.parse {
         private _aturanStmtAr;
         get aturanStmtAr(): IAturan[];
         constructor();
-        def(): IAturan;
         aturanExp(): void;
         aturanStmt(): void;
         init(): void;
@@ -110,11 +109,13 @@ declare namespace ha.parse {
     export {};
 }
 interface IAturan {
-    nama?: string;
     type?: number;
-    kondisi?: number[][];
-    sbl?: number[];
-    stl?: number[];
+    aturan?: {
+        nama?: string;
+        kondisi?: number[][];
+        sbl?: number[];
+        stl?: number[];
+    };
 }
 declare namespace ha.parse {
     class IfStmt {
@@ -173,6 +174,12 @@ declare namespace ha.parse {
         static readonly TY_MODIFIER: number;
         static readonly TY_FOR: number;
         static readonly TY_EACH: number;
+        static readonly TY_DELETE: number;
+        static readonly TY_TYPE: number;
+        static readonly TY_FIELD: number;
+        static readonly TY_BEFORE: number;
+        static readonly TY_AFTER: number;
+        static readonly TY_LAST: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_ARG_KATA: number;
@@ -205,14 +212,15 @@ declare namespace ha.parse {
         static readonly TY_DIM_PROP_ASSINMENT: number;
         static readonly TY_TYPE_NEW_INST: number;
         static readonly TY_TYPE_NEW_DEF: number;
-        static readonly TY_FIELD_NEW_DEF: number;
-        static readonly TY_TYPE: number;
-        static readonly TY_FIELD: number;
-        static readonly TY_FIELD_NEW_DEF_M: number;
         static readonly TY_ENDTYPE: number;
         static readonly TY_TYPE_ACCESS: number;
         static readonly TY_TYPE_ACCESS_DIM: number;
+        static readonly TY_FIELD_NEW_DEF: number;
+        static readonly TY_FIELD_NEW_DEF_M: number;
         static readonly TY_NEW_INST: number;
+        static readonly TY_DELETE_STMT: number;
+        static readonly TY_BEFORE_STMT: number;
+        static readonly TY_NEXT_STMT: number;
         static readonly TY_IF_EXP: number;
         static readonly TY_IF_EXP_P: number;
         static readonly TY_IF_EXP_P2: number;

@@ -459,7 +459,11 @@ namespace ha.parse {
                 if (!t3) return false;
 
                 if (t1.valueLowerCase != 'function') return false;
-                if (t2.type != Kons.TY_KATA) return false;
+                if (t2.type != Kons.TY_KATA) {
+                    if (t2.type != Kons.TY_KATA_DOT) {
+                        return false;
+                    }
+                }
 
                 let kurungAr: number[] = [
                     Kons.TY_KURUNG_ARG,

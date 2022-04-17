@@ -293,8 +293,11 @@ var ha;
                 function check(t0, t1, t2) {
                     if (!t1)
                         return false;
-                    if (t1.type != parse.Kons.TY_KATA)
-                        return false;
+                    if (t1.type != parse.Kons.TY_KATA) {
+                        if (t1.type != parse.Kons.TY_KATA_DOT) {
+                            return false;
+                        }
+                    }
                     if ("return" == t1.valueLowerCase)
                         return false;
                     let ar2 = [
@@ -353,6 +356,12 @@ var ha;
                         if (t0.valueLowerCase == ",")
                             return false;
                         if (t0.type == parse.Kons.TY_EACH)
+                            return false;
+                        if (t0.type == parse.Kons.TY_DELETE)
+                            return false;
+                        if (t0.type == parse.Kons.TY_BEFORE)
+                            return false;
+                        if (t0.type == parse.Kons.TY_LAST)
                             return false;
                     }
                     return true;
@@ -963,14 +972,18 @@ var ha;
                         return false;
                     if (!t2)
                         return false;
-                    if (t1.type != parse.Kons.TY_KATA)
-                        return false;
+                    if (t1.type != parse.Kons.TY_KATA) {
+                        if (t1.type != parse.Kons.TY_KATA_DOT) {
+                            return false;
+                        }
+                    }
                     if ('dim' == t1.valueLowerCase)
                         return false;
                     let kurung = [
                         parse.Kons.TY_KURUNG_ARG2,
                         parse.Kons.TY_KURUNG_KOSONG,
-                        parse.Kons.TY_KURUNG_SINGLE
+                        parse.Kons.TY_KURUNG_SINGLE,
+                        parse.Kons.TY_KURUNG_ARG,
                     ];
                     if (kurung.indexOf(t2.type) < 0)
                         return false;
@@ -1122,232 +1135,272 @@ var ha;
             }
             constructor() {
             }
-            def() {
-                return {
-                    nama: '',
-                    type: 0,
-                    kondisi: [],
-                    sbl: [],
-                    stl: []
-                };
-            }
             aturanExp() {
                 this._aturanExpAr = this._aturanExpAr.concat([
                     {
-                        nama: 'binop baru',
                         type: parse.Kons.TY_BINOP,
-                        kondisi: [
-                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP, parse.Kons.TY_KATA_DOT],
-                            [parse.Kons.TY_OP],
-                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP]
-                        ],
-                        sbl: [parse.Kons.TY_MODIFIER, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH],
-                        stl: [parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE]
+                        aturan: {
+                            nama: 'binop baru',
+                            kondisi: [
+                                [parse.Kons.TY_KATA, parse.Kons.TY_EXP, parse.Kons.TY_KATA_DOT],
+                                [parse.Kons.TY_OP],
+                                [parse.Kons.TY_KATA, parse.Kons.TY_EXP]
+                            ],
+                            sbl: [parse.Kons.TY_MODIFIER, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH],
+                            stl: [parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE]
+                        }
                     }
                 ]);
                 {
                     this.aturanExpAr.push({
-                        nama: 'arg_kata',
                         type: parse.Kons.TY_ARG_KATA,
-                        kondisi: [
-                            [parse.Kons.TY_KATA],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA]
-                        ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_MODIFIER, parse.Kons.TY_MODIFIER],
-                        stl: [
-                            parse.Kons.TY_OP,
-                            parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
-                        ]
+                        aturan: {
+                            nama: 'arg_kata',
+                            kondisi: [
+                                [parse.Kons.TY_KATA],
+                                [parse.Kons.TY_KOMA],
+                                [parse.Kons.TY_KATA]
+                            ],
+                            sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_MODIFIER, parse.Kons.TY_MODIFIER],
+                            stl: [
+                                parse.Kons.TY_OP,
+                                parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
+                            ]
+                        }
                     });
                     this.aturanExpAr.push({
-                        nama: 'arg_kata_m',
                         type: parse.Kons.TY_ARG_KATA_M,
-                        kondisi: [
-                            [parse.Kons.TY_ARG_KATA],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA]
-                        ],
-                        sbl: [parse.Kons.TY_KOMA,],
-                        stl: [
-                            parse.Kons.TY_OP,
-                            parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
-                        ]
+                        aturan: {
+                            nama: 'arg_kata_m',
+                            kondisi: [
+                                [parse.Kons.TY_ARG_KATA],
+                                [parse.Kons.TY_KOMA],
+                                [parse.Kons.TY_KATA]
+                            ],
+                            sbl: [parse.Kons.TY_KOMA,],
+                            stl: [
+                                parse.Kons.TY_OP,
+                                parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
+                            ]
+                        }
                     });
                 }
                 {
                     this.aturanExpAr.push({
-                        nama: 'arg kata exp',
                         type: parse.Kons.TY_ARG2,
-                        kondisi: [
-                            [parse.Kons.TY_KATA,],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_EXP, ,]
-                        ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH,],
-                        stl: [parse.Kons.TY_OP]
+                        aturan: {
+                            nama: 'arg kata exp',
+                            kondisi: [
+                                [parse.Kons.TY_KATA,],
+                                [parse.Kons.TY_KOMA],
+                                [parse.Kons.TY_EXP, ,]
+                            ],
+                            sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH,],
+                            stl: [parse.Kons.TY_OP]
+                        }
                     });
                     this.aturanExpAr.push({
-                        nama: 'exp , kata',
                         type: parse.Kons.TY_ARG2,
-                        kondisi: [
-                            [parse.Kons.TY_EXP,],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA,]
-                        ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH,],
-                        stl: [parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH]
+                        aturan: {
+                            nama: 'exp , kata',
+                            kondisi: [
+                                [parse.Kons.TY_EXP,],
+                                [parse.Kons.TY_KOMA],
+                                [parse.Kons.TY_KATA,]
+                            ],
+                            sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH,],
+                            stl: [parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH]
+                        }
                     });
                 }
                 this.aturanExpAr.push({
-                    nama: 'arg campur',
                     type: parse.Kons.TY_ARG,
-                    kondisi: [
-                        [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG,],
-                        [parse.Kons.TY_KOMA],
-                        [parse.Kons.TY_EXP, parse.Kons.TY_KATA,]
-                    ],
-                    sbl: [parse.Kons.TY_KOMA],
-                    stl: [parse.Kons.TY_OP]
+                    aturan: {
+                        nama: 'arg campur',
+                        kondisi: [
+                            [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG,],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_EXP, parse.Kons.TY_KATA,]
+                        ],
+                        sbl: [parse.Kons.TY_KOMA],
+                        stl: [parse.Kons.TY_OP]
+                    }
                 });
             }
             aturanStmt() {
                 this._aturanStmtAr = this.aturanStmtAr.concat([
                     {
-                        nama: 'perintah ',
                         type: parse.Kons.TY_PERINTAH,
-                        kondisi: [
-                            [parse.Kons.TY_KATA],
-                            [parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M],
-                        ],
-                        sbl: [, parse.Kons.TY_OP,],
-                        stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
+                        aturan: {
+                            nama: 'perintah ',
+                            kondisi: [
+                                [parse.Kons.TY_KATA],
+                                [parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M],
+                            ],
+                            sbl: [, parse.Kons.TY_OP,],
+                            stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
+                        }
                     },
                     {
-                        nama: 'label ',
                         type: parse.Kons.TY_LABEL,
-                        kondisi: [
-                            [parse.Kons.TY_DOT],
-                            [parse.Kons.TY_KATA],
-                        ],
-                        sbl: [parse.Kons.TY_KATA],
-                        stl: []
+                        aturan: {
+                            nama: 'label ',
+                            kondisi: [
+                                [parse.Kons.TY_DOT],
+                                [parse.Kons.TY_KATA],
+                            ],
+                            sbl: [parse.Kons.TY_KATA],
+                            stl: []
+                        }
                     },
                     {
-                        nama: 'until  ',
                         type: parse.Kons.TY_UNTIL_DEC,
-                        kondisi: [
-                            [parse.Kons.TY_UNTIL],
-                            [parse.Kons.TY_EXP],
-                        ],
-                        sbl: [],
-                        stl: []
+                        aturan: {
+                            nama: 'until  ',
+                            kondisi: [
+                                [parse.Kons.TY_UNTIL],
+                                [parse.Kons.TY_EXP],
+                            ],
+                            sbl: [],
+                            stl: []
+                        }
                     },
                     {
-                        nama: 'mod isi tambahan argument  ',
                         type: parse.Kons.TY_MOD_ISI_M,
-                        kondisi: [
-                            [parse.Kons.TY_MOD_ISI],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA, parse.Kons.TY_EXP],
-                        ],
-                        sbl: [],
-                        stl: [parse.Kons.TY_OP]
+                        aturan: {
+                            nama: 'mod isi tambahan argument  ',
+                            kondisi: [
+                                [parse.Kons.TY_MOD_ISI],
+                                [parse.Kons.TY_KOMA],
+                                [parse.Kons.TY_KATA, parse.Kons.TY_EXP],
+                            ],
+                            sbl: [],
+                            stl: [parse.Kons.TY_OP]
+                        }
                     },
                     {
-                        nama: 'mod isi tambahan argument2  ',
                         type: parse.Kons.TY_MOD_ISI_M,
-                        kondisi: [
-                            [parse.Kons.TY_MOD_ISI_M],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_EXP, parse.Kons.TY_KATA],
-                        ],
-                        sbl: [],
-                        stl: [parse.Kons.TY_OP]
+                        aturan: {
+                            nama: 'mod isi tambahan argument2  ',
+                            kondisi: [
+                                [parse.Kons.TY_MOD_ISI_M],
+                                [parse.Kons.TY_KOMA],
+                                [parse.Kons.TY_EXP, parse.Kons.TY_KATA],
+                            ],
+                            sbl: [],
+                            stl: [parse.Kons.TY_OP]
+                        }
                     },
                     {
-                        nama: 'mod, arg  ', type: parse.Kons.TY_MOD_DEC_M,
-                        kondisi: [
-                            [parse.Kons.TY_MOD_DEC, parse.Kons.TY_MOD_DEC_M],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_KATA],
-                        ],
-                        sbl: [], stl: []
+                        type: parse.Kons.TY_MOD_DEC_M,
+                        aturan: {
+                            nama: 'mod, arg  ',
+                            kondisi: [
+                                [parse.Kons.TY_MOD_DEC, parse.Kons.TY_MOD_DEC_M],
+                                [parse.Kons.TY_KOMA],
+                                [parse.Kons.TY_KATA],
+                            ],
+                            sbl: [], stl: []
+                        }
                     },
                     {
-                        nama: 'for each  ',
                         type: parse.Kons.TY_FOR_EACH,
-                        kondisi: [
-                            [parse.Kons.TY_FOR],
-                            [parse.Kons.TY_KATA, parse.Kons.TY_KATA_DOT],
-                            [parse.Kons.TY_OP],
-                            [parse.Kons.TY_EACH],
-                            [parse.Kons.TY_KATA]
-                        ],
-                        sbl: [],
-                        stl: []
-                    }
+                        aturan: {
+                            nama: 'for each  ',
+                            kondisi: [
+                                [parse.Kons.TY_FOR],
+                                [parse.Kons.TY_KATA, parse.Kons.TY_KATA_DOT],
+                                [parse.Kons.TY_OP],
+                                [parse.Kons.TY_EACH],
+                                [parse.Kons.TY_KATA]
+                            ],
+                            sbl: [],
+                            stl: []
+                        }
+                    },
+                    {
+                        type: parse.Kons.TY_DELETE_STMT,
+                        aturan: {
+                            nama: 'delete stmt',
+                            kondisi: [
+                                [parse.Kons.TY_DELETE],
+                                [parse.Kons.TY_KATA, parse.Kons.TY_KATA_DOT],
+                            ],
+                            sbl: [],
+                            stl: []
+                        }
+                    },
                 ]);
                 this._aturanStmtAr = this.aturanStmtAr.concat([
                     {
-                        nama: 'field def m',
                         type: parse.Kons.TY_FIELD_NEW_DEF_M,
-                        kondisi: [
-                            [parse.Kons.TY_FIELD],
-                            [parse.Kons.TY_ARG, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA],
-                        ],
-                        sbl: [],
-                        stl: [parse.Kons.TY_KOMA]
+                        aturan: {
+                            nama: 'field def m',
+                            kondisi: [
+                                [parse.Kons.TY_FIELD],
+                                [parse.Kons.TY_ARG, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA],
+                            ],
+                            sbl: [],
+                            stl: [parse.Kons.TY_KOMA]
+                        }
                     },
                     {
-                        nama: 'new',
                         type: parse.Kons.TY_NEW_INST,
-                        kondisi: [
-                            [parse.Kons.TY_NEW],
-                            [parse.Kons.TY_KATA],
-                        ],
-                        sbl: [],
-                        stl: []
+                        aturan: {
+                            nama: 'new',
+                            kondisi: [
+                                [parse.Kons.TY_NEW],
+                                [parse.Kons.TY_KATA],
+                            ],
+                            sbl: [],
+                            stl: []
+                        }
                     },
                     {
-                        nama: 'dim(n)\\kata',
                         type: parse.Kons.TY_TYPE_ACCESS_DIM,
-                        kondisi: [
-                            [parse.Kons.TY_KATA],
-                            [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_ARG2],
-                            [parse.Kons.TY_BACK_SLASH],
-                            [parse.Kons.TY_KATA]
-                        ],
-                        sbl: [],
-                        stl: []
+                        aturan: {
+                            nama: 'dim(n)\\kata',
+                            kondisi: [
+                                [parse.Kons.TY_KATA],
+                                [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_ARG2],
+                                [parse.Kons.TY_BACK_SLASH],
+                                [parse.Kons.TY_KATA]
+                            ],
+                            sbl: [],
+                            stl: []
+                        }
                     },
                     {
-                        nama: 'dim(n)\\prop = exp|kata',
                         type: parse.Kons.TY_DIM_PROP_ASSINMENT,
-                        kondisi: [
-                            [parse.Kons.TY_TYPE_ACCESS_DIM],
-                            [],
-                            [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
-                        ],
-                        sbl: [],
-                        stl: [
-                            parse.Kons.TY_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M,
-                            parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE,
-                            parse.Kons.TY_KURUNG_BUKA
-                        ]
+                        aturan: {
+                            nama: 'dim(n)\\prop = exp|kata',
+                            kondisi: [
+                                [parse.Kons.TY_TYPE_ACCESS_DIM],
+                                [],
+                                [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
+                            ],
+                            sbl: [],
+                            stl: [
+                                parse.Kons.TY_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M,
+                                parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE,
+                                parse.Kons.TY_KURUNG_BUKA
+                            ]
+                        }
                     },
                 ]);
                 this._aturanStmtAr = this.aturanStmtAr.concat([
                     {
-                        nama: 'dim dec',
                         type: parse.Kons.TY_DIM_DEC,
-                        kondisi: [
-                            [parse.Kons.TY_DIM],
-                            [parse.Kons.TY_KATA_DOT, parse.Kons.TY_KATA],
-                            [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA]
-                        ],
-                        sbl: [],
-                        stl: []
+                        aturan: {
+                            nama: 'dim dec',
+                            kondisi: [
+                                [parse.Kons.TY_DIM],
+                                [parse.Kons.TY_KATA_DOT, parse.Kons.TY_KATA],
+                                [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA]
+                            ],
+                            sbl: [],
+                            stl: []
+                        }
                     }
                 ]);
             }
@@ -1393,10 +1446,10 @@ var ha;
                             token: [],
                             type: aturan.type
                         };
-                        for (let j = 0; j < aturan.kondisi.length; j++) {
+                        for (let j = 0; j < aturan.aturan.kondisi.length; j++) {
                             tokenBaru.token.push(parse.parse.getToken(i + j, tokenAr));
                         }
-                        console.log(aturan.nama);
+                        console.log(aturan.aturan.nama);
                         console.log(tokenBaru);
                         console.log(parse.parse.tokenToValue(tokenBaru));
                         parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru, false);
@@ -1413,13 +1466,13 @@ var ha;
             checkAturan(tokenAr, aturan, idx) {
                 let t;
                 let hasil = true;
-                for (let i = 0; i < aturan.kondisi.length; i++) {
+                for (let i = 0; i < aturan.aturan.kondisi.length; i++) {
                     t = parse.parse.getToken(idx + i, tokenAr);
                     if (!t) {
                         hasil = false;
                     }
                     else {
-                        let cocok = this.checkKondisi(aturan.kondisi[i], t);
+                        let cocok = this.checkKondisi(aturan.aturan.kondisi[i], t);
                         if (!cocok) {
                             hasil = false;
                         }
@@ -1429,13 +1482,13 @@ var ha;
                 }
                 t = parse.parse.getToken(idx - 1, tokenAr);
                 if (t) {
-                    if (aturan.sbl.indexOf(t.type) >= 0) {
+                    if (aturan.aturan.sbl.indexOf(t.type) >= 0) {
                         hasil = false;
                     }
                 }
-                t = parse.parse.getToken(idx + aturan.kondisi.length, tokenAr);
+                t = parse.parse.getToken(idx + aturan.aturan.kondisi.length, tokenAr);
                 if (t) {
-                    if (aturan.stl.indexOf(t.type) >= 0) {
+                    if (aturan.aturan.stl.indexOf(t.type) >= 0) {
                         hasil = false;
                     }
                 }
@@ -1830,6 +1883,12 @@ var ha;
             static TY_MODIFIER = 21;
             static TY_FOR = 22;
             static TY_EACH = 23;
+            static TY_DELETE = 24;
+            static TY_TYPE = 25;
+            static TY_FIELD = 26;
+            static TY_BEFORE = 27;
+            static TY_AFTER = 28;
+            static TY_LAST = 29;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
             static TY_ARG_KATA = 102;
@@ -1861,15 +1920,16 @@ var ha;
             static TY_DIM_DEC_VAR = 403;
             static TY_DIM_PROP_ASSINMENT = 404;
             static TY_TYPE_NEW_INST = 500;
-            static TY_TYPE_NEW_DEF = 510;
+            static TY_TYPE_NEW_DEF = 501;
+            static TY_ENDTYPE = 502;
+            static TY_TYPE_ACCESS = 503;
+            static TY_TYPE_ACCESS_DIM = 504;
             static TY_FIELD_NEW_DEF = 520;
-            static TY_TYPE = 530;
-            static TY_FIELD = 540;
             static TY_FIELD_NEW_DEF_M = 545;
-            static TY_ENDTYPE = 550;
-            static TY_TYPE_ACCESS = 560;
-            static TY_TYPE_ACCESS_DIM = 561;
             static TY_NEW_INST = 570;
+            static TY_DELETE_STMT = 571;
+            static TY_BEFORE_STMT = 572;
+            static TY_NEXT_STMT = 573;
             static TY_IF_EXP = 600;
             static TY_IF_EXP_P = 601;
             static TY_IF_EXP_P2 = 602;
@@ -2148,6 +2208,9 @@ var ha;
                     }
                     else if ("for" == lc) {
                         token.type = parse.Kons.TY_FOR;
+                    }
+                    else if ("delete" == lc) {
+                        token.type = parse.Kons.TY_DELETE;
                     }
                     else {
                     }

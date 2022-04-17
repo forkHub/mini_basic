@@ -58,7 +58,11 @@ namespace ha.parse {
             function check(t0: IToken, t1: IToken, t2: IToken): boolean {
                 if (!t1) return false;
 
-                if (t1.type != Kons.TY_KATA) return false;
+                if (t1.type != Kons.TY_KATA) {
+                    if (t1.type != Kons.TY_KATA_DOT) {
+                        return false;
+                    }
+                }
 
                 //gak boleh return
                 if ("return" == t1.valueLowerCase) return false;
@@ -116,6 +120,9 @@ namespace ha.parse {
                     if (t0.valueLowerCase == "field") return false;
                     if (t0.valueLowerCase == ",") return false;
                     if (t0.type == Kons.TY_EACH) return false;
+                    if (t0.type == Kons.TY_DELETE) return false;
+                    if (t0.type == Kons.TY_BEFORE) return false;
+                    if (t0.type == Kons.TY_LAST) return false;
                 }
 
                 return true;
@@ -1034,7 +1041,11 @@ namespace ha.parse {
                 if (!t2) return false;
 
                 //t1 harus kata
-                if (t1.type != Kons.TY_KATA) return false;
+                if (t1.type != Kons.TY_KATA) {
+                    if (t1.type != Kons.TY_KATA_DOT) {
+                        return false;
+                    }
+                }
 
                 //t1 tidak boleh dim
                 if ('dim' == t1.valueLowerCase) return false;
@@ -1043,7 +1054,8 @@ namespace ha.parse {
                 let kurung: number[] = [
                     Kons.TY_KURUNG_ARG2,
                     Kons.TY_KURUNG_KOSONG,
-                    Kons.TY_KURUNG_SINGLE
+                    Kons.TY_KURUNG_SINGLE,
+                    Kons.TY_KURUNG_ARG,
                 ];
                 if (kurung.indexOf(t2.type) < 0) return false;
 
