@@ -728,7 +728,9 @@ var ha;
                         return false;
                     if (t1.type != parse.Kons.TY_KATA) {
                         if (t1.type != parse.Kons.TY_EXP) {
-                            return false;
+                            if (t1.type != parse.Kons.TY_KATA_DOT) {
+                                return false;
+                            }
                         }
                     }
                     if (t2.valueLowerCase != "=")
@@ -942,6 +944,8 @@ var ha;
                         if (t0.valueLowerCase == "+")
                             return false;
                         if (t0.type == parse.Kons.TY_OP)
+                            return false;
+                        if (t0.type == parse.Kons.TY_EQ)
                             return false;
                     }
                     if (t4) {
@@ -1262,7 +1266,7 @@ var ha;
                             [parse.Kons.TY_KOMA],
                             [parse.Kons.TY_KATA]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_EQ, parse.Kons.TY_MODIFIER, parse.Kons.TY_MODIFIER],
                         stl: [
                             parse.Kons.TY_OP, parse.Kons.TY_OP2,
                             parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
@@ -1276,7 +1280,7 @@ var ha;
                             [parse.Kons.TY_KOMA],
                             [parse.Kons.TY_KATA]
                         ],
-                        sbl: [parse.Kons.TY_KOMA],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_EQ],
                         stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2,
                             ,
                             parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
@@ -1292,7 +1296,7 @@ var ha;
                             [parse.Kons.TY_KOMA],
                             [parse.Kons.TY_EXP, , parse.Kons.TY_BINOP_EQ]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_EQ],
                         stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2]
                     });
                     this.aturanExpAr.push({
@@ -1303,7 +1307,7 @@ var ha;
                             [parse.Kons.TY_KOMA],
                             [parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ]
                         ],
-                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH],
+                        sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_EQ],
                         stl: [parse.Kons.TY_OP, parse.Kons.TY_OP2, parse.Kons.TY_BACK_SLASH]
                     });
                 }
@@ -1311,7 +1315,7 @@ var ha;
                     nama: 'arg campur',
                     type: parse.Kons.TY_ARG,
                     kondisi: [
-                        [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG],
+                        [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG, parse.Kons.TY_EQ],
                         [parse.Kons.TY_KOMA],
                         [parse.Kons.TY_EXP, parse.Kons.TY_KATA, parse.Kons.TY_BINOP_EQ]
                     ],
@@ -1363,6 +1367,39 @@ var ha;
                         ],
                         sbl: [],
                         stl: []
+                    },
+                    {
+                        nama: 'mod isi tambahan argument  ',
+                        type: parse.Kons.TY_MOD_ISI_M,
+                        kondisi: [
+                            [parse.Kons.TY_MOD_ISI],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_BINOP_EQ, parse.Kons.TY_KATA],
+                        ],
+                        sbl: [],
+                        stl: []
+                    },
+                    {
+                        nama: 'mod isi tambahan argument2  ',
+                        type: parse.Kons.TY_MOD_ISI_M,
+                        kondisi: [
+                            [parse.Kons.TY_MOD_ISI_M],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_BINOP_EQ, parse.Kons.TY_KATA],
+                        ],
+                        sbl: [],
+                        stl: []
+                    },
+                    {
+                        nama: 'mod, arg  ',
+                        type: parse.Kons.TY_MOD_DEC_M,
+                        kondisi: [
+                            [parse.Kons.TY_MOD_DEC, parse.Kons.TY_MOD_DEC_M],
+                            [parse.Kons.TY_KOMA],
+                            [parse.Kons.TY_BINOP_EQ, parse.Kons.TY_KATA],
+                        ],
+                        sbl: [],
+                        stl: []
                     }
                 ]);
                 this._aturanStmtAr = this.aturanStmtAr.concat([
@@ -1371,7 +1408,7 @@ var ha;
                         type: parse.Kons.TY_FIELD_NEW_DEF_M,
                         kondisi: [
                             [parse.Kons.TY_FIELD],
-                            [parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M],
+                            [parse.Kons.TY_ARG, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA],
                         ],
                         sbl: [],
                         stl: [parse.Kons.TY_KOMA]
@@ -1911,7 +1948,8 @@ var ha;
             static TY_NEW = 17;
             static TY_BACK_SLASH = 18;
             static TY_DOT = 19;
-            static TY_UNTIL = 19;
+            static TY_UNTIL = 20;
+            static TY_MODIFIER = 21;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
             static TY_ARG_KATA = 102;
@@ -1935,7 +1973,6 @@ var ha;
             static TY_FOR_STEP = 306;
             static TY_WEND = 307;
             static TY_FUNC_DEC = 308;
-            static TY_MODIFIER = 309;
             static TY_RETURN = 310;
             static TY_RETURN_EXP = 311;
             static TY_DIM = 400;
@@ -1976,7 +2013,9 @@ var ha;
             static TY_ELSEIF_ELSE_P = 756;
             static TY_ELSEIF_ELSE_P2 = 757;
             static TY_MOD_DEC = 800;
-            static TY_MOD_ISI = 801;
+            static TY_MOD_DEC_M = 801;
+            static TY_MOD_ISI = 802;
+            static TY_MOD_ISI_M = 803;
             static TY_CASE = 900;
             static TY_SELECT = 910;
             static TY_END_SELECT = 920;
@@ -2027,7 +2066,6 @@ var ha;
             }
             getString() {
                 let char1;
-                console.log('get string');
                 char1 = parse.data.dataStr.charAt(0);
                 if (char1 == "\"") {
                     let idx = this.kutip2(parse.data.dataStr);
@@ -2036,17 +2074,11 @@ var ha;
                         throw Error();
                     }
                     else {
-                        console.log('data.token: ');
-                        console.log(parse.data.token);
-                        console.log('idx ' + idx);
-                        console.log('datastr ' + parse.data.dataStr);
-                        console.log('hasil ' + parse.data.dataStr.slice(0, idx + 1));
                         parse.data.token.push({
                             value: parse.data.dataStr.slice(0, idx + 1),
                             type: parse.Kons.TY_TEKS
                         });
                         parse.data.dataStr = parse.data.dataStr.slice(idx + 1);
-                        console.log('sisa: ' + parse.data.dataStr);
                         return true;
                     }
                 }
@@ -2106,37 +2138,8 @@ var ha;
                             valueLowerCase: kata.toLowerCase()
                         };
                         let lc = kata.toLowerCase();
-                        if ("type" == lc) {
-                            token.type = parse.Kons.TY_TYPE;
-                        }
-                        if ("field" == lc) {
-                            token.type = parse.Kons.TY_FIELD;
-                        }
-                        else if ("end type" == lc) {
+                        if ("end type" == lc) {
                             token.type = parse.Kons.TY_ENDTYPE;
-                        }
-                        else if ("each" == lc) {
-                        }
-                        else if ("return" == lc) {
-                            token.type = parse.Kons.TY_RETURN;
-                        }
-                        else if ("false" == lc) {
-                            token.type = parse.Kons.TY_FALSE;
-                        }
-                        else if ("true" == lc) {
-                            token.type = parse.Kons.TY_TRUE;
-                        }
-                        else if ("null" == lc) {
-                            token.type = parse.Kons.TY_NULL;
-                        }
-                        else if ("end" == lc) {
-                            token.type = parse.Kons.TY_PERINTAH;
-                        }
-                        else if ("case" == lc) {
-                            token.type = parse.Kons.TY_CASE;
-                        }
-                        else if ("select" == lc) {
-                            token.type = parse.Kons.TY_SELECT;
                         }
                         else if ("end select" == lc) {
                             token.type = parse.Kons.TY_END_SELECT;
@@ -2268,6 +2271,12 @@ var ha;
                     else if ("until" == lc) {
                         token.type = parse.Kons.TY_UNTIL;
                     }
+                    else if ("global" == lc) {
+                        token.type = parse.Kons.TY_MODIFIER;
+                    }
+                    else if ("local" == lc) {
+                        token.type = parse.Kons.TY_MODIFIER;
+                    }
                     else {
                     }
                     return true;
@@ -2305,22 +2314,14 @@ var ha;
                     parse_1.data.token.pop();
                 }
                 console.log('str ' + parse_1.data.dataStr);
-                console.log('lexer sebelum:');
-                console.log(parse_1.data.token);
                 parse_1.lexer.lexer();
-                console.log('lexer sesudah:');
-                console.log(parse_1.data.token);
                 parse_1.data.barisObj = {
                     baris: str,
                     n: 0,
                     terjemah: '',
                     token: parse_1.data.token
                 };
-                console.log('sebelum:');
-                console.log(parse_1.data.barisObj);
                 parse_1.grammar.grammar();
-                console.log("finish");
-                console.log(parse_1.data.barisObj);
                 console.groupEnd();
             }
             getToken(idx, token) {
@@ -2795,7 +2796,7 @@ var ha;
             }
             modifier() {
                 let ada = false;
-                function check(t1, t2) {
+                function check(t1, t2, t3) {
                     if (!t1)
                         return false;
                     if (!t2)
@@ -2809,16 +2810,19 @@ var ha;
                         return false;
                     if (t2.type != parse.Kons.TY_KATA)
                         return false;
+                    if (t3) {
+                    }
                     return true;
                 }
                 for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let token1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let token2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    if (check(token1, token2)) {
+                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
+                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
+                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
+                    if (check(t1, t2, t3)) {
                         let tokenBaru;
                         tokenBaru = {
-                            type: parse.Kons.TY_MODIFIER,
-                            token: [token1, token2]
+                            type: parse.Kons.TY_MOD_DEC,
+                            token: [t1, t2]
                         };
                         console.log("modifier");
                         console.log(tokenBaru);
@@ -2840,7 +2844,7 @@ var ha;
                         return false;
                     if (!t3)
                         return false;
-                    if (t1.type != parse.Kons.TY_MODIFIER)
+                    if (t1.type != parse.Kons.TY_MOD_DEC)
                         return false;
                     if (t2.valueLowerCase != '=')
                         return false;

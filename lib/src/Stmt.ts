@@ -506,8 +506,8 @@ namespace ha.parse {
         modifier(): boolean {
             let ada: boolean = false;
 
-            //MOD KATA
-            function check(t1: IToken, t2: IToken): boolean {
+            //MOD KATA [t3]
+            function check(t1: IToken, t2: IToken, t3: IToken): boolean {
                 if (!t1) return false;
                 if (!t2) return false;
 
@@ -520,19 +520,24 @@ namespace ha.parse {
                 if (modAr.indexOf(t1.valueLowerCase) < 0) return false;
                 if (t2.type != Kons.TY_KATA) return false;
 
+                if (t3) {
+                    // if (t3.type == Kons.TY_EQ) return false;
+                }
+
                 return true;
             }
 
             for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let token1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let token2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
+                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
+                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
-                if (check(token1, token2)) {
+                if (check(t1, t2, t3)) {
                     let tokenBaru: IToken;
                     tokenBaru = {
-                        type: Kons.TY_MODIFIER,
-                        token: [token1, token2]
+                        type: Kons.TY_MOD_DEC,
+                        token: [t1, t2]
                     }
 
                     console.log("modifier");
@@ -562,7 +567,7 @@ namespace ha.parse {
                 if (!t2) return false;
                 if (!t3) return false;
 
-                if (t1.type != Kons.TY_MODIFIER) return false;
+                if (t1.type != Kons.TY_MOD_DEC) return false;
                 if (t2.valueLowerCase != '=') return false;
                 if (t3.type != Kons.TY_EXP) return false;
 

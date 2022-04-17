@@ -1,3 +1,5 @@
+global light,castle,land,ground,water,sky
+Const TYPE_PLAYER=1,TYPE_BULLET=2,TYPE_TARGET=3
 "  lsafalfkasfs al ", test
 test " ldkaf saf "
 test, " ldkaf saf "

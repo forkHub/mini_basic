@@ -23,11 +23,7 @@ namespace ha.parse {
 
 			console.log('str ' + data.dataStr);
 
-			console.log('lexer sebelum:');
-			console.log(data.token);
 			lexer.lexer();
-			console.log('lexer sesudah:');
-			console.log(data.token);
 
 			data.barisObj = {
 				baris: str,
@@ -36,13 +32,13 @@ namespace ha.parse {
 				token: data.token
 			}
 
-			console.log('sebelum:');
-			console.log(data.barisObj);
+			// console.log('sebelum:');
+			// console.log(data.barisObj);
 
 			grammar.grammar();
 
-			console.log("finish");
-			console.log(data.barisObj);
+			// console.log("finish");
+			// console.log(data.barisObj);
 			console.groupEnd();
 		}
 

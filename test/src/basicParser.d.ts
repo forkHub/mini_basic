@@ -176,6 +176,7 @@ declare namespace ha.parse {
         static readonly TY_BACK_SLASH: number;
         static readonly TY_DOT: number;
         static readonly TY_UNTIL: number;
+        static readonly TY_MODIFIER: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_ARG_KATA: number;
@@ -199,7 +200,6 @@ declare namespace ha.parse {
         static readonly TY_FOR_STEP: number;
         static readonly TY_WEND: number;
         static readonly TY_FUNC_DEC: number;
-        static readonly TY_MODIFIER: number;
         static readonly TY_RETURN: number;
         static readonly TY_RETURN_EXP: number;
         static readonly TY_DIM: number;
@@ -240,7 +240,9 @@ declare namespace ha.parse {
         static readonly TY_ELSEIF_ELSE_P: number;
         static readonly TY_ELSEIF_ELSE_P2: number;
         static readonly TY_MOD_DEC: number;
+        static readonly TY_MOD_DEC_M: number;
         static readonly TY_MOD_ISI: number;
+        static readonly TY_MOD_ISI_M: number;
         static readonly TY_CASE: number;
         static readonly TY_SELECT: number;
         static readonly TY_END_SELECT: number;

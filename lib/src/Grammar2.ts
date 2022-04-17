@@ -36,7 +36,7 @@ namespace ha.parse {
                         [Kons.TY_KOMA],
                         [Kons.TY_KATA]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH],
+                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH, Kons.TY_EQ, Kons.TY_MODIFIER, Kons.TY_MODIFIER],
                     stl: [
                         Kons.TY_OP, Kons.TY_OP2,
                         Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
@@ -51,7 +51,7 @@ namespace ha.parse {
                         [Kons.TY_KOMA],
                         [Kons.TY_KATA]
                     ],
-                    sbl: [Kons.TY_KOMA],
+                    sbl: [Kons.TY_KOMA, Kons.TY_EQ],
                     stl: [Kons.TY_OP, Kons.TY_OP2,
                         ,
                     Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
@@ -71,7 +71,7 @@ namespace ha.parse {
                         [Kons.TY_KOMA],
                         [Kons.TY_EXP, , Kons.TY_BINOP_EQ]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH],
+                    sbl: [Kons.TY_KOMA, Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH, Kons.TY_EQ],
                     stl: [Kons.TY_OP, Kons.TY_OP2]
                 })
 
@@ -83,7 +83,7 @@ namespace ha.parse {
                         [Kons.TY_KOMA],
                         [Kons.TY_KATA, Kons.TY_BINOP_EQ]
                     ],
-                    sbl: [Kons.TY_KOMA, Kons.TY_BACK_SLASH],
+                    sbl: [Kons.TY_KOMA, Kons.TY_BACK_SLASH, Kons.TY_EQ],
                     stl: [Kons.TY_OP, Kons.TY_OP2, Kons.TY_BACK_SLASH]
                 })
 
@@ -94,7 +94,7 @@ namespace ha.parse {
                 nama: 'arg campur',
                 type: Kons.TY_ARG,
                 kondisi: [
-                    [Kons.TY_ARG_KATA_M, Kons.TY_ARG_KATA, Kons.TY_ARG2, Kons.TY_ARG],
+                    [Kons.TY_ARG_KATA_M, Kons.TY_ARG_KATA, Kons.TY_ARG2, Kons.TY_ARG, Kons.TY_EQ],
                     [Kons.TY_KOMA],
                     [Kons.TY_EXP, Kons.TY_KATA, Kons.TY_BINOP_EQ]
                 ],
@@ -102,7 +102,7 @@ namespace ha.parse {
                 stl: [Kons.TY_OP, Kons.TY_OP2]
             })
 
-            //exp
+            //exp binop 
             this._aturanExpAr = this.aturanExpAr.concat([
                 {
                     nama: 'binop kata',
@@ -150,6 +150,39 @@ namespace ha.parse {
                     ],
                     sbl: [],
                     stl: []
+                },
+                {
+                    nama: 'mod isi tambahan argument  ',
+                    type: Kons.TY_MOD_ISI_M,
+                    kondisi: [
+                        [Kons.TY_MOD_ISI],
+                        [Kons.TY_KOMA],
+                        [Kons.TY_BINOP_EQ, Kons.TY_KATA],
+                    ],
+                    sbl: [],
+                    stl: []
+                },
+                {
+                    nama: 'mod isi tambahan argument2  ',
+                    type: Kons.TY_MOD_ISI_M,
+                    kondisi: [
+                        [Kons.TY_MOD_ISI_M],
+                        [Kons.TY_KOMA],
+                        [Kons.TY_BINOP_EQ, Kons.TY_KATA],
+                    ],
+                    sbl: [],
+                    stl: []
+                },
+                {
+                    nama: 'mod, arg  ',
+                    type: Kons.TY_MOD_DEC_M,
+                    kondisi: [
+                        [Kons.TY_MOD_DEC, Kons.TY_MOD_DEC_M],
+                        [Kons.TY_KOMA],
+                        [Kons.TY_BINOP_EQ, Kons.TY_KATA],
+                    ],
+                    sbl: [],
+                    stl: []
                 }
             ])
 
@@ -160,7 +193,7 @@ namespace ha.parse {
                     type: Kons.TY_FIELD_NEW_DEF_M,
                     kondisi: [
                         [Kons.TY_FIELD],
-                        [Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M],
+                        [Kons.TY_ARG, Kons.TY_ARG_KATA_M, Kons.TY_ARG2, Kons.TY_ARG_KATA],
                     ],
                     sbl: [],
                     stl: [Kons.TY_KOMA]

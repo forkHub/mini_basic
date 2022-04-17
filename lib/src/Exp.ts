@@ -592,7 +592,9 @@ namespace ha.parse {
 
                 if (t1.type != Kons.TY_KATA) {
                     if (t1.type != Kons.TY_EXP) {
-                        return false;
+                        if (t1.type != Kons.TY_KATA_DOT) {
+                            return false;
+                        }
                     }
                 }
 
@@ -839,6 +841,7 @@ namespace ha.parse {
                     if (t0.valueLowerCase == "-") return false;
                     if (t0.valueLowerCase == "+") return false;
                     if (t0.type == Kons.TY_OP) return false;
+                    if (t0.type == Kons.TY_EQ) return false;
                 }
 
                 if (t4) {

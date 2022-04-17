@@ -49,7 +49,7 @@ namespace ha.parse {
         getString(): boolean {
             let char1: string;
 
-            console.log('get string');
+            // console.log('get string');
 
             char1 = data.dataStr.charAt(0);
 
@@ -60,11 +60,11 @@ namespace ha.parse {
                     throw Error();
                 }
                 else {
-                    console.log('data.token: ');
-                    console.log(data.token);
-                    console.log('idx ' + idx);
-                    console.log('datastr ' + data.dataStr);
-                    console.log('hasil ' + data.dataStr.slice(0, idx + 1));
+                    // console.log('data.token: ');
+                    // console.log(data.token);
+                    // console.log('idx ' + idx);
+                    // console.log('datastr ' + data.dataStr);
+                    // console.log('hasil ' + data.dataStr.slice(0, idx + 1));
 
                     data.token.push({
                         value: data.dataStr.slice(0, idx + 1),
@@ -73,7 +73,7 @@ namespace ha.parse {
 
                     data.dataStr = data.dataStr.slice(idx + 1);
 
-                    console.log('sisa: ' + data.dataStr);
+                    // console.log('sisa: ' + data.dataStr);
 
                     return true;
                 }
@@ -168,38 +168,9 @@ namespace ha.parse {
                     }
 
                     let lc: string = kata.toLowerCase();
-                    if ("type" == lc) {
-                        token.type = Kons.TY_TYPE;
-                    }
-                    if ("field" == lc) {
-                        token.type = Kons.TY_FIELD;
-                    }
-                    else if ("end type" == lc) {
+
+                    if ("end type" == lc) {
                         token.type = Kons.TY_ENDTYPE;
-                    }
-                    else if ("each" == lc) {
-                        //TODO:
-                    }
-                    else if ("return" == lc) {
-                        token.type = Kons.TY_RETURN;
-                    }
-                    else if ("false" == lc) {
-                        token.type = Kons.TY_FALSE;
-                    }
-                    else if ("true" == lc) {
-                        token.type = Kons.TY_TRUE
-                    }
-                    else if ("null" == lc) {
-                        token.type = Kons.TY_NULL
-                    }
-                    else if ("end" == lc) {
-                        token.type = Kons.TY_PERINTAH
-                    }
-                    else if ("case" == lc) {
-                        token.type = Kons.TY_CASE
-                    }
-                    else if ("select" == lc) {
-                        token.type = Kons.TY_SELECT
                     }
                     else if ("end select" == lc) {
                         token.type = Kons.TY_END_SELECT
@@ -359,6 +330,12 @@ namespace ha.parse {
                 }
                 else if ("until" == lc) {
                     token.type = Kons.TY_UNTIL
+                }
+                else if ("global" == lc) {
+                    token.type = Kons.TY_MODIFIER
+                }
+                else if ("local" == lc) {
+                    token.type = Kons.TY_MODIFIER
                 }
                 else {
                     //console.warn("kata belum didefinisikan: " + lc);
