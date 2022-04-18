@@ -61,7 +61,7 @@ namespace ha.parse {
             ".\\data\\data\\samples\\mak\\anim\\makbot\\MAK-sfx.bb",
             ".\\data\\data\\tutorials\\basic_tuts\\maths.bb",
             ".\\data\\data\\samples\\si\\matrix\\matrix.bb",
-            ".\\data\\data\\mediaview\\mediaview.bb",
+            // ".\\data\\data\\mediaview\\mediaview.bb",
             ".\\data\\data\\Games\\wing_ring\\menus.bb",
             ".\\data\\data\\samples\\halo\\MeshFX\\meshfx.bb",
             ".\\data\\data\\samples\\birdie\\Mirror\\mirror.bb",
@@ -157,7 +157,7 @@ namespace ha.parse {
         }
 
         async parse(file: string): Promise<void> {
-            let hsl: string = await ha.comp.Util.Ajax2('get', file, '');
+            let hsl: string = await ha.comp.Util.Ajax2('get', file + "?rand=" + Math.floor(Math.random() * 1000), '');
             let barisAr: string[] = hsl.split(/\r?\n/);
 
             for (let i: number = 0; i < barisAr.length; i++) {
@@ -175,10 +175,17 @@ namespace ha.parse {
                     await this.parse(file);
                 }
                 catch (e) {
+                    // data.errList.push(data.dataStr);
                     console.log('file: ' + file);
                     console.error(e);
                     break;
                 }
+            }
+
+            console.log('jml err ' + data.errList.length);
+
+            if (data.errList.length > 0) {
+                console.log(JSON.stringify(data.errList));
             }
         }
 

@@ -95,7 +95,7 @@ namespace ha.parse {
 
                 else if (stmt.funcDec()) { }
                 else if (stmt.while2()) { }
-                else if (stmt.perintah()) { }
+                // else if (stmt.perintah()) { }
 
                 else if (typeStmt.typeNew()) { }
                 else if (typeStmt.typeDef()) { }
@@ -118,7 +118,12 @@ namespace ha.parse {
                     data.barisObj.token.forEach((token: IToken) => {
                         console.log(parse.tokenToValue(token));
                     })
-                    throw Error('');
+                    data.errList.push(data.barisAktif);
+                    console.groupEnd();
+                    return;
+
+                    // console.groupEnd();
+                    // throw Error('');
                 }
             }
 

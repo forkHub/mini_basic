@@ -65,7 +65,7 @@ var ha;
                 ".\\data\\data\\samples\\mak\\anim\\makbot\\MAK-sfx.bb",
                 ".\\data\\data\\tutorials\\basic_tuts\\maths.bb",
                 ".\\data\\data\\samples\\si\\matrix\\matrix.bb",
-                ".\\data\\data\\mediaview\\mediaview.bb",
+                // ".\\data\\data\\mediaview\\mediaview.bb",
                 ".\\data\\data\\Games\\wing_ring\\menus.bb",
                 ".\\data\\data\\samples\\halo\\MeshFX\\meshfx.bb",
                 ".\\data\\data\\samples\\birdie\\Mirror\\mirror.bb",
@@ -156,7 +156,7 @@ var ha;
                 // ];
             }
             async parse(file) {
-                let hsl = await ha.comp.Util.Ajax2('get', file, '');
+                let hsl = await ha.comp.Util.Ajax2('get', file + "?rand=" + Math.floor(Math.random() * 1000), '');
                 let barisAr = hsl.split(/\r?\n/);
                 for (let i = 0; i < barisAr.length; i++) {
                     await ha.parse.parse.parse(barisAr[i]);
@@ -172,10 +172,15 @@ var ha;
                         await this.parse(file);
                     }
                     catch (e) {
+                        // data.errList.push(data.dataStr);
                         console.log('file: ' + file);
                         console.error(e);
                         break;
                     }
+                }
+                console.log('jml err ' + parse.data.errList.length);
+                if (parse.data.errList.length > 0) {
+                    console.log(JSON.stringify(parse.data.errList));
                 }
             }
         }

@@ -6,7 +6,9 @@ namespace ha.parse {
 		}
 
 		async parse(str: string): Promise<void> {
+			// let strErr: string;
 			data.dataStr = str;
+
 
 			console.groupCollapsed('parse: ' + str);
 
@@ -22,6 +24,8 @@ namespace ha.parse {
 			}
 
 			console.log('str ' + data.dataStr);
+			data.barisAktif = data.dataStr;
+			// strErr = data.dataStr;
 
 			lexer.lexer();
 
@@ -37,10 +41,12 @@ namespace ha.parse {
 
 			grammar.grammar();
 
+
 			// console.log("finish");
 			// console.log(data.barisObj);
 			console.groupEnd();
 		}
+
 
 		getToken(idx: number, token: IToken[]): IToken {
 			if (idx < 0) return null;

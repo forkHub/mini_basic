@@ -1,3 +1,7 @@
+If a\ent=ent Then Return a
+If on TextureBlend tex2,2 Else TextureBlend tex2,0
+PositionEntity p\entity,ex,TerrainY( land,ex,0,ez )+1.5,ez
+Function CreatePlayerPlayer( x#,y#,z# )
 Else If KeyDown(205)
 For c.ChaseCam=Each ChaseCam
 player1.Player=CreatePlayer( 0,10,0 )

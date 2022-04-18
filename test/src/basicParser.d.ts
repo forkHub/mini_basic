@@ -27,6 +27,12 @@ declare namespace ha.parse {
         private _dataStr;
         private _token;
         private _barisObj;
+        private _errList;
+        private _barisAktif;
+        get barisAktif(): string;
+        set barisAktif(value: string);
+        get errList(): string[];
+        set errList(value: string[]);
         readonly config: Config;
         get barisObj(): IBarisObj;
         set barisObj(value: IBarisObj);
@@ -82,76 +88,6 @@ declare namespace ha.parse {
     export {};
 }
 declare namespace ha.parse {
-    class Grammar {
-        hapusSpace(): boolean;
-        grammar(): void;
-    }
-    export var grammar: Grammar;
-    export {};
-}
-declare namespace ha.parse {
-    class Grammar2 {
-        private _aturanExpAr;
-        get aturanExpAr(): IAturan[];
-        private _aturanStmtAr;
-        get aturanStmtAr(): IAturan[];
-        constructor();
-        aturanExp(): void;
-        aturanStmt(): void;
-        init(): void;
-        checkLog(aturan: IAturan[]): boolean;
-        check(aturanAr: IAturan[]): boolean;
-        checkBaris(tokenAr: IToken[], aturan: IAturan): boolean;
-        checkKondisi(kond: number[], token: IToken): boolean;
-        checkAturan(tokenAr: IToken[], aturan: IAturan, idx: number): boolean;
-    }
-    export var gm2: Grammar2;
-    export {};
-}
-interface IAturan {
-    type?: number;
-    aturan?: {
-        nama?: string;
-        kondisi?: number[][];
-        sbl?: number[];
-        stl?: number[];
-    };
-}
-declare namespace ha.parse {
-    class IfStmt {
-        isPerintah(type: number): boolean;
-        ifExp(): boolean;
-        ifExpP(): boolean;
-        ifExpP2(): boolean;
-        ifThen(): boolean;
-        ifThenP(): boolean;
-        ifThenP2(): boolean;
-        ifElseThenP(): boolean;
-        ifElseThenP2(): boolean;
-        elseIfThen(): boolean;
-    }
-    export var ifStmt: IfStmt;
-    export {};
-}
-interface IToken {
-    type: number;
-    token?: IToken[];
-    value?: string;
-    valueLowerCase?: string;
-}
-interface IBarisObj {
-    n?: number;
-    token?: IToken[];
-    baris?: string;
-    terjemah?: string;
-}
-interface IGrammar {
-    type: number;
-    tokens: number[];
-    setelah?: number;
-    sebelum?: number;
-}
-declare namespace ha.parse {
     class Kons {
         static readonly TY_ANGKA: number;
         static readonly TY_KATA: number;
@@ -181,6 +117,7 @@ declare namespace ha.parse {
         static readonly TY_AFTER: number;
         static readonly TY_LAST: number;
         static readonly TY_ELSE_IF: number;
+        static readonly TY_ELSE: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_ARG_KATA: number;
@@ -257,6 +194,82 @@ declare namespace ha.parse {
     }
 }
 declare namespace ha.parse {
+    const aturanExp: IAturan[];
+}
+declare namespace ha.parse {
+    class Grammar {
+        hapusSpace(): boolean;
+        grammar(): void;
+    }
+    export var grammar: Grammar;
+    export {};
+}
+declare namespace ha.parse {
+    class Grammar2 {
+        private _aturanExpAr;
+        get aturanExpAr(): IAturan[];
+        private _aturanStmtAr;
+        get aturanStmtAr(): IAturan[];
+        constructor();
+        aturanExp(): void;
+        aturanStmt(): void;
+        init(): void;
+        checkLog(aturan: IAturan[]): boolean;
+        check(aturanAr: IAturan[]): boolean;
+        checkBaris(tokenAr: IToken[], aturan: IAturan): boolean;
+        checkKondisi(kond: number[], token: IToken): boolean;
+        checkAturan(tokenAr: IToken[], aturan: IAturan, idx: number): boolean;
+    }
+    export var gm2: Grammar2;
+    export {};
+}
+interface IAturan {
+    type?: number;
+    aturan?: {
+        nama?: string;
+        kondisi?: number[][];
+        sbl?: number[];
+        stl?: number[];
+    };
+}
+declare namespace ha.parse {
+    class IfStmt {
+        isPerintah(type: number): boolean;
+        ifExp(): boolean;
+        ifExpP(): boolean;
+        ifExpP2(): boolean;
+        ifThen(): boolean;
+        ifThenP(): boolean;
+        ifThenP2(): boolean;
+        ifElseThenP(): boolean;
+        ifElseThenP2(): boolean;
+        elseIfThen(): boolean;
+    }
+    export var ifStmt: IfStmt;
+    export {};
+}
+interface IToken {
+    type: number;
+    token?: IToken[];
+    value?: string;
+    valueLowerCase?: string;
+}
+interface IBarisObj {
+    n?: number;
+    token?: IToken[];
+    baris?: string;
+    terjemah?: string;
+}
+interface IGrammar {
+    type: number;
+    tokens: number[];
+    setelah?: number;
+    sebelum?: number;
+}
+interface ErrorList {
+    str: string;
+}
+declare namespace ha.parse {
     class Lexer {
         lexer(): void;
         getString(): boolean;
@@ -304,8 +317,6 @@ declare namespace ha.parse {
         funcDec(): boolean;
         modifier(): boolean;
         modIsi(): boolean;
-        new2(): boolean;
-        perintah(): boolean;
         returnExp(): boolean;
         while2(): boolean;
     }

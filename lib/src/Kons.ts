@@ -29,6 +29,7 @@ namespace ha.parse {
         static readonly TY_AFTER: number = 28;
         static readonly TY_LAST: number = 29;
         static readonly TY_ELSE_IF: number = 30;
+        static readonly TY_ELSE: number = 31;
 
         static readonly TY_ARG: number = 100;
         static readonly TY_ARG2: number = 101;

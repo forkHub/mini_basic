@@ -1,0 +1,14 @@
+[
+    // "End If",
+    // "Global Bearing.vector=New vector",
+    // "Global Bearing.vector=New vector",
+    "p.Player=First Player",
+    "Org (cx, 1) = rgb Shr 16 And %11111111",
+    "red=(pix Shr 16) And 255",
+    "mag#=1/(Sqr(dx^2+dz^2))\t\t\t\t;Magnify according to distance.",
+    "Dim flies.fly(maxFlies+1)",
+    "Global sprite.sprite_type",
+    "Dim flies.firefly(maxFlies+1)",
+    "t.GfxMode=First GfxMode",
+    "Dim map.tile(gridx,gridz)\t;Now holds all info including brush tiles set 1 and 2,mask and lightmap",
+]

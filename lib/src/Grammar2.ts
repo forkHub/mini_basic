@@ -14,16 +14,6 @@ namespace ha.parse {
 
         }
 
-        // def(): IAturan {
-        //     return {
-        //         nama: '',
-        //         type: 0,
-        //         kondisi: [],
-        //         sbl: [],
-        //         stl: []
-        //     }
-        // }
-
         aturanExp(): void {
             this._aturanExpAr = this._aturanExpAr.concat([
                 {
@@ -109,7 +99,7 @@ namespace ha.parse {
                             [Kons.TY_KOMA],
                             [Kons.TY_KATA,]
                         ],
-                        sbl: [Kons.TY_KOMA, Kons.TY_BACK_SLASH,],
+                        sbl: [Kons.TY_KOMA, Kons.TY_BACK_SLASH, Kons.TY_OP],
                         stl: [Kons.TY_OP, Kons.TY_BACK_SLASH]
 
                     }
@@ -128,7 +118,10 @@ namespace ha.parse {
                         [Kons.TY_EXP, Kons.TY_KATA,]
                     ],
                     sbl: [Kons.TY_KOMA],
-                    stl: [Kons.TY_OP]
+                    stl: [
+                        Kons.TY_OP,
+                        Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
+                    ]
                 }
             })
         }
@@ -142,7 +135,7 @@ namespace ha.parse {
                         nama: 'perintah ',
                         kondisi: [
                             [Kons.TY_KATA],
-                            [Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M],
+                            [Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_ARG, Kons.TY_ARG2, Kons.TY_EXP],
                         ],
                         sbl: [, Kons.TY_OP,],
                         stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
@@ -238,6 +231,32 @@ namespace ha.parse {
                         kondisi: [
                             [Kons.TY_DELETE],
                             [Kons.TY_KATA, Kons.TY_KATA_DOT],
+                        ],
+                        sbl: [],
+                        stl: []
+
+                    }
+                },
+                {
+                    type: Kons.TY_ELSE_DEC,
+                    aturan: {
+                        nama: 'else stmt',
+                        kondisi: [
+                            [Kons.TY_ELSE],
+                            [Kons.TY_EXP, Kons.TY_PERINTAH],
+                        ],
+                        sbl: [],
+                        stl: []
+
+                    }
+                },
+                {
+                    type: Kons.TY_IF_ELSE_P,
+                    aturan: {
+                        nama: 'if stmt else stmt',
+                        kondisi: [
+                            [Kons.TY_IF_EXP_P],
+                            [Kons.TY_ELSE_DEC],
                         ],
                         sbl: [],
                         stl: []

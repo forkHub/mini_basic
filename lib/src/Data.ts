@@ -3,6 +3,20 @@ namespace ha.parse {
         private _dataStr: string = '';  //baris
         private _token: IToken[] = [];  //daftar token dalam satu baris
         private _barisObj: IBarisObj;   //baris aktif
+        private _errList: string[] = [];
+        private _barisAktif: string = '';
+        public get barisAktif(): string {
+            return this._barisAktif;
+        }
+        public set barisAktif(value: string) {
+            this._barisAktif = value;
+        }
+        public get errList(): string[] {
+            return this._errList;
+        }
+        public set errList(value: string[]) {
+            this._errList = value;
+        }
 
         readonly config: Config = new Config();
 

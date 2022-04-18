@@ -132,7 +132,7 @@ Function UpdateHole( h.Hole )
 	EndIf
 End Function
 
-Function CreatePlayer.Player( x#,y#,z# )
+Function CreatePlayerPlayer( x#,y#,z# )
 	p.Player=New Player
 	p\entity=CreatePivot()
 	p\model=CopyEntity( player_model,p\entity )
@@ -144,7 +144,7 @@ Function CreatePlayer.Player( x#,y#,z# )
 	Return p
 End Function
 
-Function CreateBullet.Bullet( p.Player )
+Function CreateBulletBullet( p.Player )
 	bull_x=-bull_x
 	b.Bullet=New Bullet
 	b\time_out=150
@@ -210,7 +210,7 @@ Function UpdateBullet( b.Bullet )
 	MoveEntity b\sprite,0,0,2
 End Function
 
-Function CreateSpark.Spark( b.Bullet )
+Function CreateSparkSpark( b.Bullet )
 	s.Spark=New Spark
 	s\alpha=-90
 	s\sprite=CopyEntity( spark_sprite,b\sprite )
@@ -277,7 +277,7 @@ Function UpdatePlayer( p.Player )
 	
 End Function
 
-Function CreateChaseCam.ChaseCam( entity )
+Function CreateChaseCamChaseCam( entity )
 	c.ChaseCam=New ChaseCam
 	c\entity=entity
 	c\camera=CreateCamera()

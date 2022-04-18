@@ -7,8 +7,12 @@ Include "../start.bb"
 
 tex=CreateTexture( 64,64 )
 SetBuffer TextureBuffer( tex )
-Color 255,0,0:Rect 0,0,32,32:Rect 32,32,32,32
-Color 255,128,0:Rect 32,0,32,32:Rect 0,32,32,32
+Color 255,0,0
+Rect 0,0,32,32
+Rect 32,32,32,32
+Color 255,128,0
+Rect 32,0,32,32
+Rect 0,32,32,32
 SetBuffer BackBuffer()
 Color 255,255,255
 

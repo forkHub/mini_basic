@@ -38,7 +38,7 @@ namespace ha.parse {
                     console.log("type dec");
                     console.log(tokenBaru);
 
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
+                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     ada = true;
                 }

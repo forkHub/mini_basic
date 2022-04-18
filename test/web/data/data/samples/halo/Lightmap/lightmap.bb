@@ -26,7 +26,7 @@ End
 ;=====================
 Function MapVertices(model,copy,texture)
 
-WriteLine Log,"Limb "+EntityName(model)+" contains "+CountChildren(model)+" children, "+CountSurfaces(model)+" surfaces.
+WriteLine Log,"Limb "+EntityName(model)+" contains "+CountChildren(model)+" children, "+CountSurfaces(model)+" surfaces."
 For n=1 To CountSurfaces(model)
 surf=GetSurface(model,n)
 WriteLine Log,"Limb "+EntityName(model)+", surface "+n+" contains "+CountVertices(surf)+" vertices."

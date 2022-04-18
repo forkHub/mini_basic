@@ -94,3 +94,7 @@ comment support //
 plugin vscode
 linter
 blitzplus
+
+[gak di support]
+function kata.dot
+

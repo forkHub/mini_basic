@@ -18,3 +18,8 @@ interface IGrammar {
     setelah?: number,
     sebelum?: number
 }
+
+interface ErrorList {
+    // file: string,
+    str: string
+}
