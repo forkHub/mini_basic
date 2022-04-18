@@ -250,19 +250,6 @@ namespace ha.parse {
 
                     }
                 },
-                {
-                    type: Kons.TY_IF_ELSE_P,
-                    aturan: {
-                        nama: 'if stmt else stmt',
-                        kondisi: [
-                            [Kons.TY_IF_EXP_P],
-                            [Kons.TY_ELSE_DEC],
-                        ],
-                        sbl: [],
-                        stl: []
-
-                    }
-                },
             ])
 
             //type

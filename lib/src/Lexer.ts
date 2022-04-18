@@ -12,6 +12,8 @@ namespace ha.parse {
             while (data.dataStr.length > 0) {
                 if (this.keyWordDouble()) { }
                 else if (this.getString()) { }
+                else if (this.getComment()) { }
+                else if (this.getTab()) { }
                 else if (this.getOp()) { }
                 // else if (this.getOp2()) { }
                 else if (this.getKata()) { }
@@ -44,6 +46,32 @@ namespace ha.parse {
             })
 
             console.groupEnd();
+        }
+
+        getTab(): boolean {
+            let char1: string;
+
+            char1 = data.dataStr.charAt(0);
+
+            if (char1 == "\t") {
+                data.dataStr = data.dataStr.slice(1);
+                return true;
+            }
+
+            return false;
+        }
+
+        getComment(): boolean {
+            let char1: string;
+
+            char1 = data.dataStr.charAt(0);
+
+            if (char1 == ";") {
+                data.dataStr = '';
+                return true;
+            }
+
+            return false;
         }
 
         getString(): boolean {
@@ -197,8 +225,7 @@ namespace ha.parse {
                 let kata: string = data.symbol[i];
 
                 if (data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
-                    // console.debug('keyword: ' + kata);
-                    // parse.kataAr.push(kata);
+
                     let token: IToken = {
                         // token: kata,
                         value: kata,
@@ -207,6 +234,7 @@ namespace ha.parse {
                     };
 
                     data.token.push(token);
+
 
                     let lc: string = kata.toLowerCase();
                     if (":" == lc) {
@@ -229,6 +257,9 @@ namespace ha.parse {
                     }
                     else if ("." == lc) {
                         token.type = Kons.TY_DOT
+                    }
+                    else if ("\t" == lc) {
+
                     }
 
                     data.dataStr = data.dataStr.slice(kata.length);

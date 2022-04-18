@@ -198,7 +198,8 @@ var ha;
                 "$",
                 "#",
                 "%",
-                " "
+                " ",
+                "\t",
             ];
             _cmd = [
                 "Graphics3D",
@@ -2045,6 +2046,8 @@ var ha;
                 while (parse.data.dataStr.length > 0) {
                     if (this.keyWordDouble()) { }
                     else if (this.getString()) { }
+                    else if (this.getComment()) { }
+                    else if (this.getTab()) { }
                     else if (this.getOp()) { }
                     else if (this.getKata()) { }
                     else if (this.getNumber()) { }
@@ -2071,6 +2074,24 @@ var ha;
                     }
                 });
                 console.groupEnd();
+            }
+            getTab() {
+                let char1;
+                char1 = parse.data.dataStr.charAt(0);
+                if (char1 == "\t") {
+                    parse.data.dataStr = parse.data.dataStr.slice(1);
+                    return true;
+                }
+                return false;
+            }
+            getComment() {
+                let char1;
+                char1 = parse.data.dataStr.charAt(0);
+                if (char1 == ";") {
+                    parse.data.dataStr = '';
+                    return true;
+                }
+                return false;
             }
             getString() {
                 let char1;
@@ -2182,6 +2203,8 @@ var ha;
                         }
                         else if ("." == lc) {
                             token.type = parse.Kons.TY_DOT;
+                        }
+                        else if ("\t" == lc) {
                         }
                         parse.data.dataStr = parse.data.dataStr.slice(kata.length);
                         return true;

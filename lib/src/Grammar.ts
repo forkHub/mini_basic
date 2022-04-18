@@ -83,13 +83,13 @@ namespace ha.parse {
                 // else if (stmt.varAssign()) { }
 
                 else if (ifStmt.ifExp()) { }
-                else if (ifStmt.ifExpP()) { }
-                else if (ifStmt.ifExpP2()) { }
+                // else if (ifStmt.ifExpP()) { }
+                // else if (ifStmt.ifExpP2()) { }
                 else if (ifStmt.ifThen()) { }
-                else if (ifStmt.ifThenP()) { }
-                else if (ifStmt.ifThenP2()) { }
-                else if (ifStmt.ifElseThenP()) { }
-                else if (ifStmt.ifElseThenP2()) { }
+                // else if (ifStmt.ifThenP()) { }
+                // else if (ifStmt.ifThenP2()) { }
+                // else if (ifStmt.ifElseThenP()) { }
+                // else if (ifStmt.ifElseThenP2()) { }
 
                 else if (ifStmt.elseIfThen()) { }
 

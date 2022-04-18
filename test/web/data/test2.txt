@@ -1,4 +1,21 @@
-If a\ent=ent Then Return a
+End If
+AddVertex(a\\surf,VertexX(surf,ind1)-x,VertexY(surf,ind1)-y,VertexZ(surf,ind1)-z,VertexU(surf,ind1),VertexV(surf,ind1))
+Global Bearing.vector=New vector
+p.particle=First particle
+p.particle=Next particle
+p.particle=last particle
+Delete Each GfxMode
+case 2:
+Org (cx, 1) = rgb Shr 16 And %11111111
+Local tempFlame.tFlame = New tFlame
+Return Sqr(x^2+y^2+z^2)
+Delete Each smoke
+TranslateEntity a\\piv,-a\\dx,-a\\dy,a\\speed*a\\dir
+PositionEntity a\\ent,a\\firer\\ox,0,10
+a\\firer\\ox=-a\\firer\\ox
+add_color_Smoke(25,CollisionX(a\\piv,b),CollisionY(a\\piv,b),CollisionZ(a\\piv,b),255,Rnd(100,200),Rnd(100,200))
+lobal craftRoll#     = 0                     ; -"-
+If a\ent=ent
 If on TextureBlend tex2,2 Else TextureBlend tex2,0
 PositionEntity p\entity,ex,TerrainY( land,ex,0,ez )+1.5,ez
 Function CreatePlayerPlayer( x#,y#,z# )
@@ -95,13 +112,9 @@ If dist<970 MoveEntity
 If dist<970 MoveEntity man,0,0,.5
 FontHeight()*0,0
 Text 0,FontHeight()*0,"Anim seq: "+AnimSeq( mesh_3ds )
-If fstep > cmot\nsteps then fstep = 1
-if Load_Motion( "Cam.bbm", cmot ) = False then RuntimeError "Error loading file" : End
 RuntimeError "Error loading file"
-if Load_Motion( "Cam.bbm", cmot ) = False then RuntimeError "Error loading file" : End
 cmot.Motion = new motion
 PositionEntity mesh_skybox,EntityX(camera,1),EntityY(camera,1),EntityZ(camera,1)
-If inc>3 Then inc=inc+.12 Else inc=inc+.14
 If os>0 And go=0 And stm2<MilliSecs()
 global sky1
 1,1

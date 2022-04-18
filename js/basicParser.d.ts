@@ -160,27 +160,11 @@ declare namespace ha.parse {
         static readonly TY_BEFORE_STMT: number;
         static readonly TY_NEXT_STMT: number;
         static readonly TY_IF_EXP: number;
-        static readonly TY_IF_EXP_P: number;
-        static readonly TY_IF_EXP_P2: number;
         static readonly TY_IF_THEN: number;
-        static readonly TY_IF_THEN_P: number;
-        static readonly TY_IF_THEN_P2: number;
-        static readonly TY_IF_ELSE_P: number;
-        static readonly TY_IF_ELSE_P2: number;
-        static readonly TY_IF_ELSE_THEN_P: number;
-        static readonly TY_IF_ELSE_THEN_P2: number;
         static readonly TY_ELSE_DEC: number;
         static readonly TY_ELSE_THEN: number;
-        static readonly TY_ELSE_P: number;
-        static readonly TY_ELSE_P2: number;
         static readonly TY_ELSEIF_DEC: number;
         static readonly TY_ELSEIF_THEN: number;
-        static readonly TY_ELSEIF_THEN_P: number;
-        static readonly TY_ELSEIF_THEN_P2: number;
-        static readonly TY_ELSEIF_P: number;
-        static readonly TY_ELSEIF_P2: number;
-        static readonly TY_ELSEIF_ELSE_P: number;
-        static readonly TY_ELSEIF_ELSE_P2: number;
         static readonly TY_MOD_DEC: number;
         static readonly TY_MOD_DEC_M: number;
         static readonly TY_MOD_ISI: number;
@@ -236,13 +220,7 @@ declare namespace ha.parse {
     class IfStmt {
         isPerintah(type: number): boolean;
         ifExp(): boolean;
-        ifExpP(): boolean;
-        ifExpP2(): boolean;
         ifThen(): boolean;
-        ifThenP(): boolean;
-        ifThenP2(): boolean;
-        ifElseThenP(): boolean;
-        ifElseThenP2(): boolean;
         elseIfThen(): boolean;
     }
     export var ifStmt: IfStmt;
@@ -272,6 +250,8 @@ interface ErrorList {
 declare namespace ha.parse {
     class Lexer {
         lexer(): void;
+        getTab(): boolean;
+        getComment(): boolean;
         getString(): boolean;
         getOp(): boolean;
         getNumber(): boolean;

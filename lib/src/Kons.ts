@@ -86,32 +86,32 @@ namespace ha.parse {
         static readonly TY_NEXT_STMT: number = 573;
 
         static readonly TY_IF_EXP: number = 600;
-        static readonly TY_IF_EXP_P: number = 601;
-        static readonly TY_IF_EXP_P2: number = 602;
+        // static readonly TY_IF_EXP_P: number = 601;
+        // static readonly TY_IF_EXP_P2: number = 602;
 
         static readonly TY_IF_THEN: number = 650;
-        static readonly TY_IF_THEN_P: number = 651;
-        static readonly TY_IF_THEN_P2: number = 652;
+        // static readonly TY_IF_THEN_P: number = 651;
+        // static readonly TY_IF_THEN_P2: number = 652;
 
-        static readonly TY_IF_ELSE_P: number = 660;
-        static readonly TY_IF_ELSE_P2: number = 661;
+        // static readonly TY_IF_ELSE_P: number = 660;
+        // static readonly TY_IF_ELSE_P2: number = 661;
 
-        static readonly TY_IF_ELSE_THEN_P: number = 670;
-        static readonly TY_IF_ELSE_THEN_P2: number = 671;
+        // static readonly TY_IF_ELSE_THEN_P: number = 670;
+        // static readonly TY_IF_ELSE_THEN_P2: number = 671;
 
         static readonly TY_ELSE_DEC: number = 700;
         static readonly TY_ELSE_THEN: number = 701;
-        static readonly TY_ELSE_P: number = 702;
-        static readonly TY_ELSE_P2: number = 703;
+        // static readonly TY_ELSE_P: number = 702;
+        // static readonly TY_ELSE_P2: number = 703;
 
         static readonly TY_ELSEIF_DEC: number = 750;
         static readonly TY_ELSEIF_THEN: number = 751;
-        static readonly TY_ELSEIF_THEN_P: number = 752;
-        static readonly TY_ELSEIF_THEN_P2: number = 753;
-        static readonly TY_ELSEIF_P: number = 754;
-        static readonly TY_ELSEIF_P2: number = 755;
-        static readonly TY_ELSEIF_ELSE_P: number = 756;
-        static readonly TY_ELSEIF_ELSE_P2: number = 757;
+        // static readonly TY_ELSEIF_THEN_P: number = 752;
+        // static readonly TY_ELSEIF_THEN_P2: number = 753;
+        // static readonly TY_ELSEIF_P: number = 754;
+        // static readonly TY_ELSEIF_P2: number = 755;
+        // static readonly TY_ELSEIF_ELSE_P: number = 756;
+        // static readonly TY_ELSEIF_ELSE_P2: number = 757;
 
         static readonly TY_MOD_DEC: number = 800;
         static readonly TY_MOD_DEC_M: number = 801;

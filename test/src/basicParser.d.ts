@@ -272,6 +272,8 @@ interface ErrorList {
 declare namespace ha.parse {
     class Lexer {
         lexer(): void;
+        getTab(): boolean;
+        getComment(): boolean;
         getString(): boolean;
         getOp(): boolean;
         getNumber(): boolean;

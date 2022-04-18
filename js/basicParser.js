@@ -198,7 +198,8 @@ var ha;
                 "$",
                 "#",
                 "%",
-                " "
+                " ",
+                "\t",
             ];
             _cmd = [
                 "Graphics3D",
@@ -1129,27 +1130,11 @@ var ha;
             static TY_BEFORE_STMT = 572;
             static TY_NEXT_STMT = 573;
             static TY_IF_EXP = 600;
-            static TY_IF_EXP_P = 601;
-            static TY_IF_EXP_P2 = 602;
             static TY_IF_THEN = 650;
-            static TY_IF_THEN_P = 651;
-            static TY_IF_THEN_P2 = 652;
-            static TY_IF_ELSE_P = 660;
-            static TY_IF_ELSE_P2 = 661;
-            static TY_IF_ELSE_THEN_P = 670;
-            static TY_IF_ELSE_THEN_P2 = 671;
             static TY_ELSE_DEC = 700;
             static TY_ELSE_THEN = 701;
-            static TY_ELSE_P = 702;
-            static TY_ELSE_P2 = 703;
             static TY_ELSEIF_DEC = 750;
             static TY_ELSEIF_THEN = 751;
-            static TY_ELSEIF_THEN_P = 752;
-            static TY_ELSEIF_THEN_P2 = 753;
-            static TY_ELSEIF_P = 754;
-            static TY_ELSEIF_P2 = 755;
-            static TY_ELSEIF_ELSE_P = 756;
-            static TY_ELSEIF_ELSE_P2 = 757;
             static TY_MOD_DEC = 800;
             static TY_MOD_DEC_M = 801;
             static TY_MOD_ISI = 802;
@@ -1229,13 +1214,7 @@ var ha;
                     else if (parse.stmt.forPendek()) { }
                     else if (parse.stmt.forStep()) { }
                     else if (parse.ifStmt.ifExp()) { }
-                    else if (parse.ifStmt.ifExpP()) { }
-                    else if (parse.ifStmt.ifExpP2()) { }
                     else if (parse.ifStmt.ifThen()) { }
-                    else if (parse.ifStmt.ifThenP()) { }
-                    else if (parse.ifStmt.ifThenP2()) { }
-                    else if (parse.ifStmt.ifElseThenP()) { }
-                    else if (parse.ifStmt.ifElseThenP2()) { }
                     else if (parse.ifStmt.elseIfThen()) { }
                     else if (parse.stmt.funcDec()) { }
                     else if (parse.stmt.while2()) { }
@@ -1493,18 +1472,6 @@ var ha;
                             stl: []
                         }
                     },
-                    {
-                        type: parse.Kons.TY_IF_ELSE_P,
-                        aturan: {
-                            nama: 'if stmt else stmt',
-                            kondisi: [
-                                [parse.Kons.TY_IF_EXP_P],
-                                [parse.Kons.TY_ELSE_DEC],
-                            ],
-                            sbl: [],
-                            stl: []
-                        }
-                    },
                 ]);
                 this._aturanStmtAr = this.aturanStmtAr.concat([
                     {
@@ -1732,82 +1699,7 @@ var ha;
                     }
                 }
                 if (ada) {
-                    this.ifExpP();
                     this.ifThen();
-                }
-                return ada;
-            }
-            ifExpP() {
-                let ada = false;
-                function check(t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (t1.type != parse.Kons.TY_IF_EXP)
-                        return false;
-                    if (parse.ifStmt.isPerintah(t2.type) == false)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_IF_EXP_P,
-                            token: [t1, t2]
-                        };
-                        console.log("if EXP p:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.ifExpP2();
-                    this.ifElseThenP();
-                }
-                return ada;
-            }
-            ifExpP2() {
-                let ada = false;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (t1.type != parse.Kons.TY_IF_EXP)
-                        return false;
-                    if (t2.valueLowerCase != ":")
-                        return false;
-                    if (parse.ifStmt.isPerintah(t3.type))
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_IF_EXP_P2,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("if EXP p2:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.ifExpP2();
-                    this.ifElseThenP();
-                    this.ifElseThenP2();
                 }
                 return ada;
             }
@@ -1840,159 +1732,6 @@ var ha;
                     }
                 }
                 if (ada) {
-                    this.ifThenP();
-                }
-                return ada;
-            }
-            ifThenP() {
-                let ada = false;
-                function check(t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (t1.type != parse.Kons.TY_IF_THEN)
-                        return false;
-                    if (!parse.ifStmt.isPerintah(t2.type))
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_IF_THEN_P,
-                            token: [t1, t2]
-                        };
-                        console.log("if perintah:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.ifThenP2();
-                    this.ifElseThenP();
-                }
-                return ada;
-            }
-            ifThenP2() {
-                let ada = false;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (t1.type != parse.Kons.TY_IF_THEN_P)
-                        return false;
-                    if (t2.valueLowerCase != ':')
-                        return false;
-                    if (parse.ifStmt.isPerintah(t3.type) == false)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_IF_THEN_P2,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("if perintah2:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.ifThenP2();
-                }
-                return ada;
-            }
-            ifElseThenP() {
-                let ada = false;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    let t1Ar = [
-                        parse.Kons.TY_IF_THEN_P,
-                        parse.Kons.TY_IF_THEN_P2
-                    ];
-                    if (t1Ar.indexOf(t1.type) < 0)
-                        return false;
-                    if (t2.valueLowerCase != 'else')
-                        return false;
-                    if (parse.ifStmt.isPerintah(t3.type) == false)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_IF_ELSE_THEN_P,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("if else:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.ifElseThenP2();
-                }
-                return ada;
-            }
-            ifElseThenP2() {
-                let ada = false;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (t1.type != parse.Kons.TY_IF_ELSE_THEN_P)
-                        return false;
-                    if (t2.valueLowerCase != ':')
-                        return false;
-                    if (parse.ifStmt.isPerintah(t3.type) == false)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_IF_ELSE_THEN_P2,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("if else P 2:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    this.ifElseThenP2();
                 }
                 return ada;
             }
@@ -2045,6 +1784,8 @@ var ha;
                 while (parse.data.dataStr.length > 0) {
                     if (this.keyWordDouble()) { }
                     else if (this.getString()) { }
+                    else if (this.getComment()) { }
+                    else if (this.getTab()) { }
                     else if (this.getOp()) { }
                     else if (this.getKata()) { }
                     else if (this.getNumber()) { }
@@ -2071,6 +1812,24 @@ var ha;
                     }
                 });
                 console.groupEnd();
+            }
+            getTab() {
+                let char1;
+                char1 = parse.data.dataStr.charAt(0);
+                if (char1 == "\t") {
+                    parse.data.dataStr = parse.data.dataStr.slice(1);
+                    return true;
+                }
+                return false;
+            }
+            getComment() {
+                let char1;
+                char1 = parse.data.dataStr.charAt(0);
+                if (char1 == ";") {
+                    parse.data.dataStr = '';
+                    return true;
+                }
+                return false;
             }
             getString() {
                 let char1;
@@ -2182,6 +1941,8 @@ var ha;
                         }
                         else if ("." == lc) {
                             token.type = parse.Kons.TY_DOT;
+                        }
+                        else if ("\t" == lc) {
                         }
                         parse.data.dataStr = parse.data.dataStr.slice(kata.length);
                         return true;
@@ -3029,9 +2790,6 @@ var ha;
                 else if (token.type == parse.Kons.TY_IF_EXP) {
                     return 'if (' + this.terjemah(token.token[1]) + ") {";
                 }
-                else if (token.type == parse.Kons.TY_IF_THEN_P) {
-                    return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]) + " }";
-                }
                 else if (token.type == parse.Kons.TY_KATA) {
                     if (token.token && token.token.length == 2) {
                         return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
@@ -3109,9 +2867,6 @@ var ha;
                         return token.value;
                     return token.value + " ";
                 }
-                else if (token.type == parse.Kons.TY_IF_ELSE_THEN_P) {
-                    return "} else if " + " (" + this.terjemah(token.token[1]) + ") " + " { ";
-                }
                 else if (token.type == parse.Kons.TY_ELSE_THEN) {
                     return '';
                 }
@@ -3138,13 +2893,7 @@ var ha;
                 else if (token.type == parse.Kons.TY_IF_THEN) {
                     return '';
                 }
-                else if (token.type == parse.Kons.TY_IF_THEN_P2) {
-                    return '';
-                }
                 else if (token.type == parse.Kons.TY_TYPE_NEW_INST) {
-                    return '';
-                }
-                else if (token.type == parse.Kons.TY_IF_EXP_P) {
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_MODIFIER) {

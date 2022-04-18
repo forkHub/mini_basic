@@ -119,7 +119,8 @@ namespace ha.parse {
             "%",
 
             //ignore
-            " "
+            " ",
+            "\t",
         ];
 
         private _cmd: string[] = [

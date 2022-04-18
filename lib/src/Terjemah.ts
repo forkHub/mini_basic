@@ -86,11 +86,11 @@ namespace ha.parse {
                 //if binop then => if binop {
                 return 'if (' + this.terjemah(token.token[1]) + ") {";
             }
-            else if (token.type == Kons.TY_IF_THEN_P) {
-                //if perintah
-                //0  1
-                return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]) + " }";
-            }
+            // else if (token.type == Kons.TY_IF_THEN_P) {
+            //     //if perintah
+            //     //0  1
+            //     return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]) + " }";
+            // }
             else if (token.type == Kons.TY_KATA) {
                 if (token.token && token.token.length == 2) {
                     return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
@@ -178,9 +178,9 @@ namespace ha.parse {
                 if (token.value == ".") return token.value;
                 return token.value + " ";
             }
-            else if (token.type == Kons.TY_IF_ELSE_THEN_P) {
-                return "} else if " + " (" + this.terjemah(token.token[1]) + ") " + " { ";
-            }
+            // else if (token.type == Kons.TY_IF_ELSE_THEN_P) {
+            //     return "} else if " + " (" + this.terjemah(token.token[1]) + ") " + " { ";
+            // }
             else if (token.type == Kons.TY_ELSE_THEN) {
                 //TODO:
                 return '';
@@ -223,17 +223,17 @@ namespace ha.parse {
             //     //TODO:
             //     return '';
             // }
-            else if (token.type == Kons.TY_IF_THEN_P2) {
-                return '';
-            }
+            // else if (token.type == Kons.TY_IF_THEN_P2) {
+            //     return '';
+            // }
             else if (token.type == Kons.TY_TYPE_NEW_INST) {
                 //TODO:
                 return '';
             }
-            else if (token.type == Kons.TY_IF_EXP_P) {
-                //TODO:
-                return '';
-            }
+            // else if (token.type == Kons.TY_IF_EXP_P) {
+            //     //TODO:
+            //     return '';
+            // }
             else if (token.type == Kons.TY_MODIFIER) {
                 //TODO:
                 return '';
