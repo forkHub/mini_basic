@@ -60,6 +60,7 @@ namespace ha.parse {
         }
 
         //stmt colon2
+        //TODO: dihapus
         stmtColon2(): boolean {
             function check(t0: IToken, t1: IToken, t2: IToken): boolean {
                 if (!t1) return false;
@@ -104,6 +105,7 @@ namespace ha.parse {
         }
 
         //stmt colon
+        //TODO: dihapus
         stmtColon(): boolean {
             //STMT COLON
             //STMT [T2]
@@ -111,7 +113,7 @@ namespace ha.parse {
                 if (!t1) return false;
                 if (!t2) return false;
 
-                //TODO: ditambahin
+                //TODO: hapus
                 let t1Ar: number[] = [
                     Kons.TY_PERINTAH
                 ]
@@ -155,6 +157,7 @@ namespace ha.parse {
         }
 
         //stmt biasa
+        //TODO: dihapus
         stmt(): boolean {
             //STMT [T2]
             function check(t1: IToken, t2: IToken): boolean {
@@ -168,10 +171,10 @@ namespace ha.parse {
                     Kons.TY_ELSEIF_THEN
                 ]
 
-                //TODO:
+                //TODO: hapus
                 t1Ar;
 
-                return false; //TODO:
+                return false; //TODO: hapus
             }
 
             let ada: boolean = false;
@@ -448,7 +451,6 @@ namespace ha.parse {
 
         funcDec(): boolean {
 
-            //TODO:
             //function kata ()
             //function kata (arg)
             //function kata (arg2)
@@ -460,7 +462,7 @@ namespace ha.parse {
 
                 if (t1.valueLowerCase != 'function') return false;
                 if (t2.type != Kons.TY_KATA) {
-                    if (t2.type != Kons.TY_KATA_DOT) {
+                    if (t2.type != Kons.TY_KATA_DOT) { //TODO: kata dot dihapus
                         return false;
                     }
                 }
@@ -605,125 +607,6 @@ namespace ha.parse {
 
             return ada;
         }
-
-        //TODO: dihapus karena new sudah ada
-        /*
-        new2(): boolean {
-            for (let i: number = 0; i <= data.barisObj.token.length - 2; i++) {
- 
-                let token1: IToken = data.barisObj.token[i];
-                let token2: IToken = data.barisObj.token[i + 1];
- 
-                if (token1.value && token1.value.toLowerCase() == "new") {
-                    if (token2.type == Kons.TY_KATA || (token2.type == Kons.TY_PANGGIL_FUNGSI)) {
- 
-                        let tokenBaru: IToken = {
-                            token: [token1, token2],
-                            type: Kons.TY_PERINTAH
-                        }
-                        console.log("new:");
-                        console.log(tokenBaru);
- 
-                        data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
- 
-                        return true;
-                    }
-                }
- 
-            }
- 
-            // console.groupEnd();
-            return false;
-        }
-        */
-
-        //TODO: dipindah ke grammar 2
-        /*
-        perintah(): boolean {
- 
-            //kata arg 
-            //kata exp             
-            function check(t0: IToken, t1: IToken, t2: IToken, t3: IToken): boolean {
-                if (!t1) return false;
-                if (!t2) return false;
- 
-                if (t1.type != Kons.TY_KATA) return false;
-                if (t1.valueLowerCase == 'dim') return false;
- 
-                let t2Ar: Number[] = [
-                    Kons.TY_EXP,
-                    Kons.TY_ARG,
-                    Kons.TY_ARG2,
-                    Kons.TY_ARG_KATA,
-                    Kons.TY_ARG_KATA_M
-                ]
- 
-                if (t2Ar.indexOf(t2.type) < 0) {
-                    return false;
-                }
- 
-                // if (!exp.isExp(t2)) {
-                //     if (t2.type != Kons.TY_ARG) {
-                //         if (t2.type != Kons.TY_ARG2) {
-                //             return false;
-                //         }
-                //     }
-                // }
- 
-                //gak boleh didahului exp => contoh belum ada
-                if (t0) {
-                    //     if (t0.type == Kons.TY_EXP) {
-                    //         return false;
-                    //     }
-                }
- 
-                if (t3) {
-                    if (t3.valueLowerCase == '=') return false;
-                    if (t3.type == Kons.TY_OP) return false;
-                    // if (t3.type == Kons.TY_OP2) return false;
-                    if (t3.type == Kons.TY_KOMA) return false;
-                }
- 
-                return true;
-            }
- 
-            let ada: boolean = false;
- 
-            for (let i: number = 0; i < data.barisObj.token.length; i++) {
- 
-                let t0: IToken = parse.getToken(i - 1, data.barisObj.token);
-                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
- 
-                let tokenBaru: IToken;
- 
-                if (check(t0, t1, t2, t3)) {
-                    tokenBaru = {
-                        type: Kons.TY_PERINTAH,
-                        token: [t1, t2]
-                    }
- 
-                    console.log("perintah:");
-                    console.log(parse.tokenToValue(tokenBaru));
- 
-                    // console.log(data.barisObj.token);
-                    // console.log('token baru l: ' + (tokenBaru.token.length - 1));
-                    // console.log('index ' + i);
- 
-                    // console.log('token l-1: ' + data.barisObj.token.length);
- 
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
- 
-                    // console.log('token l-2: ' + data.barisObj.token.length);
- 
-                    ada = true;
-                }
-            }
- 
-            return ada;
-        }
-        */
 
         returnExp(): boolean {
 

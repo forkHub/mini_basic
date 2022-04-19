@@ -97,7 +97,6 @@ namespace ha.parse {
 
                     if (t2.type == Kons.TY_KURUNG_ARG) return false;
                     if (t2.type == Kons.TY_KURUNG_ARG2) return false;
-                    // if (t2.type == Kons.TY_KURUNG_ISI) return false;    //TODO: [ref] dihapus
                     if (t2.type == Kons.TY_KURUNG_KOSONG) return false;
                     if (t2.type == Kons.TY_KURUNG_SINGLE) return false;
                 }
@@ -593,133 +592,7 @@ namespace ha.parse {
             return ada;
         }
 
-        /*
-        binopEq(): boolean {
-            let ada: boolean = false;
-
-            //KATA = EXP
-            function check(t0: IToken, t1: IToken, t2: IToken, t3: IToken, t4: IToken) {
-                if (!t1) return false;
-                if (!t2) return false;
-                if (!t3) return false;
-
-                if (t1.type != Kons.TY_KATA) {
-                    if (t1.type != Kons.TY_EXP) {
-                        if (t1.type != Kons.TY_KATA_DOT) {
-                            return false;
-                        }
-                    }
-                }
-
-                if (t2.valueLowerCase != "=") return false;
-
-                if (t3.type != Kons.TY_EXP) return false;
-
-                //tidak didahului mod
-                if (t0) {
-                    if (t0.valueLowerCase == 'global') return false;
-                    if (t0.valueLowerCase == 'local') return false;
-                    if (t0.valueLowerCase == 'const') return false;
-                    if (t0.valueLowerCase == '\\') return false;
-                }
-
-                if (t4) {
-                    if (t4.type == Kons.TY_OP) return false;
-                    // if (t4.type == Kons.TY_OP2) return false;
-                    if (t4.valueLowerCase == '=') return false;
-                }
-
-                return true;
-            }
-
-            for (let i: number = 0; i < data.barisObj.token.length; i++) {
-
-                let t0: IToken = parse.getToken(i - 1, data.barisObj.token);
-                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
-                let t4: IToken = parse.getToken(i + 3, data.barisObj.token);
-                let tokenBaru: IToken;
-
-                if (check(t0, t1, t2, t3, t4)) {
-                    tokenBaru = {
-                        type: Kons.TY_BINOP_EQ,
-                        token: [t1, t2, t3]
-                    }
-
-                    console.log("binop eq");
-                    console.log(parse.tokenToValue(tokenBaru));
-
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-
-                    ada = true;
-                }
-
-            }
-
-            if (ada) {
-                // this.binopLogic();
-            }
-
-            return ada;
-        }
-        */
-
-        /*
-        binopLogic(): boolean {
-            let ada: boolean = false;
-
-            function check(t0: IToken, t1: IToken, t2: IToken, t3: IToken) {
-
-                if (!t1) return false;
-                if (!t2) return false;
-                if (!t3) return false;
-
-                if (exp.isExpBinopLogic(t1.type) == false) return false;
-                if (t2.type != Kons.TY_OP2) return false;
-                if (exp.isExpBinopLogic(t3.type) == false) return false;
-
-                if (t0) {
-                    if (t0.valueLowerCase == '=') return false;
-                    if (t0.type == Kons.TY_OP) return false;
-                    if (t0.type == Kons.TY_OP2) return false;
-                }
-
-                return true;
-            }
-
-            for (let i: number = 0; i < data.barisObj.token.length; i++) {
-
-                let t0: IToken = parse.getToken(i - 1, data.barisObj.token);
-                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
-                let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
-                let tokenBaru: IToken;
-
-                if (check(t0, t1, t2, t3)) {
-                    tokenBaru = {
-                        type: Kons.TY_BINOP,
-                        token: [t1, t2, t3]
-                    }
-
-                    console.log("binop logik");
-                    console.log(parse.tokenToValue(tokenBaru));
-
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-
-                    ada = true;
-                }
-
-            }
-
-            if (ada) {
-                this.exp();
-            }
-
-            return ada;
-        }
-        */
-
+        //TODO: di check lagi
         not(): boolean {
             let ada: boolean = false;
 

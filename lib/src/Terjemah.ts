@@ -1,6 +1,7 @@
 namespace ha.parse {
     class Terjemah {
 
+        //TODO: dipisah antara exp dan stmt
         terjemah(token: IToken): string {
             console.log("terjemah");
             console.log(token);
@@ -237,14 +238,6 @@ namespace ha.parse {
                 console.log('token type ' + token.type);
                 throw Error();
             }
-        }
-
-        string(token: IToken[]): string {
-            let hasil: string = '';
-            token.forEach((item: IToken) => {
-                hasil += item.value;
-            });
-            return " " + hasil;
         }
 
         wend(token: IToken): string {
