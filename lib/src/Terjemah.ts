@@ -4,14 +4,9 @@ namespace ha.parse {
         terjemah(token: IToken): string {
             console.log("terjemah");
             console.log(token);
-            // let b: boolean = false;
 
             if (false) {
-                return '';
             }
-            // else if (token.type == Kons.TY_VAR_ASSIGNMENT) {
-            //     return this.varAssign(token);
-            // }
             else if (token.type == Kons.TY_ANGKA) {
                 return token.value;
             }
@@ -43,9 +38,6 @@ namespace ha.parse {
                 else if (token.value.toLowerCase() == "mod") {
                     return " % ";
                 }
-                else if (token.value.toLowerCase() == "cls") {
-                    return "Cls()";
-                }
                 else {
                     return token.value;
                 }
@@ -62,7 +54,7 @@ namespace ha.parse {
                 }
             }
             else if (token.type == Kons.TY_TEKS) {
-                return this.string(token.token);
+                return token.value
             }
             else if (token.type == Kons.TY_BARIS) {
                 return '';
@@ -219,21 +211,6 @@ namespace ha.parse {
                 //TODO:
                 return '';
             }
-            // else if (token.type == Kons.TY_BINOP_EQ) {
-            //     //TODO:
-            //     return '';
-            // }
-            // else if (token.type == Kons.TY_IF_THEN_P2) {
-            //     return '';
-            // }
-            // else if (token.type == Kons.TY_TYPE_NEW_INST) {
-            //     //TODO:
-            //     return '';
-            // }
-            // else if (token.type == Kons.TY_IF_EXP_P) {
-            //     //TODO:
-            //     return '';
-            // }
             else if (token.type == Kons.TY_MODIFIER) {
                 //TODO:
                 return '';

@@ -2,23 +2,15 @@ namespace ha.parse {
 	class Blitz {
 
 		init(): void {
-			// data.ignore
 			gm2.init();
 		}
 
 		async parse(str: string): Promise<void> {
-			// let strErr: string;
 			data.dataStr = str;
-
 
 			console.groupCollapsed('parse: ' + str);
 
 			data.dataStr = data.dataStr.trim();
-
-			// let idx: number = data.dataStr.indexOf(';');
-			// if (idx >= 0) {
-			// 	data.dataStr = data.dataStr.slice(0, idx);
-			// }
 
 			while (data.token.length > 0) {
 				data.token.pop();
@@ -30,10 +22,8 @@ namespace ha.parse {
 			if (data.ignore.indexOf(data.barisAktif) >= 0) {
 				console.log('ignore: ' + data.barisAktif);
 				console.groupEnd();
-				// throw Error('');
 				return;
 			}
-			// strErr = data.dataStr;
 
 			lexer.lexer();
 
@@ -44,14 +34,8 @@ namespace ha.parse {
 				token: data.token
 			}
 
-			// console.log('sebelum:');
-			// console.log(data.barisObj);
-
 			grammar.grammar();
 
-
-			// console.log("finish");
-			// console.log(data.barisObj);
 			console.groupEnd();
 		}
 
@@ -112,7 +96,6 @@ namespace ha.parse {
 				console.log(this.tokenToValue(item));
 			})
 			console.groupEnd();
-			// return '';
 		}
 
 	}
@@ -170,21 +153,10 @@ namespace ha.parse {
 			let kiri: IToken[];
 			let kanan: IToken[];
 
-			// console.group('hapus');
-
 			kiri = this.kiri(token, idx);
 			kanan = this.kanan(token, idx);
 
-			// console.log('kiri:');
-			// console.log(kiri);
-			// console.log('kanan:');
-			// console.log(kanan);
-
 			hasil = kiri.concat(kanan);
-
-			// console.log('hasil');
-
-			// console.groupEnd();
 
 			return hasil;
 		}

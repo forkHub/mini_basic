@@ -30,7 +30,6 @@ namespace ha.parse {
                     }
 
                     console.log("case dec:");
-                    // console.log(tokenBaru);
                     console.log(parse.tokenToValue(tokenBaru, true));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
