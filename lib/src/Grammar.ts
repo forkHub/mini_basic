@@ -71,7 +71,7 @@ namespace ha.parse {
                 else if (exp.args(data.barisObj.token)) { }
                 else if (exp.kurungArg2()) { }
                 else if (exp.kurungArg()) { }
-                else if (typeStmt.typeAkses()) { }
+                // else if (typeStmt.typeAkses()) { }
                 else if (gm2.checkLog(gm2.aturanExpAr)) { }
 
                 //STMT
@@ -97,10 +97,10 @@ namespace ha.parse {
                 else if (stmt.while2()) { }
                 // else if (stmt.perintah()) { }
 
-                else if (typeStmt.typeNew()) { }
-                else if (typeStmt.typeDef()) { }
-                else if (typeStmt.fieldDef()) { }
-                else if (typeStmt.typeAkses()) { }
+                // else if (typeStmt.typeNew()) { }
+                // else if (typeStmt.typeDef()) { }
+                // else if (typeStmt.fieldDef()) { }
+                // else if (typeStmt.typeAkses()) { }
                 // else if (typeStmt.()) { }
 
                 else if (stmt.dimDec()) { }

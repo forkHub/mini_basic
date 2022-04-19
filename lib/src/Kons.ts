@@ -71,19 +71,19 @@ namespace ha.parse {
         static readonly TY_DIM_DEC_VAR: number = 403;   //assign dim ke var
         static readonly TY_DIM_PROP_ASSINMENT: number = 404;    //dim(n)\prop = exp|kata
 
-        static readonly TY_TYPE_NEW_INST: number = 500;
-        static readonly TY_TYPE_NEW_DEF: number = 501;
-        static readonly TY_ENDTYPE: number = 502;
-        static readonly TY_TYPE_ACCESS: number = 503;
-        static readonly TY_TYPE_ACCESS_DIM: number = 504;
+        // static readonly TY_TYPE_NEW_INST: number = 500;
+        // static readonly TY_TYPE_NEW_DEF: number = 501;
+        // static readonly TY_ENDTYPE: number = 502;
+        // static readonly TY_TYPE_ACCESS: number = 503;
+        // static readonly TY_TYPE_ACCESS_DIM: number = 504;
 
-        static readonly TY_FIELD_NEW_DEF: number = 520;
-        static readonly TY_FIELD_NEW_DEF_M: number = 545;
+        // static readonly TY_FIELD_NEW_DEF: number = 520;
+        // static readonly TY_FIELD_NEW_DEF_M: number = 545;
 
-        static readonly TY_NEW_INST: number = 570;
-        static readonly TY_DELETE_STMT: number = 571;
-        static readonly TY_BEFORE_STMT: number = 572;
-        static readonly TY_NEXT_STMT: number = 573;
+        // static readonly TY_NEW_INST: number = 570;
+        // static readonly TY_DELETE_STMT: number = 571;
+        // static readonly TY_BEFORE_STMT: number = 572;
+        // static readonly TY_NEXT_STMT: number = 573;
 
         static readonly TY_IF_EXP: number = 600;
         // static readonly TY_IF_EXP_P: number = 601;

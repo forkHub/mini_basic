@@ -226,10 +226,10 @@ namespace ha.parse {
             // else if (token.type == Kons.TY_IF_THEN_P2) {
             //     return '';
             // }
-            else if (token.type == Kons.TY_TYPE_NEW_INST) {
-                //TODO:
-                return '';
-            }
+            // else if (token.type == Kons.TY_TYPE_NEW_INST) {
+            //     //TODO:
+            //     return '';
+            // }
             // else if (token.type == Kons.TY_IF_EXP_P) {
             //     //TODO:
             //     return '';

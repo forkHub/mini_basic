@@ -197,9 +197,10 @@ namespace ha.parse {
 
                     let lc: string = kata.toLowerCase();
 
-                    if ("end type" == lc) {
-                        token.type = Kons.TY_ENDTYPE;
-                    }
+                    // if ("end type" == lc) {
+                    //     token.type = Kons.TY_ENDTYPE;
+                    // }
+                    if (false) { }
                     else if ("end select" == lc) {
                         token.type = Kons.TY_END_SELECT
                     }
@@ -303,9 +304,9 @@ namespace ha.parse {
                 else if ("field" == lc) {
                     token.type = Kons.TY_FIELD;
                 }
-                else if ("end type" == lc) {
-                    token.type = Kons.TY_ENDTYPE;
-                }
+                // else if ("end type" == lc) {
+                //     token.type = Kons.TY_ENDTYPE;
+                // }
                 else if ("each" == lc) {
                     token.type = Kons.TY_EACH;
                 }

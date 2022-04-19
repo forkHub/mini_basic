@@ -142,6 +142,7 @@ namespace ha.parse {
 
         constructor() {
             this.debug();
+            data.ignore.concat(Ignore);
         }
 
         async init(): Promise<void> {

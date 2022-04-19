@@ -2,6 +2,7 @@ namespace ha.parse {
 	class Blitz {
 
 		init(): void {
+			// data.ignore
 			gm2.init();
 		}
 
@@ -25,6 +26,13 @@ namespace ha.parse {
 
 			console.log('str ' + data.dataStr);
 			data.barisAktif = data.dataStr;
+
+			if (data.ignore.indexOf(data.barisAktif) >= 0) {
+				console.log('ignore: ' + data.barisAktif);
+				console.groupEnd();
+				// throw Error('');
+				return;
+			}
 			// strErr = data.dataStr;
 
 			lexer.lexer();

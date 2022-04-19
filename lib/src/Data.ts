@@ -1,10 +1,17 @@
+
 namespace ha.parse {
     class Data {
+
         private _dataStr: string = '';  //baris
         private _token: IToken[] = [];  //daftar token dalam satu baris
         private _barisObj: IBarisObj;   //baris aktif
         private _errList: string[] = [];
         private _barisAktif: string = '';
+        private _ignore: string[] = [];
+
+        public get ignore(): string[] {
+            return this._ignore;
+        }
         public get barisAktif(): string {
             return this._barisAktif;
         }
@@ -163,6 +170,11 @@ namespace ha.parse {
         public set cmd(value: string[]) {
             this._cmd = value;
         }
+
+        constructor() {
+            // this._ignore = Ignore;
+        }
+
     }
 
     class Config {

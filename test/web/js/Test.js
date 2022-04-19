@@ -144,6 +144,7 @@ var ha;
             // ];
             constructor() {
                 this.debug();
+                parse.data.ignore.concat(Ignore);
             }
             async init() {
                 // await aturan.loads(this.aturans);

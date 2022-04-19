@@ -225,7 +225,7 @@ namespace ha.parse {
                     }
                 },
                 {
-                    type: Kons.TY_DELETE_STMT,
+                    // type: Kons.TY_DELETE_STMT,
                     aturan: {
                         nama: 'delete stmt',
                         kondisi: [
@@ -253,68 +253,68 @@ namespace ha.parse {
             ])
 
             //type
-            this._aturanStmtAr = this.aturanStmtAr.concat([
-                {
-                    type: Kons.TY_FIELD_NEW_DEF_M,
-                    aturan: {
-                        nama: 'field def m',
-                        kondisi: [
-                            [Kons.TY_FIELD],
-                            [Kons.TY_ARG, Kons.TY_ARG_KATA_M, Kons.TY_ARG2, Kons.TY_ARG_KATA],
-                        ],
-                        sbl: [],
-                        stl: [Kons.TY_KOMA]
+            // this._aturanStmtAr = this.aturanStmtAr.concat([
+            //     {
+            //         type: Kons.TY_FIELD_NEW_DEF_M,
+            //         aturan: {
+            //             nama: 'field def m',
+            //             kondisi: [
+            //                 [Kons.TY_FIELD],
+            //                 [Kons.TY_ARG, Kons.TY_ARG_KATA_M, Kons.TY_ARG2, Kons.TY_ARG_KATA],
+            //             ],
+            //             sbl: [],
+            //             stl: [Kons.TY_KOMA]
 
-                    }
-                },
-                {
-                    type: Kons.TY_NEW_INST,
-                    aturan: {
-                        nama: 'new',
-                        kondisi: [
-                            [Kons.TY_NEW],
-                            [Kons.TY_KATA],
-                        ],
-                        sbl: [],
-                        stl: []
+            //         }
+            //     },
+            // {
+            //     type: Kons.TY_NEW_INST,
+            //         aturan: {
+            //         nama: 'new',
+            //             kondisi: [
+            //                 [Kons.TY_NEW],
+            //                 [Kons.TY_KATA],
+            //             ],
+            //                 sbl: [],
+            //                     stl: []
 
-                    }
-                },
-                {
-                    type: Kons.TY_TYPE_ACCESS_DIM,
-                    aturan: {
-                        nama: 'dim(n)\\kata',
-                        kondisi: [
-                            [Kons.TY_KATA],
-                            [Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_ARG2],
-                            [Kons.TY_BACK_SLASH],
-                            [Kons.TY_KATA]
-                        ],
-                        sbl: [],
-                        stl: []
+            //     }
+            // },
+            // {
+            //     type: Kons.TY_TYPE_ACCESS_DIM,
+            //         aturan: {
+            //         nama: 'dim(n)\\kata',
+            //             kondisi: [
+            //                 [Kons.TY_KATA],
+            //                 [Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_ARG2],
+            //                 [Kons.TY_BACK_SLASH],
+            //                 [Kons.TY_KATA]
+            //             ],
+            //                 sbl: [],
+            //                     stl: []
 
-                    }
-                },
-                {
-                    type: Kons.TY_DIM_PROP_ASSINMENT,
-                    aturan: {
-                        nama: 'dim(n)\\prop = exp|kata',
-                        kondisi: [
-                            [Kons.TY_TYPE_ACCESS_DIM],
-                            [],
-                            [Kons.TY_EXP, Kons.TY_KATA]
-                        ],
-                        sbl: [],
-                        stl: [
-                            Kons.TY_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M,
-                            Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE,
-                            Kons.TY_KURUNG_BUKA
-                        ]
+            //     }
+            // },
+            // {
+            //     type: Kons.TY_DIM_PROP_ASSINMENT,
+            //         aturan: {
+            //         nama: 'dim(n)\\prop = exp|kata',
+            //             kondisi: [
+            //                 [Kons.TY_TYPE_ACCESS_DIM],
+            //                 [],
+            //                 [Kons.TY_EXP, Kons.TY_KATA]
+            //             ],
+            //                 sbl: [],
+            //                     stl: [
+            //                         Kons.TY_ARG, Kons.TY_ARG2, Kons.TY_ARG_KATA, Kons.TY_ARG_KATA_M,
+            //                         Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE,
+            //                         Kons.TY_KURUNG_BUKA
+            //                     ]
 
-                    }
-                },
+            //     }
+            // },
 
-            ])
+            // ])
 
             //dim
             this._aturanStmtAr = this.aturanStmtAr.concat([

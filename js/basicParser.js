@@ -117,6 +117,10 @@ var ha;
             _barisObj;
             _errList = [];
             _barisAktif = '';
+            _ignore = [];
+            get ignore() {
+                return this._ignore;
+            }
             get barisAktif() {
                 return this._barisAktif;
             }
@@ -232,6 +236,8 @@ var ha;
             }
             set cmd(value) {
                 this._cmd = value;
+            }
+            constructor() {
             }
         }
         class Config {
@@ -459,11 +465,9 @@ var ha;
                         parse.Kons.TY_TEKS,
                         parse.Kons.TY_MIN,
                         parse.Kons.TY_PANGGIL_FUNGSI,
-                        parse.Kons.TY_TYPE_ACCESS,
                         parse.Kons.TY_FALSE,
                         parse.Kons.TY_TRUE,
                         parse.Kons.TY_NULL,
-                        parse.Kons.TY_TYPE_ACCESS_DIM,
                         parse.Kons.TY_DIM_ASSINMENT
                     ];
                     if (ar.indexOf(t1.type) < 0)
@@ -1118,17 +1122,6 @@ var ha;
             static TY_DIM_DEC = 402;
             static TY_DIM_DEC_VAR = 403;
             static TY_DIM_PROP_ASSINMENT = 404;
-            static TY_TYPE_NEW_INST = 500;
-            static TY_TYPE_NEW_DEF = 501;
-            static TY_ENDTYPE = 502;
-            static TY_TYPE_ACCESS = 503;
-            static TY_TYPE_ACCESS_DIM = 504;
-            static TY_FIELD_NEW_DEF = 520;
-            static TY_FIELD_NEW_DEF_M = 545;
-            static TY_NEW_INST = 570;
-            static TY_DELETE_STMT = 571;
-            static TY_BEFORE_STMT = 572;
-            static TY_NEXT_STMT = 573;
             static TY_IF_EXP = 600;
             static TY_IF_THEN = 650;
             static TY_ELSE_DEC = 700;
@@ -1206,7 +1199,6 @@ var ha;
                     else if (parse.exp.args(parse.data.barisObj.token)) { }
                     else if (parse.exp.kurungArg2()) { }
                     else if (parse.exp.kurungArg()) { }
-                    else if (parse.typeStmt.typeAkses()) { }
                     else if (parse.gm2.checkLog(parse.gm2.aturanExpAr)) { }
                     else if (parse.stmt.modifier()) { }
                     else if (parse.stmt.modIsi()) { }
@@ -1218,10 +1210,6 @@ var ha;
                     else if (parse.ifStmt.elseIfThen()) { }
                     else if (parse.stmt.funcDec()) { }
                     else if (parse.stmt.while2()) { }
-                    else if (parse.typeStmt.typeNew()) { }
-                    else if (parse.typeStmt.typeDef()) { }
-                    else if (parse.typeStmt.fieldDef()) { }
-                    else if (parse.typeStmt.typeAkses()) { }
                     else if (parse.stmt.dimDec()) { }
                     else if (parse.stmt.dimAssign()) { }
                     else if (parse.caseStmt.caseDec()) { }
@@ -1449,7 +1437,6 @@ var ha;
                         }
                     },
                     {
-                        type: parse.Kons.TY_DELETE_STMT,
                         aturan: {
                             nama: 'delete stmt',
                             kondisi: [
@@ -1470,63 +1457,6 @@ var ha;
                             ],
                             sbl: [],
                             stl: []
-                        }
-                    },
-                ]);
-                this._aturanStmtAr = this.aturanStmtAr.concat([
-                    {
-                        type: parse.Kons.TY_FIELD_NEW_DEF_M,
-                        aturan: {
-                            nama: 'field def m',
-                            kondisi: [
-                                [parse.Kons.TY_FIELD],
-                                [parse.Kons.TY_ARG, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA],
-                            ],
-                            sbl: [],
-                            stl: [parse.Kons.TY_KOMA]
-                        }
-                    },
-                    {
-                        type: parse.Kons.TY_NEW_INST,
-                        aturan: {
-                            nama: 'new',
-                            kondisi: [
-                                [parse.Kons.TY_NEW],
-                                [parse.Kons.TY_KATA],
-                            ],
-                            sbl: [],
-                            stl: []
-                        }
-                    },
-                    {
-                        type: parse.Kons.TY_TYPE_ACCESS_DIM,
-                        aturan: {
-                            nama: 'dim(n)\\kata',
-                            kondisi: [
-                                [parse.Kons.TY_KATA],
-                                [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_ARG2],
-                                [parse.Kons.TY_BACK_SLASH],
-                                [parse.Kons.TY_KATA]
-                            ],
-                            sbl: [],
-                            stl: []
-                        }
-                    },
-                    {
-                        type: parse.Kons.TY_DIM_PROP_ASSINMENT,
-                        aturan: {
-                            nama: 'dim(n)\\prop = exp|kata',
-                            kondisi: [
-                                [parse.Kons.TY_TYPE_ACCESS_DIM],
-                                [],
-                                [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
-                            ],
-                            sbl: [],
-                            stl: [
-                                parse.Kons.TY_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M,
-                                parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE,
-                                parse.Kons.TY_KURUNG_BUKA
-                            ]
                         }
                     },
                 ]);
@@ -1891,9 +1821,7 @@ var ha;
                             valueLowerCase: kata.toLowerCase()
                         };
                         let lc = kata.toLowerCase();
-                        if ("end type" == lc) {
-                            token.type = parse.Kons.TY_ENDTYPE;
-                        }
+                        if (false) { }
                         else if ("end select" == lc) {
                             token.type = parse.Kons.TY_END_SELECT;
                         }
@@ -1975,9 +1903,6 @@ var ha;
                     }
                     else if ("field" == lc) {
                         token.type = parse.Kons.TY_FIELD;
-                    }
-                    else if ("end type" == lc) {
-                        token.type = parse.Kons.TY_ENDTYPE;
                     }
                     else if ("each" == lc) {
                         token.type = parse.Kons.TY_EACH;
@@ -2086,6 +2011,11 @@ var ha;
                 }
                 console.log('str ' + parse_1.data.dataStr);
                 parse_1.data.barisAktif = parse_1.data.dataStr;
+                if (parse_1.data.ignore.indexOf(parse_1.data.barisAktif) >= 0) {
+                    console.log('ignore: ' + parse_1.data.barisAktif);
+                    console.groupEnd();
+                    return;
+                }
                 parse_1.lexer.lexer();
                 parse_1.data.barisObj = {
                     baris: str,
@@ -2368,11 +2298,6 @@ var ha;
                         return false;
                     if (t3.valueLowerCase != '=')
                         return false;
-                    if (t4.type != parse.Kons.TY_EXP) {
-                        if (t4.type != parse.Kons.TY_NEW_INST) {
-                            return false;
-                        }
-                    }
                     if (t5) {
                         if (t5.type == parse.Kons.TY_KATA)
                             return false;
@@ -2893,9 +2818,6 @@ var ha;
                 else if (token.type == parse.Kons.TY_IF_THEN) {
                     return '';
                 }
-                else if (token.type == parse.Kons.TY_TYPE_NEW_INST) {
-                    return '';
-                }
                 else if (token.type == parse.Kons.TY_MODIFIER) {
                     return '';
                 }
@@ -2955,183 +2877,6 @@ var ha;
             }
         }
         parse.terj = new Terjemah();
-    })(parse = ha.parse || (ha.parse = {}));
-})(ha || (ha = {}));
-var ha;
-(function (ha) {
-    var parse;
-    (function (parse) {
-        class TypeStmt {
-            typeNew() {
-                let ada = false;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (t1.type != parse.Kons.TY_KATA_DOT)
-                        return false;
-                    if (t2.valueLowerCase != "=")
-                        return false;
-                    if (t3.type != parse.Kons.TY_NEW_INST)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_TYPE_NEW_INST,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("type dec");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
-            }
-            typeDef() {
-                let ada = false;
-                function check(t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (t1.valueLowerCase != "type")
-                        return false;
-                    if (t2.type != parse.Kons.TY_KATA)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_TYPE_NEW_DEF,
-                            token: [t1, t2]
-                        };
-                        console.log("type def");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
-            }
-            fieldDef() {
-                let ada = false;
-                function check(t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (t1.valueLowerCase != "field")
-                        return false;
-                    if (t2.type != parse.Kons.TY_KATA)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_FIELD_NEW_DEF,
-                            token: [t1, t2]
-                        };
-                        console.log("field def");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
-            }
-            fieldDefM() {
-                let ada = false;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (t1.type != parse.Kons.TY_TYPE_NEW_DEF)
-                        return false;
-                    if (t2.valueLowerCase != ",")
-                        return false;
-                    if (t2.type != parse.Kons.TY_KATA)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_FIELD_NEW_DEF,
-                            token: [t1, t2]
-                        };
-                        console.log("field def");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
-            }
-            typeAkses() {
-                let ada = false;
-                function check(t1, t2, t3) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (!t3)
-                        return false;
-                    if (t1.type != parse.Kons.TY_KATA)
-                        return false;
-                    if (t2.valueLowerCase != '\\')
-                        return false;
-                    if (t3.type != parse.Kons.TY_KATA)
-                        return false;
-                    return true;
-                }
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    let t3 = parse.parse.getToken(i + 2, parse.data.barisObj.token);
-                    let tokenBaru;
-                    if (check(t1, t2, t3)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_TYPE_ACCESS,
-                            token: [t1, t2, t3]
-                        };
-                        console.log("type access");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                if (ada) {
-                    parse.exp.exp();
-                }
-                return ada;
-            }
-        }
-        parse.typeStmt = new TypeStmt();
     })(parse = ha.parse || (ha.parse = {}));
 })(ha || (ha = {}));
 var ha;

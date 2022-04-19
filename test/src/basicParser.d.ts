@@ -29,6 +29,8 @@ declare namespace ha.parse {
         private _barisObj;
         private _errList;
         private _barisAktif;
+        private _ignore;
+        get ignore(): string[];
         get barisAktif(): string;
         set barisAktif(value: string);
         get errList(): string[];
@@ -51,6 +53,7 @@ declare namespace ha.parse {
         set op(value: string[]);
         get cmd(): string[];
         set cmd(value: string[]);
+        constructor();
     }
     class Config {
         private _awaitFl;
@@ -148,39 +151,12 @@ declare namespace ha.parse {
         static readonly TY_DIM_DEC: number;
         static readonly TY_DIM_DEC_VAR: number;
         static readonly TY_DIM_PROP_ASSINMENT: number;
-        static readonly TY_TYPE_NEW_INST: number;
-        static readonly TY_TYPE_NEW_DEF: number;
-        static readonly TY_ENDTYPE: number;
-        static readonly TY_TYPE_ACCESS: number;
-        static readonly TY_TYPE_ACCESS_DIM: number;
-        static readonly TY_FIELD_NEW_DEF: number;
-        static readonly TY_FIELD_NEW_DEF_M: number;
-        static readonly TY_NEW_INST: number;
-        static readonly TY_DELETE_STMT: number;
-        static readonly TY_BEFORE_STMT: number;
-        static readonly TY_NEXT_STMT: number;
         static readonly TY_IF_EXP: number;
-        static readonly TY_IF_EXP_P: number;
-        static readonly TY_IF_EXP_P2: number;
         static readonly TY_IF_THEN: number;
-        static readonly TY_IF_THEN_P: number;
-        static readonly TY_IF_THEN_P2: number;
-        static readonly TY_IF_ELSE_P: number;
-        static readonly TY_IF_ELSE_P2: number;
-        static readonly TY_IF_ELSE_THEN_P: number;
-        static readonly TY_IF_ELSE_THEN_P2: number;
         static readonly TY_ELSE_DEC: number;
         static readonly TY_ELSE_THEN: number;
-        static readonly TY_ELSE_P: number;
-        static readonly TY_ELSE_P2: number;
         static readonly TY_ELSEIF_DEC: number;
         static readonly TY_ELSEIF_THEN: number;
-        static readonly TY_ELSEIF_THEN_P: number;
-        static readonly TY_ELSEIF_THEN_P2: number;
-        static readonly TY_ELSEIF_P: number;
-        static readonly TY_ELSEIF_P2: number;
-        static readonly TY_ELSEIF_ELSE_P: number;
-        static readonly TY_ELSEIF_ELSE_P2: number;
         static readonly TY_MOD_DEC: number;
         static readonly TY_MOD_DEC_M: number;
         static readonly TY_MOD_ISI: number;
@@ -236,13 +212,7 @@ declare namespace ha.parse {
     class IfStmt {
         isPerintah(type: number): boolean;
         ifExp(): boolean;
-        ifExpP(): boolean;
-        ifExpP2(): boolean;
         ifThen(): boolean;
-        ifThenP(): boolean;
-        ifThenP2(): boolean;
-        ifElseThenP(): boolean;
-        ifElseThenP2(): boolean;
         elseIfThen(): boolean;
     }
     export var ifStmt: IfStmt;
@@ -333,17 +303,6 @@ declare namespace ha.parse {
         varAssign(token: IToken): string;
     }
     export var terj: Terjemah;
-    export {};
-}
-declare namespace ha.parse {
-    class TypeStmt {
-        typeNew(): boolean;
-        typeDef(): boolean;
-        fieldDef(): boolean;
-        fieldDefM(): boolean;
-        typeAkses(): boolean;
-    }
-    export var typeStmt: TypeStmt;
     export {};
 }
 declare namespace ha.comp {

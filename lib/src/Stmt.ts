@@ -225,11 +225,11 @@ namespace ha.parse {
                 if (t3.valueLowerCase != '=') return false;
 
                 //t4 exp
-                if (t4.type != Kons.TY_EXP) {
-                    if (t4.type != Kons.TY_NEW_INST) {
-                        return false;
-                    }
-                }
+                // if (t4.type != Kons.TY_EXP) {
+                //     if (t4.type != Kons.TY_NEW_INST) {
+                //         return false;
+                //     }
+                // }
 
                 if (t5) {
                     if (t5.type == Kons.TY_KATA) return false;

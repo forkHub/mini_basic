@@ -225,11 +225,11 @@ namespace ha.parse {
                     Kons.TY_TEKS,
                     Kons.TY_MIN,
                     Kons.TY_PANGGIL_FUNGSI,
-                    Kons.TY_TYPE_ACCESS,
+                    // Kons.TY_TYPE_ACCESS,
                     Kons.TY_FALSE,
                     Kons.TY_TRUE,
                     Kons.TY_NULL,
-                    Kons.TY_TYPE_ACCESS_DIM,
+                    // Kons.TY_TYPE_ACCESS_DIM,
                     Kons.TY_DIM_ASSINMENT
                 ];
 
