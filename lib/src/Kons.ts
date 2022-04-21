@@ -3,7 +3,6 @@ namespace ha.parse {
         //literal
         static readonly TY_ANGKA: number = 1;
         static readonly TY_KATA: number = 2;
-        static readonly TY_BARIS: number = 3;
         static readonly TY_TEKS: number = 4;
         static readonly TY_RES_WORD: number = 5;
         static readonly TY_OP: number = 6;
@@ -30,6 +29,7 @@ namespace ha.parse {
         static readonly TY_LAST: number = 29;
         static readonly TY_ELSE_IF: number = 30;
         static readonly TY_ELSE: number = 31;
+        static readonly TY_RETURN: number = 32;
 
         static readonly TY_ARG: number = 100;
         static readonly TY_ARG2: number = 101;
@@ -59,9 +59,8 @@ namespace ha.parse {
         //stmt
         static readonly TY_FOR_DEC: number = 305;
         static readonly TY_FOR_STEP: number = 306;
-        static readonly TY_WEND: number = 307;
+        static readonly TY_WEND_STMT: number = 307;
         static readonly TY_FUNC_DEC: number = 308;
-        static readonly TY_RETURN: number = 310;
         static readonly TY_RETURN_EXP: number = 311;
         static readonly TY_FOR_EACH: number = 312;
 

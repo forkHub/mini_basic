@@ -73,9 +73,9 @@ namespace ha.parse {
                 else if (stmt.dimAssign()) { }
                 else if (caseStmt.caseDec()) { }
                 else if (caseStmt.selectDec()) { }
-                else if (stmt.stmtColon()) { }
-                else if (stmt.stmtColon2()) { }
-                else if (stmt.stmtMul()) { }
+                // else if (stmt.stmtColon()) { }
+                // else if (stmt.stmtColon2()) { }
+                // else if (stmt.stmtMul()) { }
                 else if (gm2.checkLog(gm2.aturanStmtAr)) { }
 
                 else if (data.barisObj.token.length > 1) {

@@ -5,157 +5,6 @@ namespace ha.parse {
             return false;
         }
 
-
-        stmtMul(): boolean {
-
-            //STMT_COL STMT
-            function check(t0: IToken, t1: IToken, t2: IToken): boolean {
-                if (!t1) return false;
-                if (!t2) return false;
-
-                if (t1.type != Kons.TY_STMT_COLON) return false;
-
-                let t2Ar: number[] = [
-                    Kons.TY_STMT,
-                    Kons.TY_PERINTAH
-                ]
-
-                if (t2Ar.indexOf(t2.type) < 0) return false;
-
-                if (t0) {
-                    if (t0.type == Kons.TY_COLON) return false;
-                }
-
-
-
-                return true;
-            }
-
-            let ada: boolean = false;
-
-            for (let i: number = 0; i < data.barisObj.token.length; i++) {
-
-                let t0: IToken = parse.getToken(i - 1, data.barisObj.token);
-                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
-
-                if (check(t0, t1, t2)) {
-                    let tokenBaru: IToken;
-
-                    tokenBaru = {
-                        type: Kons.TY_STMT_M,
-                        token: [t1, t2]
-                    }
-
-                    console.log("stmt mul");
-                    console.log(parse.tokenToValue(tokenBaru));
-
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-
-                    ada = true;
-                }
-            }
-
-            return ada;
-        }
-
-        //stmt colon2
-        //TODO: dihapus
-        stmtColon2(): boolean {
-            function check(t0: IToken, t1: IToken, t2: IToken): boolean {
-                if (!t1) return false;
-                if (!t2) return false;
-
-                if (t1.type != Kons.TY_STMT_M) return false;
-                if (t2.type != Kons.TY_COLON) return false;
-
-                if (t0) {
-                    if (t0.type == Kons.TY_COLON) return false;
-                }
-
-                return true;
-            }
-
-            let ada: boolean = false;
-
-            for (let i: number = 0; i < data.barisObj.token.length; i++) {
-
-                let t0: IToken = parse.getToken(i - 1, data.barisObj.token);
-                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
-
-                if (check(t0, t1, t2)) {
-                    let tokenBaru: IToken;
-
-                    tokenBaru = {
-                        type: Kons.TY_STMT_COLON,
-                        token: [t1, t2]
-                    }
-
-                    console.log("stmt colon");
-                    console.log(parse.tokenToValue(tokenBaru));
-
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-
-                    ada = true;
-                }
-            }
-
-            return ada;
-        }
-
-        //stmt colon
-        //TODO: dihapus
-        stmtColon(): boolean {
-            //STMT COLON
-            //STMT [T2]
-            function check(t0: IToken, t1: IToken, t2: IToken): boolean {
-                if (!t1) return false;
-                if (!t2) return false;
-
-                //TODO: hapus
-                let t1Ar: number[] = [
-                    Kons.TY_PERINTAH
-                ]
-
-                if (t1Ar.indexOf(t1.type) < 0) return false;
-                if (t2.type != Kons.TY_COLON) return false;
-
-                if (t0) {
-                    if (t0.type == Kons.TY_COLON) return false;
-                }
-
-                return true;
-            }
-
-            let ada: boolean = false;
-
-            for (let i: number = 0; i < data.barisObj.token.length; i++) {
-
-                let t0: IToken = parse.getToken(i - 1, data.barisObj.token);
-                let t1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let t2: IToken = parse.getToken(i + 1, data.barisObj.token);
-
-                if (check(t0, t1, t2)) {
-                    let tokenBaru: IToken;
-
-                    tokenBaru = {
-                        type: Kons.TY_STMT_COLON,
-                        token: [t1, t2]
-                    }
-
-                    console.log("stmt colon");
-                    console.log(parse.tokenToValue(tokenBaru));
-
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-
-                    ada = true;
-                }
-            }
-
-            return ada;
-        }
-
         //stmt biasa
         //TODO: dihapus
         stmt(): boolean {
@@ -616,7 +465,11 @@ namespace ha.parse {
                 if (!t2) return false;
 
                 if (t1.type != Kons.TY_RETURN) return false;
-                if (t2.type != Kons.TY_EXP) return false;
+                if (t2.type != Kons.TY_EXP) {
+                    if (t2.type != Kons.TY_KATA) {
+                        return false;
+                    }
+                }
 
                 return true;
             }
@@ -648,6 +501,7 @@ namespace ha.parse {
             return ada;
         }
 
+        //TODO: refaktor
         while2(): boolean {
             let ada: boolean = false;
 
@@ -661,7 +515,7 @@ namespace ha.parse {
 
                 if (check(token1, token2, token3)) {
                     tokenBaru = {
-                        type: Kons.TY_WEND,
+                        type: Kons.TY_WEND_STMT,
                         token: [token1, token2]
                     }
 
