@@ -1,4 +1,5 @@
 "use strict";
+///<reference path="Ingore.ts"/>
 var ha;
 (function (ha) {
     var parse;
@@ -139,22 +140,41 @@ var ha;
                 ".\\data\\data\\samples\\RobCummings\\Bumpy\\bumpyfun.bb",
                 ".\\data\\data\\tutorials\\GCUK_Tuts\\camera.bb",
             ];
-            // private aturans: string[] = [
-            //     "\\data\\data\\aturan\\exp.json"
-            // ];
             constructor() {
                 this.debug();
-                parse.data.ignore.concat(Ignore);
+                while (parse.data.ignore.length > 0) {
+                    parse.data.ignore.pop();
+                }
+                let ar = parse.data.ignore.concat(Ignore);
+                ar.forEach((item) => {
+                    parse.data.ignore.push(item);
+                });
+                console.log("data ignore " + parse.data.ignore.length);
             }
             async init() {
-                // await aturan.loads(this.aturans);
-                // gm2.aturanAr.concat(aturan.daftar);
+                parse.data.jmlIgnore = 0;
+                parse.data.errGakIgnore = true;
+                parse.data.errBaru = [];
                 await this.load2();
             }
+            mapIgnore() {
+                let ignore2 = [];
+                for (let i = 0; i < Ignore.length; i++) {
+                    let str = Ignore[i];
+                    if (ignore2.indexOf(str) < 0) {
+                        ignore2.push(str);
+                    }
+                }
+                while (parse.data.ignore.length > 0) {
+                    parse.data.ignore.pop();
+                }
+                ignore2.forEach((item) => {
+                    parse.data.ignore.push(item);
+                });
+                console.log('data ignore 2 length: ' + parse.data.ignore.length);
+                console.log(JSON.stringify(parse.data.ignore));
+            }
             debug() {
-                // this.files = [
-                //     ".\\data\\data\\testSingle.txt"
-                // ];
             }
             async parse(file) {
                 let hsl = await ha.comp.Util.Ajax2('get', file + "?rand=" + Math.floor(Math.random() * 1000), '');
@@ -173,16 +193,19 @@ var ha;
                         await this.parse(file);
                     }
                     catch (e) {
-                        // data.errList.push(data.dataStr);
                         console.log('file: ' + file);
                         console.error(e);
+                        throw Error();
                         break;
                     }
                 }
                 console.log('jml err ' + parse.data.errList.length);
-                if (parse.data.errList.length > 0) {
-                    console.log(JSON.stringify(parse.data.errList));
-                }
+                console.log('jml ignore ' + parse.data.jmlIgnore);
+                console.groupCollapsed('error baru:');
+                parse.data.errBaru.forEach((item) => {
+                    console.log(item);
+                });
+                console.groupEnd();
             }
         }
         parse.test = new Test();

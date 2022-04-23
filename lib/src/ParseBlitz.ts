@@ -21,6 +21,7 @@ namespace ha.parse {
 
 			if (data.ignore.indexOf(data.barisAktif) >= 0) {
 				console.log('ignore: ' + data.barisAktif);
+				data.jmlIgnore++;
 				console.groupEnd();
 				return;
 			}
@@ -35,6 +36,10 @@ namespace ha.parse {
 			}
 
 			grammar.grammar();
+
+			console.groupCollapsed("terjemah");
+			terj.terjemah(data.barisObj.token[0]);
+			console.groupEnd();
 
 			console.groupEnd();
 		}

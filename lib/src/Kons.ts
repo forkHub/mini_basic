@@ -7,6 +7,8 @@ namespace ha.parse {
         static readonly TY_RES_WORD: number = 5;
         static readonly TY_OP: number = 6;
         static readonly TY_SYMBOL: number = 8;
+
+        //kons
         static readonly TY_TRUE: number = 9;
         static readonly TY_FALSE: number = 10;
         static readonly TY_NULL: number = 11;
@@ -30,11 +32,12 @@ namespace ha.parse {
         static readonly TY_ELSE_IF: number = 30;
         static readonly TY_ELSE: number = 31;
         static readonly TY_RETURN: number = 32;
+        static readonly TY_NOT: number = 33;
 
         static readonly TY_ARG: number = 100;
         static readonly TY_ARG2: number = 101;
-        static readonly TY_ARG_KATA: number = 102;
-        static readonly TY_ARG_KATA_M: number = 103;
+        // static readonly TY_ARG_KATA: number = 102;
+        // static readonly TY_ARG_KATA_M: number = 103;
 
         static readonly TY_KURUNG_KOSONG: number = 153;
         static readonly TY_KURUNG_SINGLE: number = 155;
@@ -70,52 +73,17 @@ namespace ha.parse {
         static readonly TY_DIM_DEC_VAR: number = 403;   //assign dim ke var
         static readonly TY_DIM_PROP_ASSINMENT: number = 404;    //dim(n)\prop = exp|kata
 
-        // static readonly TY_TYPE_NEW_INST: number = 500;
-        // static readonly TY_TYPE_NEW_DEF: number = 501;
-        // static readonly TY_ENDTYPE: number = 502;
-        // static readonly TY_TYPE_ACCESS: number = 503;
-        // static readonly TY_TYPE_ACCESS_DIM: number = 504;
-
-        // static readonly TY_FIELD_NEW_DEF: number = 520;
-        // static readonly TY_FIELD_NEW_DEF_M: number = 545;
-
-        // static readonly TY_NEW_INST: number = 570;
-        // static readonly TY_DELETE_STMT: number = 571;
-        // static readonly TY_BEFORE_STMT: number = 572;
-        // static readonly TY_NEXT_STMT: number = 573;
-
         static readonly TY_IF_EXP: number = 600;
-        // static readonly TY_IF_EXP_P: number = 601;
-        // static readonly TY_IF_EXP_P2: number = 602;
-
         static readonly TY_IF_THEN: number = 650;
-        // static readonly TY_IF_THEN_P: number = 651;
-        // static readonly TY_IF_THEN_P2: number = 652;
-
-        // static readonly TY_IF_ELSE_P: number = 660;
-        // static readonly TY_IF_ELSE_P2: number = 661;
-
-        // static readonly TY_IF_ELSE_THEN_P: number = 670;
-        // static readonly TY_IF_ELSE_THEN_P2: number = 671;
 
         static readonly TY_ELSE_DEC: number = 700;
         static readonly TY_ELSE_THEN: number = 701;
-        // static readonly TY_ELSE_P: number = 702;
-        // static readonly TY_ELSE_P2: number = 703;
 
         static readonly TY_ELSEIF_DEC: number = 750;
         static readonly TY_ELSEIF_THEN: number = 751;
-        // static readonly TY_ELSEIF_THEN_P: number = 752;
-        // static readonly TY_ELSEIF_THEN_P2: number = 753;
-        // static readonly TY_ELSEIF_P: number = 754;
-        // static readonly TY_ELSEIF_P2: number = 755;
-        // static readonly TY_ELSEIF_ELSE_P: number = 756;
-        // static readonly TY_ELSEIF_ELSE_P2: number = 757;
 
         static readonly TY_MOD_DEC: number = 800;
-        static readonly TY_MOD_DEC_M: number = 801;
         static readonly TY_MOD_ISI: number = 802;
-        static readonly TY_MOD_ISI_M: number = 803;
 
         static readonly TY_CASE: number = 900;
         static readonly TY_SELECT: number = 910;

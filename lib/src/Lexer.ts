@@ -304,9 +304,6 @@ namespace ha.parse {
                 else if ("field" == lc) {
                     token.type = Kons.TY_FIELD;
                 }
-                // else if ("end type" == lc) {
-                //     token.type = Kons.TY_ENDTYPE;
-                // }
                 else if ("each" == lc) {
                     token.type = Kons.TY_EACH;
                 }
@@ -340,21 +337,6 @@ namespace ha.parse {
                 else if ("new" == lc) {
                     token.type = Kons.TY_NEW
                 }
-                else if ("and" == lc) {
-                    token.type = Kons.TY_OP
-                }
-                else if ("or" == lc) {
-                    token.type = Kons.TY_OP
-                }
-                else if ("xor" == lc) {
-                    token.type = Kons.TY_OP
-                }
-                else if ("mod" == lc) {
-                    token.type = Kons.TY_OP
-                }
-                else if ("not" == lc) {
-                    token.type = Kons.TY_OP
-                }
                 else if ("until" == lc) {
                     token.type = Kons.TY_UNTIL
                 }
@@ -376,8 +358,30 @@ namespace ha.parse {
                 else if ("else" == lc) {
                     token.type = Kons.TY_ELSE
                 }
+
+                //operator
+                else if ("and" == lc) {
+                    token.type = Kons.TY_OP
+                }
+                else if ("or" == lc) {
+                    token.type = Kons.TY_OP
+                }
+                else if ("xor" == lc) {
+                    token.type = Kons.TY_OP
+                }
+                else if ("mod" == lc) {
+                    token.type = Kons.TY_OP
+                }
+                else if ("not" == lc) {
+                    token.type = Kons.TY_NOT
+                }
+                else if ("shl" == lc) {
+                    token.type = Kons.TY_NOT
+                }
+                else if ("shr" == lc) {
+                    token.type = Kons.TY_NOT
+                }
                 else {
-                    //console.warn("kata belum didefinisikan: " + lc);
                 }
 
                 return true;

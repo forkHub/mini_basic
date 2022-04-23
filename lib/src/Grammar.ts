@@ -48,7 +48,7 @@ namespace ha.parse {
                 else if (exp.panggilfungsiArg()) { }
                 else if (exp.min()) { }
                 else if (exp.binop()) { }
-                else if (exp.not()) { }
+                // else if (exp.not()) { }
                 else if (exp.arg2()) { }
                 else if (exp.args(data.barisObj.token)) { }
                 else if (exp.kurungArg2()) { }
@@ -84,8 +84,16 @@ namespace ha.parse {
                     data.barisObj.token.forEach((token: IToken) => {
                         console.log(parse.tokenToValue(token));
                     })
+
+                    if (data.ignore.indexOf(data.barisAktif) < 0) {
+                        if (data.errGakIgnore) {
+                            throw Error();
+                        }
+                    }
+
                     data.errList.push(data.barisAktif);
                     console.groupEnd();
+
                     return;
                 }
             }

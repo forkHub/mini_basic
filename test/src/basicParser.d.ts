@@ -7,14 +7,6 @@ declare namespace ha.parse {
     export {};
 }
 declare namespace ha.parse {
-    class Baris {
-        getLine(token: IToken[]): string;
-        getLineBreak(idx: number): number;
-    }
-    export var baris: Baris;
-    export {};
-}
-declare namespace ha.parse {
     class CaseStmt {
         caseDec(): boolean;
         selectDec(): boolean;
@@ -30,6 +22,15 @@ declare namespace ha.parse {
         private _errList;
         private _barisAktif;
         private _ignore;
+        private _jmlIgnore;
+        private _errGakIgnore;
+        private _errBaru;
+        get errBaru(): string[];
+        set errBaru(value: string[]);
+        get errGakIgnore(): boolean;
+        set errGakIgnore(value: boolean);
+        get jmlIgnore(): number;
+        set jmlIgnore(value: number);
         get ignore(): string[];
         get barisAktif(): string;
         set barisAktif(value: string);
@@ -79,7 +80,6 @@ declare namespace ha.parse {
         kurungArg2(): boolean;
         kurungArg(): boolean;
         binop(): boolean;
-        not(): boolean;
         min(): boolean;
         arg2(): boolean;
         args(token: IToken[]): boolean;
@@ -94,7 +94,6 @@ declare namespace ha.parse {
     class Kons {
         static readonly TY_ANGKA: number;
         static readonly TY_KATA: number;
-        static readonly TY_BARIS: number;
         static readonly TY_TEKS: number;
         static readonly TY_RES_WORD: number;
         static readonly TY_OP: number;
@@ -121,10 +120,10 @@ declare namespace ha.parse {
         static readonly TY_LAST: number;
         static readonly TY_ELSE_IF: number;
         static readonly TY_ELSE: number;
+        static readonly TY_RETURN: number;
+        static readonly TY_NOT: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
-        static readonly TY_ARG_KATA: number;
-        static readonly TY_ARG_KATA_M: number;
         static readonly TY_KURUNG_KOSONG: number;
         static readonly TY_KURUNG_SINGLE: number;
         static readonly TY_KURUNG_ARG: number;
@@ -141,9 +140,8 @@ declare namespace ha.parse {
         static readonly TY_LABEL: number;
         static readonly TY_FOR_DEC: number;
         static readonly TY_FOR_STEP: number;
-        static readonly TY_WEND: number;
+        static readonly TY_WEND_STMT: number;
         static readonly TY_FUNC_DEC: number;
-        static readonly TY_RETURN: number;
         static readonly TY_RETURN_EXP: number;
         static readonly TY_FOR_EACH: number;
         static readonly TY_DIM: number;
@@ -158,9 +156,7 @@ declare namespace ha.parse {
         static readonly TY_ELSEIF_DEC: number;
         static readonly TY_ELSEIF_THEN: number;
         static readonly TY_MOD_DEC: number;
-        static readonly TY_MOD_DEC_M: number;
         static readonly TY_MOD_ISI: number;
-        static readonly TY_MOD_ISI_M: number;
         static readonly TY_CASE: number;
         static readonly TY_SELECT: number;
         static readonly TY_END_SELECT: number;
@@ -278,9 +274,6 @@ declare namespace ha.parse {
 declare namespace ha.parse {
     class Stmt {
         Baru(): boolean;
-        stmtMul(): boolean;
-        stmtColon2(): boolean;
-        stmtColon(): boolean;
         stmt(): boolean;
         dimAssign(): boolean;
         dimDec(): boolean;
@@ -296,11 +289,20 @@ declare namespace ha.parse {
     export {};
 }
 declare namespace ha.parse {
+    class TerjExp {
+    }
+}
+declare namespace ha.parse {
     class Terjemah {
+        private flDim;
+        private flBinopExp;
         terjemah(token: IToken): string;
-        string(token: IToken[]): string;
-        wend(token: IToken): string;
-        varAssign(token: IToken): string;
+        exp(token: IToken): string;
+        stmt(token: IToken): string;
+        langsung(token: IToken): string;
+        kurungKotak(token: IToken): string;
+        kurung(token: IToken): string;
+        fungsi(token: IToken): string;
     }
     export var terj: Terjemah;
     export {};
@@ -394,7 +396,6 @@ declare namespace ha.comp {
         static getUrl(url: string, params: any[]): string;
         static AjaxLogin(type: string, urlServer: string, dataStr: string, loginUrl: string, pf?: (p: ProgressEvent) => void): Promise<XMLHttpRequest>;
         static Ajax2(type: string, url: string, dataStr: string, pf?: (p: ProgressEvent) => void): Promise<string>;
-        static sql(query: string): Promise<any[]>;
         static Ajax(type: string, url: string, dataStr: string, pf?: (p: ProgressEvent) => void): Promise<XMLHttpRequest>;
     }
 }

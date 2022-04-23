@@ -16,30 +16,6 @@ var ha;
 (function (ha) {
     var parse;
     (function (parse) {
-        class Baris {
-            getLine(token) {
-                let str = '';
-                token.forEach((token) => {
-                    str += token.value;
-                });
-                return str;
-            }
-            getLineBreak(idx) {
-                for (let i = idx; i < parse.data.token.length; i++) {
-                    if (parse.data.token[i].type == parse.Kons.TY_BARIS) {
-                        return i;
-                    }
-                }
-                return -1;
-            }
-        }
-        parse.baris = new Baris();
-    })(parse = ha.parse || (ha.parse = {}));
-})(ha || (ha = {}));
-var ha;
-(function (ha) {
-    var parse;
-    (function (parse) {
         class CaseStmt {
             caseDec() {
                 let ada = false;
@@ -118,6 +94,27 @@ var ha;
             _errList = [];
             _barisAktif = '';
             _ignore = [];
+            _jmlIgnore = 0;
+            _errGakIgnore = false;
+            _errBaru = [];
+            get errBaru() {
+                return this._errBaru;
+            }
+            set errBaru(value) {
+                this._errBaru = value;
+            }
+            get errGakIgnore() {
+                return this._errGakIgnore;
+            }
+            set errGakIgnore(value) {
+                this._errGakIgnore = value;
+            }
+            get jmlIgnore() {
+                return this._jmlIgnore;
+            }
+            set jmlIgnore(value) {
+                this._jmlIgnore = value;
+            }
             get ignore() {
                 return this._ignore;
             }
@@ -178,7 +175,7 @@ var ha;
                 "!=",
                 "&&",
                 "||",
-                "="
+                "=",
             ];
             _symbol = [
                 '"',
@@ -331,8 +328,6 @@ var ha;
                         parse.Kons.TY_ANGKA,
                         parse.Kons.TY_PANGGIL_FUNGSI,
                         parse.Kons.TY_BINOP,
-                        parse.Kons.TY_ARG_KATA,
-                        parse.Kons.TY_ARG_KATA_M,
                         parse.Kons.TY_NEW
                     ];
                     if (t2) {
@@ -641,9 +636,7 @@ var ha;
                     if (t3.valueLowerCase != ')')
                         return false;
                     if (t2.type != parse.Kons.TY_ARG2) {
-                        if (t2.type != parse.Kons.TY_ARG_KATA) {
-                            return false;
-                        }
+                        return false;
                     }
                     return true;
                 }
@@ -680,9 +673,7 @@ var ha;
                     if (t3.valueLowerCase != ')')
                         return false;
                     if (t2.type != parse.Kons.TY_ARG) {
-                        if (t2.type != parse.Kons.TY_ARG_KATA_M) {
-                            return false;
-                        }
+                        return false;
                     }
                     return true;
                 }
@@ -742,38 +733,6 @@ var ha;
                     this.exp();
                 }
                 return ada;
-            }
-            not() {
-                let ada = false;
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let token1 = parse.data.barisObj.token[i];
-                    let token2 = parse.data.barisObj.token[i + 1];
-                    let tokenBaru;
-                    if (check(token1, token2)) {
-                        tokenBaru = {
-                            type: parse.Kons.TY_BINOP,
-                            token: [token1, token2]
-                        };
-                        console.log("binop not:");
-                        console.log(tokenBaru);
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
-                function check(t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (t1.type != parse.Kons.TY_OP)
-                        return false;
-                    if (t1.value.toLowerCase() != "not")
-                        return false;
-                    if (!parse.exp.isExp(t2))
-                        return false;
-                    return true;
-                }
             }
             min() {
                 let ada = false;
@@ -1065,7 +1024,6 @@ var ha;
         class Kons {
             static TY_ANGKA = 1;
             static TY_KATA = 2;
-            static TY_BARIS = 3;
             static TY_TEKS = 4;
             static TY_RES_WORD = 5;
             static TY_OP = 6;
@@ -1092,10 +1050,10 @@ var ha;
             static TY_LAST = 29;
             static TY_ELSE_IF = 30;
             static TY_ELSE = 31;
+            static TY_RETURN = 32;
+            static TY_NOT = 33;
             static TY_ARG = 100;
             static TY_ARG2 = 101;
-            static TY_ARG_KATA = 102;
-            static TY_ARG_KATA_M = 103;
             static TY_KURUNG_KOSONG = 153;
             static TY_KURUNG_SINGLE = 155;
             static TY_KURUNG_ARG = 156;
@@ -1112,9 +1070,8 @@ var ha;
             static TY_LABEL = 304;
             static TY_FOR_DEC = 305;
             static TY_FOR_STEP = 306;
-            static TY_WEND = 307;
+            static TY_WEND_STMT = 307;
             static TY_FUNC_DEC = 308;
-            static TY_RETURN = 310;
             static TY_RETURN_EXP = 311;
             static TY_FOR_EACH = 312;
             static TY_DIM = 400;
@@ -1129,9 +1086,7 @@ var ha;
             static TY_ELSEIF_DEC = 750;
             static TY_ELSEIF_THEN = 751;
             static TY_MOD_DEC = 800;
-            static TY_MOD_DEC_M = 801;
             static TY_MOD_ISI = 802;
-            static TY_MOD_ISI_M = 803;
             static TY_CASE = 900;
             static TY_SELECT = 910;
             static TY_END_SELECT = 920;
@@ -1146,21 +1101,7 @@ var ha;
 (function (ha) {
     var parse;
     (function (parse) {
-        parse.aturanExp = [
-            {
-                type: parse.Kons.TY_BINOP,
-                aturan: {
-                    nama: 'binop baru',
-                    kondisi: [
-                        [parse.Kons.TY_KATA, parse.Kons.TY_EXP, parse.Kons.TY_KATA_DOT],
-                        [parse.Kons.TY_OP],
-                        [parse.Kons.TY_KATA, parse.Kons.TY_EXP]
-                    ],
-                    sbl: [parse.Kons.TY_MODIFIER, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH],
-                    stl: [parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE]
-                }
-            }
-        ];
+        parse.aturanExp = [];
     })(parse = ha.parse || (ha.parse = {}));
 })(ha || (ha = {}));
 var ha;
@@ -1194,7 +1135,6 @@ var ha;
                     else if (parse.exp.panggilfungsiArg()) { }
                     else if (parse.exp.min()) { }
                     else if (parse.exp.binop()) { }
-                    else if (parse.exp.not()) { }
                     else if (parse.exp.arg2()) { }
                     else if (parse.exp.args(parse.data.barisObj.token)) { }
                     else if (parse.exp.kurungArg2()) { }
@@ -1214,9 +1154,6 @@ var ha;
                     else if (parse.stmt.dimAssign()) { }
                     else if (parse.caseStmt.caseDec()) { }
                     else if (parse.caseStmt.selectDec()) { }
-                    else if (parse.stmt.stmtColon()) { }
-                    else if (parse.stmt.stmtColon2()) { }
-                    else if (parse.stmt.stmtMul()) { }
                     else if (parse.gm2.checkLog(parse.gm2.aturanStmtAr)) { }
                     else if (parse.data.barisObj.token.length > 1) {
                         console.log("error:");
@@ -1224,6 +1161,11 @@ var ha;
                         parse.data.barisObj.token.forEach((token) => {
                             console.log(parse.parse.tokenToValue(token));
                         });
+                        if (parse.data.ignore.indexOf(parse.data.barisAktif) < 0) {
+                            if (parse.data.errGakIgnore) {
+                                throw Error();
+                            }
+                        }
                         parse.data.errList.push(parse.data.barisAktif);
                         console.groupEnd();
                         return;
@@ -1264,86 +1206,52 @@ var ha;
                             sbl: [parse.Kons.TY_MODIFIER, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH],
                             stl: [parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE]
                         }
-                    }
-                ]);
-                {
-                    this.aturanExpAr.push({
-                        type: parse.Kons.TY_ARG_KATA,
+                    },
+                    {
+                        type: parse.Kons.TY_BINOP,
                         aturan: {
-                            nama: 'arg_kata',
+                            nama: 'not',
                             kondisi: [
-                                [parse.Kons.TY_KATA],
-                                [parse.Kons.TY_KOMA],
-                                [parse.Kons.TY_KATA]
+                                [parse.Kons.TY_NOT],
+                                [parse.Kons.TY_EXP],
                             ],
-                            sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_MODIFIER, parse.Kons.TY_MODIFIER],
-                            stl: [
-                                parse.Kons.TY_OP,
-                                parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
-                            ]
+                            sbl: [],
+                            stl: []
                         }
-                    });
-                    this.aturanExpAr.push({
-                        type: parse.Kons.TY_ARG_KATA_M,
-                        aturan: {
-                            nama: 'arg_kata_m',
-                            kondisi: [
-                                [parse.Kons.TY_ARG_KATA],
-                                [parse.Kons.TY_KOMA],
-                                [parse.Kons.TY_KATA]
-                            ],
-                            sbl: [parse.Kons.TY_KOMA,],
-                            stl: [
-                                parse.Kons.TY_OP,
-                                parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
-                            ]
-                        }
-                    });
-                }
-                {
-                    this.aturanExpAr.push({
+                    },
+                    {
                         type: parse.Kons.TY_ARG2,
                         aturan: {
-                            nama: 'arg kata exp',
+                            nama: 'arg 2',
                             kondisi: [
-                                [parse.Kons.TY_KATA,],
+                                [parse.Kons.TY_KATA, parse.Kons.TY_EXP],
                                 [parse.Kons.TY_KOMA],
-                                [parse.Kons.TY_EXP, ,]
+                                [parse.Kons.TY_EXP, parse.Kons.TY_KATA]
                             ],
                             sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH,],
-                            stl: [parse.Kons.TY_OP]
+                            stl: [
+                                parse.Kons.TY_OP, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_ARG, parse.Kons.TY_ARG2,
+                                parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
+                            ]
                         }
-                    });
-                    this.aturanExpAr.push({
-                        type: parse.Kons.TY_ARG2,
+                    },
+                    {
+                        type: parse.Kons.TY_ARG,
                         aturan: {
-                            nama: 'exp , kata',
+                            nama: 'arg campur',
                             kondisi: [
-                                [parse.Kons.TY_EXP,],
+                                [parse.Kons.TY_ARG2, parse.Kons.TY_ARG,],
                                 [parse.Kons.TY_KOMA],
-                                [parse.Kons.TY_KATA,]
+                                [parse.Kons.TY_EXP, parse.Kons.TY_KATA,]
                             ],
-                            sbl: [parse.Kons.TY_KOMA, parse.Kons.TY_BACK_SLASH, parse.Kons.TY_OP],
-                            stl: [parse.Kons.TY_OP, parse.Kons.TY_BACK_SLASH]
+                            sbl: [parse.Kons.TY_KOMA],
+                            stl: [
+                                parse.Kons.TY_OP,
+                                parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
+                            ]
                         }
-                    });
-                }
-                this.aturanExpAr.push({
-                    type: parse.Kons.TY_ARG,
-                    aturan: {
-                        nama: 'arg campur',
-                        kondisi: [
-                            [parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG2, parse.Kons.TY_ARG,],
-                            [parse.Kons.TY_KOMA],
-                            [parse.Kons.TY_EXP, parse.Kons.TY_KATA,]
-                        ],
-                        sbl: [parse.Kons.TY_KOMA],
-                        stl: [
-                            parse.Kons.TY_OP,
-                            parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_KURUNG_ARG2, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_KOSONG, parse.Kons.TY_KURUNG_SINGLE
-                        ]
                     }
-                });
+                ]);
             }
             aturanStmt() {
                 this._aturanStmtAr = this.aturanStmtAr.concat([
@@ -1353,10 +1261,10 @@ var ha;
                             nama: 'perintah ',
                             kondisi: [
                                 [parse.Kons.TY_KATA],
-                                [parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_EXP],
+                                [parse.Kons.TY_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_EXP],
                             ],
                             sbl: [, parse.Kons.TY_OP,],
-                            stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA, parse.Kons.TY_ARG_KATA_M, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
+                            stl: [parse.Kons.TY_KURUNG_ARG, parse.Kons.TY_ARG2, parse.Kons.TY_KURUNG_BUKA, parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_KURUNG_KOSONG]
                         }
                     },
                     {
@@ -1381,44 +1289,6 @@ var ha;
                             ],
                             sbl: [],
                             stl: []
-                        }
-                    },
-                    {
-                        type: parse.Kons.TY_MOD_ISI_M,
-                        aturan: {
-                            nama: 'mod isi tambahan argument  ',
-                            kondisi: [
-                                [parse.Kons.TY_MOD_ISI],
-                                [parse.Kons.TY_KOMA],
-                                [parse.Kons.TY_KATA, parse.Kons.TY_EXP],
-                            ],
-                            sbl: [],
-                            stl: [parse.Kons.TY_OP]
-                        }
-                    },
-                    {
-                        type: parse.Kons.TY_MOD_ISI_M,
-                        aturan: {
-                            nama: 'mod isi tambahan argument2  ',
-                            kondisi: [
-                                [parse.Kons.TY_MOD_ISI_M],
-                                [parse.Kons.TY_KOMA],
-                                [parse.Kons.TY_EXP, parse.Kons.TY_KATA],
-                            ],
-                            sbl: [],
-                            stl: [parse.Kons.TY_OP]
-                        }
-                    },
-                    {
-                        type: parse.Kons.TY_MOD_DEC_M,
-                        aturan: {
-                            nama: 'mod, arg  ',
-                            kondisi: [
-                                [parse.Kons.TY_MOD_DEC, parse.Kons.TY_MOD_DEC_M],
-                                [parse.Kons.TY_KOMA],
-                                [parse.Kons.TY_KATA],
-                            ],
-                            sbl: [], stl: []
                         }
                     },
                     {
@@ -1468,7 +1338,7 @@ var ha;
                             kondisi: [
                                 [parse.Kons.TY_DIM],
                                 [parse.Kons.TY_KATA_DOT, parse.Kons.TY_KATA],
-                                [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_ARG2, parse.Kons.TY_ARG_KATA]
+                                [parse.Kons.TY_KURUNG_SINGLE, parse.Kons.TY_ARG2]
                             ],
                             sbl: [],
                             stl: []
@@ -1937,21 +1807,6 @@ var ha;
                     else if ("new" == lc) {
                         token.type = parse.Kons.TY_NEW;
                     }
-                    else if ("and" == lc) {
-                        token.type = parse.Kons.TY_OP;
-                    }
-                    else if ("or" == lc) {
-                        token.type = parse.Kons.TY_OP;
-                    }
-                    else if ("xor" == lc) {
-                        token.type = parse.Kons.TY_OP;
-                    }
-                    else if ("mod" == lc) {
-                        token.type = parse.Kons.TY_OP;
-                    }
-                    else if ("not" == lc) {
-                        token.type = parse.Kons.TY_OP;
-                    }
                     else if ("until" == lc) {
                         token.type = parse.Kons.TY_UNTIL;
                     }
@@ -1972,6 +1827,27 @@ var ha;
                     }
                     else if ("else" == lc) {
                         token.type = parse.Kons.TY_ELSE;
+                    }
+                    else if ("and" == lc) {
+                        token.type = parse.Kons.TY_OP;
+                    }
+                    else if ("or" == lc) {
+                        token.type = parse.Kons.TY_OP;
+                    }
+                    else if ("xor" == lc) {
+                        token.type = parse.Kons.TY_OP;
+                    }
+                    else if ("mod" == lc) {
+                        token.type = parse.Kons.TY_OP;
+                    }
+                    else if ("not" == lc) {
+                        token.type = parse.Kons.TY_NOT;
+                    }
+                    else if ("shl" == lc) {
+                        token.type = parse.Kons.TY_NOT;
+                    }
+                    else if ("shr" == lc) {
+                        token.type = parse.Kons.TY_NOT;
                     }
                     else {
                     }
@@ -2013,8 +1889,11 @@ var ha;
                 parse_1.data.barisAktif = parse_1.data.dataStr;
                 if (parse_1.data.ignore.indexOf(parse_1.data.barisAktif) >= 0) {
                     console.log('ignore: ' + parse_1.data.barisAktif);
+                    parse_1.data.jmlIgnore++;
                     console.groupEnd();
                     return;
+                }
+                else {
                 }
                 parse_1.lexer.lexer();
                 parse_1.data.barisObj = {
@@ -2135,118 +2014,6 @@ var ha;
         class Stmt {
             Baru() {
                 return false;
-            }
-            stmtMul() {
-                function check(t0, t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (t1.type != parse.Kons.TY_STMT_COLON)
-                        return false;
-                    let t2Ar = [
-                        parse.Kons.TY_STMT,
-                        parse.Kons.TY_PERINTAH
-                    ];
-                    if (t2Ar.indexOf(t2.type) < 0)
-                        return false;
-                    if (t0) {
-                        if (t0.type == parse.Kons.TY_COLON)
-                            return false;
-                    }
-                    return true;
-                }
-                let ada = false;
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t0 = parse.parse.getToken(i - 1, parse.data.barisObj.token);
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    if (check(t0, t1, t2)) {
-                        let tokenBaru;
-                        tokenBaru = {
-                            type: parse.Kons.TY_STMT_M,
-                            token: [t1, t2]
-                        };
-                        console.log("stmt mul");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
-            }
-            stmtColon2() {
-                function check(t0, t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    if (t1.type != parse.Kons.TY_STMT_M)
-                        return false;
-                    if (t2.type != parse.Kons.TY_COLON)
-                        return false;
-                    if (t0) {
-                        if (t0.type == parse.Kons.TY_COLON)
-                            return false;
-                    }
-                    return true;
-                }
-                let ada = false;
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t0 = parse.parse.getToken(i - 1, parse.data.barisObj.token);
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    if (check(t0, t1, t2)) {
-                        let tokenBaru;
-                        tokenBaru = {
-                            type: parse.Kons.TY_STMT_COLON,
-                            token: [t1, t2]
-                        };
-                        console.log("stmt colon");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
-            }
-            stmtColon() {
-                function check(t0, t1, t2) {
-                    if (!t1)
-                        return false;
-                    if (!t2)
-                        return false;
-                    let t1Ar = [
-                        parse.Kons.TY_PERINTAH
-                    ];
-                    if (t1Ar.indexOf(t1.type) < 0)
-                        return false;
-                    if (t2.type != parse.Kons.TY_COLON)
-                        return false;
-                    if (t0) {
-                        if (t0.type == parse.Kons.TY_COLON)
-                            return false;
-                    }
-                    return true;
-                }
-                let ada = false;
-                for (let i = 0; i < parse.data.barisObj.token.length; i++) {
-                    let t0 = parse.parse.getToken(i - 1, parse.data.barisObj.token);
-                    let t1 = parse.parse.getToken(i + 0, parse.data.barisObj.token);
-                    let t2 = parse.parse.getToken(i + 1, parse.data.barisObj.token);
-                    if (check(t0, t1, t2)) {
-                        let tokenBaru;
-                        tokenBaru = {
-                            type: parse.Kons.TY_STMT_COLON,
-                            token: [t1, t2]
-                        };
-                        console.log("stmt colon");
-                        console.log(parse.parse.tokenToValue(tokenBaru));
-                        parse.data.barisObj.token = parse.ar.ganti(parse.data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
-                        ada = true;
-                    }
-                }
-                return ada;
             }
             stmt() {
                 function check(t1, t2) {
@@ -2577,8 +2344,11 @@ var ha;
                         return false;
                     if (t1.type != parse.Kons.TY_RETURN)
                         return false;
-                    if (t2.type != parse.Kons.TY_EXP)
-                        return false;
+                    if (t2.type != parse.Kons.TY_EXP) {
+                        if (t2.type != parse.Kons.TY_KATA) {
+                            return false;
+                        }
+                    }
                     return true;
                 }
                 let ada = false;
@@ -2608,7 +2378,7 @@ var ha;
                     let tokenBaru;
                     if (check(token1, token2, token3)) {
                         tokenBaru = {
-                            type: parse.Kons.TY_WEND,
+                            type: parse.Kons.TY_WEND_STMT,
                             token: [token1, token2]
                         };
                         console.log("while:");
@@ -2643,68 +2413,73 @@ var ha;
 (function (ha) {
     var parse;
     (function (parse) {
+        class TerjExp {
+        }
+        parse.TerjExp = TerjExp;
+    })(parse = ha.parse || (ha.parse = {}));
+})(ha || (ha = {}));
+var ha;
+(function (ha) {
+    var parse;
+    (function (parse) {
         class Terjemah {
+            flDim = false;
+            flBinopExp = false;
             terjemah(token) {
+                let hasil = '';
                 console.log("terjemah");
                 console.log(token);
-                if (false) {
-                    return '';
-                }
-                else if (token.type == parse.Kons.TY_ANGKA) {
-                    return token.value;
-                }
+                hasil = this.langsung(token);
+                if (hasil != '')
+                    return hasil;
+                hasil = this.exp(token);
+                if (hasil != '')
+                    return hasil;
+                hasil = this.stmt(token);
+                if (hasil != '')
+                    return hasil;
+                console.log(token);
+                console.log('token type ' + token.type);
+                throw Error();
+            }
+            exp(token) {
+                if (false) { }
                 else if (token.type == parse.Kons.TY_ARG) {
-                    return this.terjemah(token.token[0]) + ',' + this.terjemah(token.token[2]);
-                }
-                else if (token.type == parse.Kons.TY_RES_WORD) {
-                    if (token.value.toLowerCase() == "wend") {
-                        return "}";
-                    }
-                    else if (token.value.toLowerCase() == "next") {
-                        return "}";
-                    }
-                    else if (token.value.toLowerCase() == 'end function') {
-                        return "}";
-                    }
-                    else if (token.value.toLowerCase() == "endif") {
-                        return "}";
-                    }
-                    else if (token.value.toLowerCase() == "else") {
-                        return "} else {";
-                    }
-                    else if (token.value.toLowerCase() == "function") {
-                        return "function ";
-                    }
-                    else if (token.value.toLowerCase() == "return") {
-                        return "return ";
-                    }
-                    else if (token.value.toLowerCase() == "mod") {
-                        return " % ";
-                    }
-                    else if (token.value.toLowerCase() == "cls") {
-                        return "Cls()";
-                    }
-                    else {
-                        return token.value;
-                    }
+                    return parse.terj.terjemah(token.token[0]) + ',' + parse.terj.terjemah(token.token[2]);
                 }
                 else if (token.type == parse.Kons.TY_BINOP) {
-                    if (token.token.length == 2) {
-                        return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
-                    }
-                    else if (token.token.length == 3) {
-                        return this.terjemah(token.token[0]) + " " + this.terjemah(token.token[1]) + " " + this.terjemah(token.token[2]);
-                    }
-                    else {
-                        throw new Error();
-                    }
+                    return parse.terj.terjemah(token.token[0]) + " " + parse.terj.terjemah(token.token[1]) + " " + parse.terj.terjemah(token.token[2]);
                 }
-                else if (token.type == parse.Kons.TY_TEKS) {
-                    return this.string(token.token);
+                else if (token.type == parse.Kons.TY_PANGGIL_FUNGSI) {
+                    return this.fungsi(token);
                 }
-                else if (token.type == parse.Kons.TY_BARIS) {
+                else if (token.type == parse.Kons.TY_ARG2) {
+                    return parse.terj.terjemah(token.token[0]) + ',' + parse.terj.terjemah(token.token[2]);
+                }
+                else if (token.type == parse.Kons.TY_ARG) {
                     return '';
                 }
+                else if (token.type == parse.Kons.TY_EXP) {
+                    return this.terjemah(token.token[0]);
+                }
+                else if (token.type == parse.Kons.TY_KURUNG_ARG2) {
+                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
+                }
+                else if (token.type == parse.Kons.TY_KURUNG_ARG) {
+                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
+                }
+                else if (token.type == parse.Kons.TY_KURUNG_KOSONG) {
+                    return this.terjemah(token.token[0]) + this.terjemah(token.token[2]);
+                }
+                else if (token.type == parse.Kons.TY_KURUNG_SINGLE) {
+                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
+                }
+                else {
+                    return '';
+                }
+            }
+            stmt(token) {
+                if (false) { }
                 else if (token.type == parse.Kons.TY_FOR_DEC) {
                     return '';
                 }
@@ -2713,45 +2488,8 @@ var ha;
                     return hasil;
                 }
                 else if (token.type == parse.Kons.TY_IF_EXP) {
-                    return 'if (' + this.terjemah(token.token[1]) + ") {";
-                }
-                else if (token.type == parse.Kons.TY_KATA) {
-                    if (token.token && token.token.length == 2) {
-                        return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
-                    }
-                    else if (token.value) {
-                        return token.value;
-                    }
-                    else {
-                        throw Error('');
-                    }
-                }
-                else if (token.type == parse.Kons.TY_KATA_DOT) {
-                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
-                }
-                else if (token.type == parse.Kons.TY_KURUNG_KOSONG) {
-                    return "()";
-                }
-                else if (token.type == parse.Kons.TY_MIN) {
-                    return token.token[0].value + this.terjemah(token.token[1]);
-                }
-                else if (token.type == parse.Kons.TY_OP) {
-                    if (token.value == "<>") {
-                        return "!=";
-                    }
-                    else if (token.value.toLowerCase() == "mod") {
-                        return " % ";
-                    }
-                    return token.value;
-                }
-                else if (token.type == parse.Kons.TY_PANGGIL_FUNGSI) {
-                    let hsl = '';
-                    hsl = this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
-                    if (parse.data.config.awaitFl) {
-                        hsl = hsl.trim();
-                        hsl = 'await ' + hsl;
-                    }
-                    return hsl;
+                    let hasil = '';
+                    return hasil;
                 }
                 else if (token.type == parse.Kons.TY_PERINTAH) {
                     let hsl = '';
@@ -2784,13 +2522,7 @@ var ha;
                     }
                     return hsl;
                 }
-                else if (token.type == parse.Kons.TY_WEND) {
-                    return this.wend(token);
-                }
-                else if (token.type == parse.Kons.TY_SYMBOL) {
-                    if (token.value == ".")
-                        return token.value;
-                    return token.value + " ";
+                else if (token.type == parse.Kons.TY_WEND_STMT) {
                 }
                 else if (token.type == parse.Kons.TY_ELSE_THEN) {
                     return '';
@@ -2809,19 +2541,10 @@ var ha;
                 else if (token.type == parse.Kons.TY_RETURN) {
                     return '';
                 }
-                else if (token.type == parse.Kons.TY_ARG2) {
-                    return '';
-                }
-                else if (token.type == parse.Kons.TY_EXP) {
-                    return '';
-                }
                 else if (token.type == parse.Kons.TY_IF_THEN) {
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_MODIFIER) {
-                    return '';
-                }
-                else if (token.type == parse.Kons.TY_KURUNG_ARG2) {
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_DIM_DEC) {
@@ -2831,48 +2554,115 @@ var ha;
                     return '';
                 }
                 else if (token.type == parse.Kons.TY_RETURN_EXP) {
-                    return '';
+                    return this.terjemah(token.token[0]) + ' ' + this.terjemah(token.token[1]);
                 }
-                else {
-                    console.log(token);
-                    console.log('token type ' + token.type);
-                    throw Error();
+                return '';
+            }
+            langsung(token) {
+                if (false) {
                 }
-            }
-            string(token) {
-                let hasil = '';
-                token.forEach((item) => {
-                    hasil += item.value;
-                });
-                return " " + hasil;
-            }
-            wend(token) {
-                let hasil = '';
-                hasil += token.token[0].value.toLowerCase();
-                hasil += " (" + this.terjemah(token.token[1]) + ") {";
-                return hasil;
-            }
-            varAssign(token) {
-                if (token.token.length == 2) {
-                    let token1 = token.token[0].value.toLowerCase();
-                    let token2 = this.terjemah(token.token[1]);
-                    if (token1 == "global") {
-                        return "window." + token2;
+                else if (token.type == parse.Kons.TY_ANGKA) {
+                    return token.value;
+                }
+                else if (token.type == parse.Kons.TY_RES_WORD) {
+                    if (token.value.toLowerCase() == "wend") {
+                        return "}";
                     }
-                    else if (token1 == "const") {
-                        return "const " + token2;
+                    else if (token.value.toLowerCase() == "next") {
+                        return "}";
+                    }
+                    else if (token.value.toLowerCase() == 'end function') {
+                        return "}";
+                    }
+                    else if (token.value.toLowerCase() == "endif") {
+                        return "}";
+                    }
+                    else if (token.value.toLowerCase() == "else") {
+                        return "} else {";
+                    }
+                    else if (token.value.toLowerCase() == "function") {
+                        return "function ";
+                    }
+                    else if (token.value.toLowerCase() == "return") {
+                        return "return ";
+                    }
+                    else if (token.value.toLowerCase() == "mod") {
+                        return " % ";
                     }
                     else {
-                        console.log('token 1 ' + token1);
-                        console.log('token 2 ' + token2);
-                        throw Error("");
+                        return token.value;
                     }
                 }
-                else if (token.token.length == 3) {
-                    return this.terjemah(token.token[0]) + "=" + this.terjemah(token.token[2]);
+                else if (token.type == parse.Kons.TY_TEKS) {
+                    return token.value;
+                }
+                else if (token.type == parse.Kons.TY_KATA) {
+                    if (token.token && token.token.length == 2) {
+                        return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
+                    }
+                    else if (token.value) {
+                        return token.value;
+                    }
+                    else {
+                        throw Error('');
+                    }
+                }
+                else if (token.type == parse.Kons.TY_KATA_DOT) {
+                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
+                }
+                else if (token.type == parse.Kons.TY_MIN) {
+                    return token.token[0].value + this.terjemah(token.token[1]);
+                }
+                else if (token.type == parse.Kons.TY_OP) {
+                    if (token.value == "<>") {
+                        return "!=";
+                    }
+                    else if (token.value.toLowerCase() == "mod") {
+                        return " % ";
+                    }
+                    else if (token.value.toLowerCase() == '=') {
+                        if (this.flBinopExp)
+                            return "==";
+                        return "=";
+                    }
+                    return token.value;
+                }
+                else if (token.type == parse.Kons.TY_SYMBOL) {
+                    if (token.value == ".")
+                        return token.value;
+                    return token.value + " ";
+                }
+                return '';
+            }
+            kurungKotak(token) {
+                return "[" + this.terjemah(token.token[1]) + "]";
+            }
+            kurung(token) {
+                return "(" + token.token[1] + ")";
+            }
+            fungsi(token) {
+                if (this.flDim) {
+                    return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
                 }
                 else {
-                    throw Error('');
+                    let ty = token.token[1].type;
+                    if (ty == parse.Kons.TY_KURUNG_ARG2 || ty == parse.Kons.TY_KURUNG_SINGLE) {
+                        let nama = this.terjemah(token.token[0]);
+                        let kurung = this.kurung(token.token[1]);
+                        let kurungKotak = this.kurungKotak(token.token[1]);
+                        let f1 = nama + kurung;
+                        let d1 = nama + kurungKotak;
+                        let res = '';
+                        f1 = '(await ' + f1 + ')';
+                        res = "?" + d1 + ":" + f1;
+                        let f = "Array.isArray(nama)" + res;
+                        return f;
+                    }
+                    else {
+                        let nama = this.terjemah(token.token[0]);
+                        let kurung = this.terjemah(token.token[1]);
+                        return `(await ${nama + kurung})`;
+                    }
                 }
             }
         }
@@ -3238,10 +3028,6 @@ var ha;
                 }
                 console.log('error status code: ' + x.status);
                 throw Error(x.responseText);
-            }
-            static async sql(query) {
-                query;
-                return [];
             }
             static async Ajax(type, url, dataStr, pf = null) {
                 return new Promise((resolve, reject) => {
