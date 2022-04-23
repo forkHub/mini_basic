@@ -1,3 +1,4 @@
+///<reference path="Ingore.ts"/>
 namespace ha.parse {
     class Test {
         private files: string[] = [
@@ -136,25 +137,54 @@ namespace ha.parse {
             ".\\data\\data\\tutorials\\GCUK_Tuts\\camera.bb",
 
         ];
-        // private aturans: string[] = [
-        //     "\\data\\data\\aturan\\exp.json"
-        // ];
 
         constructor() {
             this.debug();
-            data.ignore.concat(Ignore);
+
+            while (data.ignore.length > 0) {
+                data.ignore.pop();
+            }
+
+            let ar: string[] = data.ignore.concat(Ignore);
+            ar.forEach((item: string) => {
+                data.ignore.push(item);
+            })
+
+            console.log("data ignore " + data.ignore.length);
         }
 
         async init(): Promise<void> {
-            // await aturan.loads(this.aturans);
-            // gm2.aturanAr.concat(aturan.daftar);
+            data.jmlIgnore = 0;
+            data.errGakIgnore = true;
+            data.errBaru = [];
+
             await this.load2();
         }
 
+        mapIgnore(): void {
+            let ignore2: string[] = [];
+
+            for (let i: number = 0; i < Ignore.length; i++) {
+                let str: string = Ignore[i];
+                if (ignore2.indexOf(str) < 0) {
+                    ignore2.push(str);
+                }
+            }
+
+            while (data.ignore.length > 0) {
+                data.ignore.pop();
+            }
+
+            ignore2.forEach((item: string) => {
+                data.ignore.push(item);
+            });
+
+            console.log('data ignore 2 length: ' + data.ignore.length);
+            console.log(JSON.stringify(data.ignore));
+        }
+
         debug(): void {
-            // this.files = [
-            //     ".\\data\\data\\testSingle.txt"
-            // ];
+
         }
 
         async parse(file: string): Promise<void> {
@@ -176,18 +206,21 @@ namespace ha.parse {
                     await this.parse(file);
                 }
                 catch (e) {
-                    // data.errList.push(data.dataStr);
                     console.log('file: ' + file);
                     console.error(e);
+                    throw Error();
                     break;
                 }
             }
 
             console.log('jml err ' + data.errList.length);
+            console.log('jml ignore ' + data.jmlIgnore);
+            console.groupCollapsed('error baru:');
+            data.errBaru.forEach((item: string) => {
+                console.log(item);
+            })
+            console.groupEnd();
 
-            if (data.errList.length > 0) {
-                console.log(JSON.stringify(data.errList));
-            }
         }
 
     }

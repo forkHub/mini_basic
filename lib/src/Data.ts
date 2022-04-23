@@ -8,6 +8,31 @@ namespace ha.parse {
         private _errList: string[] = [];
         private _barisAktif: string = '';
         private _ignore: string[] = [];
+        private _jmlIgnore: number = 0;
+        private _errGakIgnore: boolean = false;
+        private _errBaru: string[] = [];
+
+        public get errBaru(): string[] {
+            return this._errBaru;
+        }
+        public set errBaru(value: string[]) {
+            this._errBaru = value;
+        }
+
+        public get errGakIgnore(): boolean {
+            return this._errGakIgnore;
+        }
+        public set errGakIgnore(value: boolean) {
+            this._errGakIgnore = value;
+        }
+
+
+        public get jmlIgnore(): number {
+            return this._jmlIgnore;
+        }
+        public set jmlIgnore(value: number) {
+            this._jmlIgnore = value;
+        }
 
         public get ignore(): string[] {
             return this._ignore;
@@ -87,10 +112,7 @@ namespace ha.parse {
             "!=",
             "&&",
             "||",
-            "="
-
-            // "not",
-            // "mod"
+            "=",
         ];
 
         // private _op2: string[] = [
