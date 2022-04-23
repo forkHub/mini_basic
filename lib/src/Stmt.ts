@@ -44,8 +44,8 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("dim assign");
-                    console.log(tokenBaru);
+                    ha.comp.log.log("dim assign");
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -108,9 +108,9 @@ namespace ha.parse {
                         token: [t1, t2, t3, t4]
                     }
 
-                    console.log("dim assign");
-                    console.log(tokenBaru);
-                    console.log(t5);
+                    ha.comp.log.log("dim assign");
+                    ha.comp.log.log(tokenBaru);
+                    ha.comp.log.log(t5);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -148,7 +148,7 @@ namespace ha.parse {
                 let t3: IToken = parse.getToken(i + 2, data.barisObj.token);
                 // let token4: Itoken = parse.getToken(i + 3, data.barisObj.token);
 
-                // console.group('for');
+                // ha.comp.log.group('for');
                 if (check(t1, t2, t3)) {
                     let tokenBaru: IToken = {
                         token: [
@@ -159,8 +159,8 @@ namespace ha.parse {
                         type: Kons.TY_DIM_DEC
                     };
 
-                    console.log('dim dec: ');
-                    console.log(parse.tokenToAr(tokenBaru));
+                    ha.comp.log.log('dim dec: ');
+                    ha.comp.log.log(parse.tokenToAr(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
 
@@ -178,7 +178,7 @@ namespace ha.parse {
             //for var_assign to exp
             //1   2          3  4  
             function check(t1: IToken, t2: IToken, t3: IToken, t4: IToken): boolean {
-                // console.debug('null check:');
+                // ha.comp.log.debug('null check:');
                 if (!t1) return false;
                 if (!t2) return false;
                 if (!t3) return false;
@@ -215,7 +215,7 @@ namespace ha.parse {
                 //                 if (token5.value && token5.value.toLowerCase() == "to") {
                 //                     if (exp.isExp(token6)) {
 
-                // console.group('for');
+                // ha.comp.log.group('for');
                 if (check(token1, token2, token3, token4)) {
                     let tokenBaru: IToken = {
                         token: [
@@ -227,8 +227,8 @@ namespace ha.parse {
                         type: Kons.TY_FOR_DEC
                     };
 
-                    console.log('for: ');
-                    console.log(parse.tokenToAr(tokenBaru));
+                    ha.comp.log.log('for: ');
+                    ha.comp.log.log(parse.tokenToAr(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
 
@@ -237,7 +237,7 @@ namespace ha.parse {
                     // i--;
                 }
 
-                // console.groupEnd();
+                // ha.comp.log.groupEnd();
 
                 //                 }
                 //             }
@@ -275,7 +275,7 @@ namespace ha.parse {
                 let token3: IToken = parse.getToken(i + 2, data.barisObj.token);
                 // let token4: Itoken = parse.getToken(i + 3, data.barisObj.token);
 
-                // console.group('for');
+                // ha.comp.log.group('for');
                 if (check(token1, token2, token3)) {
                     let tokenBaru: IToken = {
                         token: [
@@ -286,8 +286,8 @@ namespace ha.parse {
                         type: Kons.TY_FOR_STEP
                     };
 
-                    console.log('for step: ');
-                    console.log(parse.tokenToAr(tokenBaru));
+                    ha.comp.log.log('for step: ');
+                    ha.comp.log.log(parse.tokenToAr(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, tokenBaru.token.length - 1, tokenBaru);
 
@@ -346,8 +346,8 @@ namespace ha.parse {
                         type: Kons.TY_FUNC_DEC
                     };
 
-                    console.log('func dec: ');
-                    console.log(tokenBaru);
+                    ha.comp.log.log('func dec: ');
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -395,8 +395,8 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("modifier");
-                    console.log(tokenBaru);
+                    ha.comp.log.log("modifier");
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -443,8 +443,8 @@ namespace ha.parse {
                         token: [t1, t2, t3]
                     }
 
-                    console.log("mod isi");
-                    console.log(tokenBaru);
+                    ha.comp.log.log("mod isi");
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -489,8 +489,8 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("return exp");
-                    console.log(tokenBaru);
+                    ha.comp.log.log("return exp");
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -519,8 +519,8 @@ namespace ha.parse {
                         token: [token1, token2]
                     }
 
-                    console.log("while:");
-                    console.log(tokenBaru);
+                    ha.comp.log.log("while:");
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
 

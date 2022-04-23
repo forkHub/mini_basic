@@ -150,6 +150,7 @@ var ha;
                     parse.data.ignore.push(item);
                 });
                 console.log("data ignore " + parse.data.ignore.length);
+                ha.comp.log.aktif = false;
             }
             async init() {
                 parse.data.jmlIgnore = 0;

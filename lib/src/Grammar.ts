@@ -2,7 +2,7 @@ namespace ha.parse {
     class Grammar {
 
         hapusSpace(): boolean {
-            // console.group('hapus space');
+            // ha.comp.log.group('hapus space');
 
             for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
@@ -10,28 +10,28 @@ namespace ha.parse {
 
                 if (value == ' ' || (value == '\t')) {
 
-                    // console.log('idx ' + i);
+                    // ha.comp.log.log('idx ' + i);
 
-                    // console.log('sebelum:');
-                    // console.log(data.barisObj.token);
+                    // ha.comp.log.log('sebelum:');
+                    // ha.comp.log.log(data.barisObj.token);
 
                     data.barisObj.token = ar.hapus(data.barisObj.token, i);
 
-                    // console.log('sesudah:');
-                    // console.log(data.barisObj.token);
+                    // ha.comp.log.log('sesudah:');
+                    // ha.comp.log.log(data.barisObj.token);
 
-                    // console.groupEnd();
+                    // ha.comp.log.groupEnd();
                     return true;
                 }
 
             }
 
-            // console.groupEnd();
+            // ha.comp.log.groupEnd();
             return false;
         }
 
         grammar(): void {
-            console.group('grammar');
+            ha.comp.log.group('grammar');
 
             while (data.barisObj.token.length > 1) {
                 if (false) { }
@@ -79,10 +79,10 @@ namespace ha.parse {
                 else if (gm2.checkLog(gm2.aturanStmtAr)) { }
 
                 else if (data.barisObj.token.length > 1) {
-                    console.log("error:");
-                    console.log(data.barisObj.token);
+                    ha.comp.log.log("error:");
+                    ha.comp.log.log(data.barisObj.token);
                     data.barisObj.token.forEach((token: IToken) => {
-                        console.log(parse.tokenToValue(token));
+                        ha.comp.log.log(parse.tokenToValue(token));
                     })
 
                     if (data.ignore.indexOf(data.barisAktif) < 0) {
@@ -92,13 +92,13 @@ namespace ha.parse {
                     }
 
                     data.errList.push(data.barisAktif);
-                    console.groupEnd();
+                    ha.comp.log.groupEnd();
 
                     return;
                 }
             }
 
-            console.groupEnd();
+            ha.comp.log.groupEnd();
         }
     }
 

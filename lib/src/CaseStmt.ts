@@ -29,8 +29,8 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("case dec:");
-                    console.log(parse.tokenToValue(tokenBaru, true));
+                    ha.comp.log.log("case dec:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru, true));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -71,8 +71,8 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("select dec:");
-                    console.log(parse.tokenToValue(tokenBaru, true));
+                    ha.comp.log.log("select dec:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru, true));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 

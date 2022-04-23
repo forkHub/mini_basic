@@ -75,8 +75,8 @@ namespace ha.comp {
 			if (el) {
 				return el
 			} else {
-				console.log(this._elHtml);
-				console.log(query);
+				log.log(this._elHtml);
+				log.log(query);
 				throw new Error('query not found ');
 			}
 		}

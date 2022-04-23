@@ -142,8 +142,8 @@ namespace ha.parse {
                         token: [token1]
                     }
 
-                    console.log("exp");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("exp");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -190,8 +190,8 @@ namespace ha.parse {
                         token: [token1]
                     }
 
-                    console.log("exp kurung single");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("exp kurung single");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -268,9 +268,9 @@ namespace ha.parse {
                         token: [t1]
                     }
 
-                    console.log("exp");
-                    console.log(parse.tokenToValue(tokenBaru));
-                    // console.log('seb ' + t0.type);
+                    ha.comp.log.log("exp");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
+                    // ha.comp.log.log('seb ' + t0.type);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -339,8 +339,8 @@ namespace ha.parse {
                         token: [t1, t2, t3]
                     }
 
-                    console.log("kata dot:");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("kata dot:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
                     // parse.debugToken(data.barisObj.token);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
@@ -354,10 +354,10 @@ namespace ha.parse {
 
         //2
         kurungKosong(): boolean {
-            // console.group('kurung kosong');
+            // ha.comp.log.group('kurung kosong');
 
             for (let i: number = 0; i <= data.barisObj.token.length - 2; i++) {
-                // console.log('iterate ' + i);
+                // ha.comp.log.log('iterate ' + i);
 
                 let token1: IToken = data.barisObj.token[i];
                 let token2: IToken = data.barisObj.token[i + 1];
@@ -369,31 +369,31 @@ namespace ha.parse {
                             token: [token1, token2],
                             type: Kons.TY_KURUNG_KOSONG
                         }
-                        console.log("kurung kosong:");
-                        console.log(parse.tokenToValue(tokenBaru));
+                        ha.comp.log.log("kurung kosong:");
+                        ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
-                        // console.log('sebelum:')
-                        // console.log(this._barisObj.token);
+                        // ha.comp.log.log('sebelum:')
+                        // ha.comp.log.log(this._barisObj.token);
 
                         data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
 
-                        // console.log('sesudah:');
-                        // console.log(this._barisObj.token);
+                        // ha.comp.log.log('sesudah:');
+                        // ha.comp.log.log(this._barisObj.token);
 
-                        // console.groupEnd();
+                        // ha.comp.log.groupEnd();
                         return true;
                     }
                     // else {
-                    //     console.log('gagal: ' + token2.token.toString());
+                    //     ha.comp.log.log('gagal: ' + token2.token.toString());
                     // }
 
                 }
                 // else {
-                //     console.log("gagal: " + token1.token.toString());
+                //     ha.comp.log.log("gagal: " + token1.token.toString());
                 // }
             }
 
-            // console.groupEnd();
+            // ha.comp.log.groupEnd();
             return false;
         }
 
@@ -435,8 +435,8 @@ namespace ha.parse {
                         token: [token1, token2, token3],
                         type: Kons.TY_KURUNG_SINGLE
                     }
-                    console.log("kurung single:");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("kurung single:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                     i--;
@@ -481,9 +481,9 @@ namespace ha.parse {
                         token: [token1, token2, token3],
                         type: Kons.TY_KURUNG_ARG2
                     }
-                    console.log("kurung arg 2:");
-                    console.log(parse.tokenToAr(tokenBaru));
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("kurung arg 2:");
+                    ha.comp.log.log(parse.tokenToAr(tokenBaru));
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                     i--;
@@ -529,8 +529,8 @@ namespace ha.parse {
                         token: [token1, token2, token3],
                         type: Kons.TY_KURUNG_ARG
                     }
-                    console.log("kurung arg:");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("kurung arg:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
                     i--;
@@ -570,8 +570,8 @@ namespace ha.parse {
                         token: [t1, t2, t3]
                     }
 
-                    console.log("binop");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("binop");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -604,8 +604,8 @@ namespace ha.parse {
         //                 token: [token1, token2]
         //             }
 
-        //             console.log("binop not:");
-        //             console.log(tokenBaru);
+        //             ha.comp.log.log("binop not:");
+        //             ha.comp.log.log(tokenBaru);
 
         //             data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
 
@@ -678,12 +678,12 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("min:");
-                    console.log(tokenBaru);
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("min:");
+                    ha.comp.log.log(tokenBaru);
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
                     // if (t0) {
-                    //     console.log('to');
-                    //     console.log(t0);
+                    //     ha.comp.log.log('to');
+                    //     ha.comp.log.log(t0);
                     // }
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
@@ -757,8 +757,8 @@ namespace ha.parse {
                         token: [t1, t2, t3]
                     }
 
-                    console.log("argument2:");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("argument2:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -818,8 +818,8 @@ namespace ha.parse {
                         type: Kons.TY_ARG
                     }
 
-                    console.log("arg:");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("arg:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -874,7 +874,7 @@ namespace ha.parse {
                 let t3: IToken = parse.getToken(i + 1, data.barisObj.token);
                 // let token3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
-                // console.group('check fungsi group');
+                // ha.comp.log.group('check fungsi group');
                 if (check(t1, t2, t3)) {
                     ada = true;
 
@@ -882,14 +882,14 @@ namespace ha.parse {
                         token: [t2, t3],
                         type: Kons.TY_PANGGIL_FUNGSI
                     }
-                    console.log("fungsi exp arg:");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("fungsi exp arg:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     i--;
                 }
-                // console.groupEnd();
+                // ha.comp.log.groupEnd();
             }
 
             if (ada) {
@@ -959,7 +959,7 @@ namespace ha.parse {
                 let token2: IToken = parse.getToken(i + 1, data.barisObj.token);
                 let token3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
-                // console.group('check fungsi group');
+                // ha.comp.log.group('check fungsi group');
                 if (check(token0, token1, token2, token3)) {
                     ada = true;
 
@@ -967,14 +967,14 @@ namespace ha.parse {
                         token: [token1, token2],
                         type: Kons.TY_PANGGIL_FUNGSI
                     }
-                    console.log("fungsi exp:");
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("fungsi exp:");
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
                     i--;
                 }
-                // console.groupEnd();
+                // ha.comp.log.groupEnd();
             }
 
             if (ada) {
@@ -986,27 +986,27 @@ namespace ha.parse {
         }
 
         getQuote2(idx: number): number {
-            // console.group('get quote');
+            // ha.comp.log.group('get quote');
 
             for (let i: number = idx; i < data.barisObj.token.length; i++) {
                 let item: IToken = data.barisObj.token[i];
-                // console.log('token as string: ' + (item.token as string) + '/' + item.token.toString());
+                // ha.comp.log.log('token as string: ' + (item.token as string) + '/' + item.token.toString());
                 if ((item.value as string) == "\"") {
                     return i;
                     // if (i == idx) {
-                    //     // console.groupEnd();
+                    //     // ha.comp.log.groupEnd();
                     //     return i;
                     // } else {
                     //     let itemSebelum: IToken = data.barisObj.token[i - 1];
                     //     if (itemSebelum && itemSebelum.value.toString() != "\\") {
-                    //         // console.groupEnd();
+                    //         // ha.comp.log.groupEnd();
                     //         return i;
                     //     }
                     // }
                 }
             }
 
-            // console.groupEnd();
+            // ha.comp.log.groupEnd();
             return -1;
         }
 
@@ -1016,25 +1016,25 @@ namespace ha.parse {
             let idx2: number = 0;
             // let l: number = 0;
 
-            // console.group('teks:');
-            // console.log(this.data.barisObj.token);
+            // ha.comp.log.group('teks:');
+            // ha.comp.log.log(this.data.barisObj.token);
 
             idx = this.getQuote2(0);
             if (idx == -1) {
-                // console.groupEnd();
+                // ha.comp.log.groupEnd();
                 return false;
             }
 
             idx2 = this.getQuote2(idx + 1);
             if (idx2 == -1) {
-                // console.groupEnd();
+                // ha.comp.log.groupEnd();
                 return false;
             }
 
             // l = idx2 - idx;
 
-            // console.log('idx1: ' + idx);
-            // console.log('idx2: ' + idx2);
+            // ha.comp.log.log('idx1: ' + idx);
+            // ha.comp.log.log('idx2: ' + idx2);
 
             //package
             let tokenBaru: IToken = {
@@ -1043,21 +1043,21 @@ namespace ha.parse {
             }
 
             tokenBaru.token = ar.ambilTengah(data.barisObj.token, idx, idx2);
-            console.log("teks:");
-            console.log(parse.tokenToValue(tokenBaru));
+            ha.comp.log.log("teks:");
+            ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
-            // console.log('teks baru:');
+            // ha.comp.log.log('teks baru:');
             // parse.baris.renderLines(tokenBaru.token);
 
-            // console.log('sebelum:');
-            // console.log(this.data.barisObj.token);
+            // ha.comp.log.log('sebelum:');
+            // ha.comp.log.log(this.data.barisObj.token);
 
             data.barisObj.token = ar.ganti(data.barisObj.token, idx, idx2, tokenBaru);
 
-            // console.log('setelah:');
-            // console.log(this.data.barisObj.token);
+            // ha.comp.log.log('setelah:');
+            // ha.comp.log.log(this.data.barisObj.token);
 
-            // console.groupEnd();
+            // ha.comp.log.groupEnd();
 
             return true;
         }

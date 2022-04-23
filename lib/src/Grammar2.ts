@@ -191,9 +191,9 @@ namespace ha.parse {
 
         checkLog(aturan: IAturan[]): boolean {
             let hasil: boolean = false;
-            console.group('check');
+            ha.comp.log.group('check');
             hasil = this.check(aturan);
-            console.groupEnd();
+            ha.comp.log.groupEnd();
             return hasil;
         }
 
@@ -218,8 +218,8 @@ namespace ha.parse {
                 }
             }
 
-            // console.log("hasil check: " + checkAda);
-            // console.log('sisa: ' + data.barisObj.token.length);
+            // ha.comp.log.log("hasil check: " + checkAda);
+            // ha.comp.log.log('sisa: ' + data.barisObj.token.length);
 
             return checkAda;
         }
@@ -230,8 +230,8 @@ namespace ha.parse {
             for (let i: number = tokenAr.length - 1; i >= 0; i--) {
                 let ok: boolean = false;
 
-                // console.group('iterate aturan: ' + aturan.nama);
-                // console.log('idx token ' + i);
+                // ha.comp.log.group('iterate aturan: ' + aturan.nama);
+                // ha.comp.log.log('idx token ' + i);
                 ok = this.checkAturan(tokenAr, aturan, i);
 
                 if (ok) {
@@ -244,22 +244,22 @@ namespace ha.parse {
                         tokenBaru.token.push(parse.getToken(i + j, tokenAr));
                     }
 
-                    console.log(aturan.aturan.nama);
-                    console.log(tokenBaru);
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log(aturan.aturan.nama);
+                    ha.comp.log.log(tokenBaru);
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
-                    // console.log('sebelum:')
+                    // ha.comp.log.log('sebelum:')
                     // parse.debugToken(data.barisObj.token);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru, false);
 
-                    // console.log('sesudah:')
+                    // ha.comp.log.log('sesudah:')
                     // parse.debugToken(data.barisObj.token);
 
                     ada = true;
                 }
 
-                // console.groupEnd();
+                // ha.comp.log.groupEnd();
             }
 
             return ada;
@@ -268,16 +268,16 @@ namespace ha.parse {
         checkKondisi(kond: number[], token: IToken): boolean {
             let hasil: boolean = false;
 
-            // console.group('check kondisi')
-            // console.log('kondisi:');
-            // console.log(kond);
-            // console.log('token:');
-            // console.log(token);
+            // ha.comp.log.group('check kondisi')
+            // ha.comp.log.log('kondisi:');
+            // ha.comp.log.log(kond);
+            // ha.comp.log.log('token:');
+            // ha.comp.log.log(token);
 
             hasil = (kond.indexOf(token.type) >= 0);
-            // console.log('hasil: ' + hasil);
+            // ha.comp.log.log('hasil: ' + hasil);
 
-            // console.groupEnd();
+            // ha.comp.log.groupEnd();
 
             return hasil;
         }
@@ -286,17 +286,17 @@ namespace ha.parse {
             let t: IToken;
             let hasil: boolean = true;
 
-            // console.log('idx token: ' + idx);
+            // ha.comp.log.log('idx token: ' + idx);
 
-            // console.log('iterate kondisi:');
+            // ha.comp.log.log('iterate kondisi:');
             for (let i: number = 0; i < aturan.aturan.kondisi.length; i++) {
-                // console.group('idx: ' + i);
+                // ha.comp.log.group('idx: ' + i);
 
                 t = parse.getToken(idx + i, tokenAr);
-                // console.log('idx kondisi: ' + i);
-                // console.log('ambil token, idx ' + (idx + i));
-                // console.log('token:');
-                // console.log(t);
+                // ha.comp.log.log('idx kondisi: ' + i);
+                // ha.comp.log.log('ambil token, idx ' + (idx + i));
+                // ha.comp.log.log('token:');
+                // ha.comp.log.log(t);
 
                 if (!t) {
                     hasil = false;
@@ -305,38 +305,38 @@ namespace ha.parse {
                     let cocok: boolean = this.checkKondisi(aturan.aturan.kondisi[i], t);
 
                     if (!cocok) {
-                        // console.log('kondisi tidak ada')
+                        // ha.comp.log.log('kondisi tidak ada')
                         hasil = false;
                     }
                     else {
-                        // console.log('kondisi ada');
+                        // ha.comp.log.log('kondisi ada');
                     }
                 }
 
-                // console.groupEnd();
+                // ha.comp.log.groupEnd();
             }
 
             //check prev
-            // console.log('check prev');
+            // ha.comp.log.log('check prev');
             t = parse.getToken(idx - 1, tokenAr);
             if (t) {
                 if (aturan.aturan.sbl.indexOf(t.type) >= 0) {
-                    // console.log('prev ada');
+                    // ha.comp.log.log('prev ada');
                     hasil = false;
                 }
             }
 
             //check setelahnya
-            // console.log('check next');
+            // ha.comp.log.log('check next');
             t = parse.getToken(idx + aturan.aturan.kondisi.length, tokenAr);
             if (t) {
                 if (aturan.aturan.stl.indexOf(t.type) >= 0) {
-                    // console.log('next ada');
+                    // ha.comp.log.log('next ada');
                     hasil = false;
                 }
             }
 
-            // console.log('hasil ' + hasil);
+            // ha.comp.log.log('hasil ' + hasil);
 
             return hasil;
         }

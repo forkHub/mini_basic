@@ -15,8 +15,8 @@ namespace ha.comp {
 			if (el) {
 				return el
 			} else {
-				console.log(parent);
-				console.log(query);
+				log.log(parent);
+				log.log(query);
 				if (err) {
 					throw new Error('query not found ');
 				}
@@ -41,19 +41,19 @@ namespace ha.comp {
 		static getUrl(url: string, params: any[]): string {
 			let urlHasil: string = url;
 
-			console.group('get url');
-			console.log('url: ' + url);
-			console.log('params: ' + JSON.stringify(params));
+			log.group('get url');
+			log.log('url: ' + url);
+			log.log('params: ' + JSON.stringify(params));
 
 			params.forEach((item: string) => {
-				console.log('reg: ' + urlHasil.search(/\:[a-zA-Z_0-9]+/));
+				log.log('reg: ' + urlHasil.search(/\:[a-zA-Z_0-9]+/));
 				urlHasil = urlHasil.replace(/\:[a-zA-Z_0-9]+/, item + '');
-				console.log('item: ' + item);
-				console.log('url: ' + urlHasil);
+				log.log('item: ' + item);
+				log.log('url: ' + urlHasil);
 			});
 
-			console.log('url hasil: ' + urlHasil);
-			console.groupEnd();
+			log.log('url hasil: ' + urlHasil);
+			log.groupEnd();
 
 			return urlHasil;
 		}
@@ -77,7 +77,7 @@ namespace ha.comp {
 			if (x.status == 200 || x.status == 0) {
 				return x.responseText;
 			}
-			console.log('error status code: ' + x.status);
+			log.log('error status code: ' + x.status);
 
 			throw Error(x.responseText);
 		}
@@ -86,9 +86,9 @@ namespace ha.comp {
 		static async Ajax(type: string, url: string, dataStr: string, pf: (p: ProgressEvent) => void = null): Promise<XMLHttpRequest> {
 			return new Promise((resolve: any, reject: any) => {
 				try {
-					console.group('send data');
+					log.group('send data');
 					// console.log(dataStr);
-					console.log("type " + type);
+					log.log("type " + type);
 
 					loading.attach(document.body);
 
@@ -101,8 +101,8 @@ namespace ha.comp {
 					};
 
 					xhr.onerror = (e: any) => {
-						console.log('xhr error');
-						console.log(e);
+						log.log('xhr error');
+						log.log(e);
 						loading.detach();
 						reject(new Error(e.message));
 					}
@@ -123,11 +123,11 @@ namespace ha.comp {
 
 					// console.log("type " + type);
 					// console.log("url " + url);
-					console.groupEnd();
+					log.groupEnd();
 				}
 				catch (e) {
-					console.log('Util error');
-					console.log(e);
+					log.log('Util error');
+					log.log(e);
 					loading.detach();
 					reject(new Error(e.message));
 				}

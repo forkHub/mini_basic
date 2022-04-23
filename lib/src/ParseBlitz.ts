@@ -8,7 +8,7 @@ namespace ha.parse {
 		async parse(str: string): Promise<void> {
 			data.dataStr = str;
 
-			console.groupCollapsed('parse: ' + str);
+			ha.comp.log.groupCollapsed('parse: ' + str);
 
 			data.dataStr = data.dataStr.trim();
 
@@ -16,13 +16,13 @@ namespace ha.parse {
 				data.token.pop();
 			}
 
-			console.log('str ' + data.dataStr);
+			ha.comp.log.log('str ' + data.dataStr);
 			data.barisAktif = data.dataStr;
 
 			if (data.ignore.indexOf(data.barisAktif) >= 0) {
-				console.log('ignore: ' + data.barisAktif);
+				ha.comp.log.log('ignore: ' + data.barisAktif);
 				data.jmlIgnore++;
-				console.groupEnd();
+				ha.comp.log.groupEnd();
 				return;
 			}
 
@@ -37,11 +37,11 @@ namespace ha.parse {
 
 			grammar.grammar();
 
-			console.groupCollapsed("terjemah");
+			ha.comp.log.groupCollapsed("terjemah");
 			terj.terjemah(data.barisObj.token[0]);
-			console.groupEnd();
+			ha.comp.log.groupEnd();
 
-			console.groupEnd();
+			ha.comp.log.groupEnd();
 		}
 
 
@@ -70,9 +70,9 @@ namespace ha.parse {
 			let hasil: string = '';
 
 			if (debug) {
-				console.log('token to value');
-				console.log(token);
-				console.log(token.token);
+				ha.comp.log.log('token to value');
+				ha.comp.log.log(token);
+				ha.comp.log.log(token.token);
 			}
 
 			if (!token) throw Error();
@@ -96,11 +96,11 @@ namespace ha.parse {
 		}
 
 		debugToken(token: IToken[]): void {
-			console.group('debug token:')
+			ha.comp.log.group('debug token:')
 			token.forEach((item: IToken) => {
-				console.log(this.tokenToValue(item));
+				ha.comp.log.log(this.tokenToValue(item));
 			})
-			console.groupEnd();
+			ha.comp.log.groupEnd();
 		}
 
 	}
@@ -123,27 +123,27 @@ namespace ha.parse {
 			let kanan: IToken[] = this.kanan(token, idx2);
 
 			if (debug) {
-				console.log('index ' + idx);
+				ha.comp.log.log('index ' + idx);
 
-				console.log('token:');
-				console.log(token);
+				ha.comp.log.log('token:');
+				ha.comp.log.log(token);
 
-				console.log('kiri:');
-				console.log(kiri);
-				console.log('kiri l ' + kiri.length);
+				ha.comp.log.log('kiri:');
+				ha.comp.log.log(kiri);
+				ha.comp.log.log('kiri l ' + kiri.length);
 
-				console.log('kanan:');
-				console.log('kanan l: ' + kanan.length);
-				console.log(kanan);
+				ha.comp.log.log('kanan:');
+				ha.comp.log.log('kanan l: ' + kanan.length);
+				ha.comp.log.log(kanan);
 
-				console.log('token2:');
-				console.log(token2);
+				ha.comp.log.log('token2:');
+				ha.comp.log.log(token2);
 			}
 
 			let hasil: IToken[] = kiri.concat(token2);
 			hasil = hasil.concat(kanan);
 			if (debug) {
-				console.log('hasil length ' + hasil.length);
+				ha.comp.log.log('hasil length ' + hasil.length);
 			}
 
 			if (hasil.length > token.length) {

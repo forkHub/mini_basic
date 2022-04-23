@@ -57,9 +57,9 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("if pendek:");
-                    console.log(tokenBaru);
-                    console.log(parse.tokenToValue(tokenBaru));
+                    ha.comp.log.log("if pendek:");
+                    ha.comp.log.log(tokenBaru);
+                    ha.comp.log.log(parse.tokenToValue(tokenBaru));
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -103,8 +103,8 @@ namespace ha.parse {
                         token: [t1, t2]
                     }
 
-                    console.log("if then:");
-                    console.log(tokenBaru);
+                    ha.comp.log.log("if then:");
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 
@@ -152,8 +152,8 @@ namespace ha.parse {
                         token: [t1, t2, t3]
                     }
 
-                    console.log("else if then");
-                    console.log(tokenBaru);
+                    ha.comp.log.log("else if then");
+                    ha.comp.log.log(tokenBaru);
 
                     data.barisObj.token = ar.ganti(data.barisObj.token, i, i + tokenBaru.token.length - 1, tokenBaru);
 

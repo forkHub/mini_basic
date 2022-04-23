@@ -7,8 +7,8 @@ namespace ha.parse {
         terjemah(token: IToken): string {
             let hasil: string = '';
 
-            console.log("terjemah");
-            console.log(token);
+            ha.comp.log.log("terjemah");
+            ha.comp.log.log(token);
 
             hasil = this.langsung(token);
             if (hasil != '') return hasil;
@@ -19,8 +19,8 @@ namespace ha.parse {
             hasil = this.stmt(token);
             if (hasil != '') return hasil;
 
-            console.log(token);
-            console.log('token type ' + token.type);
+            ha.comp.log.log(token);
+            ha.comp.log.log('token type ' + token.type);
             throw Error();
         }
 

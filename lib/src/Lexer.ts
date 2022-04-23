@@ -7,7 +7,7 @@ namespace ha.parse {
          * 
          */
         lexer(): void {
-            console.group('lexer start');
+            ha.comp.log.group('lexer start');
 
             while (data.dataStr.length > 0) {
                 if (this.keyWordDouble()) { }
@@ -29,11 +29,11 @@ namespace ha.parse {
                     data.token.push(token);
                     data.dataStr = data.dataStr.slice(1);
 
-                    console.group('found unknown character');
-                    console.log(data.dataStr.slice(0, 10));
-                    console.log(data.dataStr.charCodeAt(0));
-                    console.log(data.dataStr.charAt(0));
-                    console.groupEnd();
+                    ha.comp.log.group('found unknown character');
+                    ha.comp.log.log(data.dataStr.slice(0, 10));
+                    ha.comp.log.log(data.dataStr.charCodeAt(0));
+                    ha.comp.log.log(data.dataStr.charAt(0));
+                    ha.comp.log.groupEnd();
                 }
             }
 
@@ -45,7 +45,7 @@ namespace ha.parse {
                 }
             })
 
-            console.groupEnd();
+            ha.comp.log.groupEnd();
         }
 
         getTab(): boolean {
@@ -77,7 +77,7 @@ namespace ha.parse {
         getString(): boolean {
             let char1: string;
 
-            // console.log('get string');
+            // ha.comp.log.log('get string');
 
             char1 = data.dataStr.charAt(0);
 
@@ -88,11 +88,11 @@ namespace ha.parse {
                     throw Error();
                 }
                 else {
-                    // console.log('data.token: ');
-                    // console.log(data.token);
-                    // console.log('idx ' + idx);
-                    // console.log('datastr ' + data.dataStr);
-                    // console.log('hasil ' + data.dataStr.slice(0, idx + 1));
+                    // ha.comp.log.log('data.token: ');
+                    // ha.comp.log.log(data.token);
+                    // ha.comp.log.log('idx ' + idx);
+                    // ha.comp.log.log('datastr ' + data.dataStr);
+                    // ha.comp.log.log('hasil ' + data.dataStr.slice(0, idx + 1));
 
                     data.token.push({
                         value: data.dataStr.slice(0, idx + 1),
@@ -101,7 +101,7 @@ namespace ha.parse {
 
                     data.dataStr = data.dataStr.slice(idx + 1);
 
-                    // console.log('sisa: ' + data.dataStr);
+                    // ha.comp.log.log('sisa: ' + data.dataStr);
 
                     return true;
                 }
@@ -152,16 +152,16 @@ namespace ha.parse {
 
             if (hsl) {
                 value = hsl + '';
-                // console.log('get number, value: ' + value + '|');
-                // console.log('hsl');
-                // console.log(hsl);
+                // ha.comp.log.log('get number, value: ' + value + '|');
+                // ha.comp.log.log('hsl');
+                // ha.comp.log.log(hsl);
 
-                // console.log(hsl.groups.length);
-                // console.log(hsl);
-                // console.log(hsl[0]);
-                // console.log(hsl.groups[0].length);
+                // ha.comp.log.log(hsl.groups.length);
+                // ha.comp.log.log(hsl);
+                // ha.comp.log.log(hsl[0]);
+                // ha.comp.log.log(hsl.groups[0].length);
                 data.dataStr = data.dataStr.slice(value.length);
-                // console.debug('no: ' + hsl);
+                // ha.comp.log.debug('no: ' + hsl);
                 // this.sisa(str);
                 // parse.kataAr.push(hsl + '');
 
@@ -170,11 +170,11 @@ namespace ha.parse {
                     type: Kons.TY_ANGKA
                 }
                 data.token.push(token);
-                // console.log('get number: ' + JSON.stringify(token));
-                // console.log(hsl);
-                // console.log(hsl[0]);
+                // ha.comp.log.log('get number: ' + JSON.stringify(token));
+                // ha.comp.log.log(hsl);
+                // ha.comp.log.log(hsl[0]);
 
-                // console.log(data.token);
+                // ha.comp.log.log(data.token);
                 return true;
             }
 
@@ -208,7 +208,7 @@ namespace ha.parse {
                         token.type = Kons.TY_ELSE_IF
                     }
                     else {
-                        console.warn("kata belum didefinisikan: " + lc);
+                        ha.comp.log.warn("kata belum didefinisikan: " + lc);
                     }
 
                     data.token.push(token);

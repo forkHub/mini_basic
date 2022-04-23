@@ -151,6 +151,7 @@ namespace ha.parse {
             })
 
             console.log("data ignore " + data.ignore.length);
+            ha.comp.log.aktif = false;
         }
 
         async init(): Promise<void> {
