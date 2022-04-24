@@ -4,11 +4,18 @@ namespace ha.parse {
         private flDim: boolean = false;
         private flBinopExp: boolean = false;
 
+        constructor() {
+
+        }
+
+        log(data: any): void {
+            ha.comp.log.log(data, 'tj');
+        }
+
         terjemah(token: IToken): string {
             let hasil: string = '';
 
-            ha.comp.log.log("terjemah");
-            ha.comp.log.log(token);
+            this.log(token);
 
             hasil = this.langsung(token);
             if (hasil != '') return hasil;
@@ -19,8 +26,8 @@ namespace ha.parse {
             hasil = this.stmt(token);
             if (hasil != '') return hasil;
 
-            ha.comp.log.log(token);
-            ha.comp.log.log('token type ' + token.type);
+            this.log(token);
+            this.log('token type ' + token.type);
             throw Error();
         }
 
@@ -39,8 +46,7 @@ namespace ha.parse {
                 return terj.terjemah(token.token[0]) + ',' + terj.terjemah(token.token[2]);
             }
             else if (token.type == Kons.TY_ARG) {
-                //TODO:
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_EXP) {
                 return this.terjemah(token.token[0]);
@@ -66,18 +72,13 @@ namespace ha.parse {
 
             if (false) { }
             else if (token.type == Kons.TY_FOR_DEC) {
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_FOR_STEP) {
-                let hasil: string = '';
-                return hasil;
+                throw Error('');
             }
             else if (token.type == Kons.TY_IF_EXP) {
-                let hasil: string = '';
-
-                //TODO:
-
-                return hasil;
+                throw Error('');
             }
             else if (token.type == Kons.TY_PERINTAH) {
                 let hsl: string = '';
@@ -119,7 +120,7 @@ namespace ha.parse {
                 // return this.wend(token);
             }
             else if (token.type == Kons.TY_ELSE_THEN) {
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_FUNC_DEC) {
                 let hsl: string = '';
@@ -138,24 +139,19 @@ namespace ha.parse {
                 return hsl;
             }
             else if (token.type == Kons.TY_RETURN) {
-                //TODO:
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_IF_THEN) {
-                //TODO:
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_MODIFIER) {
-                //TODO:
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_DIM_DEC) {
-                //TODO:
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_DIM_ASSINMENT) {
-                //TODO:
-                return '';
+                throw Error('');
             }
             else if (token.type == Kons.TY_RETURN_EXP) {
                 //return exp|kata
