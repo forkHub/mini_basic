@@ -37,9 +37,9 @@ namespace ha.parse {
 
 			grammar.grammar();
 
-			ha.comp.log.groupCollapsed("terjemah");
+			ha.comp.log.groupCollapsed("terjemah", "tj");
 			terj.terjemah(data.barisObj.token[0]);
-			ha.comp.log.groupEnd();
+			ha.comp.log.groupEnd("tj");
 
 			ha.comp.log.groupEnd();
 		}

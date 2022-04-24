@@ -296,6 +296,8 @@ declare namespace ha.parse {
     class Terjemah {
         private flDim;
         private flBinopExp;
+        constructor();
+        log(data: any): void;
         terjemah(token: IToken): string;
         exp(token: IToken): string;
         stmt(token: IToken): string;
@@ -361,21 +363,31 @@ declare namespace ha.comp {
     class Logger {
         private _aktif;
         private _debugTag;
+        private daftarTag;
+        private _defTagLabel;
+        private _defMode;
+        private daftarLog;
+        get defMode(): string;
+        set defMode(value: string);
+        get defTagLabel(): string;
+        set defTagLabel(value: string);
         get debugTag(): boolean;
         set debugTag(value: boolean);
         get aktif(): boolean;
         set aktif(value: boolean);
         constructor();
-        debug(msg: any, mode?: string): void;
-        groupCollapsed(msg: any): void;
-        group(msg: any): void;
+        private tambahTag;
+        private cariTag;
+        groupCollapsed(msg: any, label?: string): void;
+        group(msg: any, label?: string): void;
         error(e: Error): void;
-        warn(msg: string): void;
-        groupEnd(): void;
-        log(msg: any): void;
+        warn(msg: any, label?: string): void;
+        groupEnd(label?: string): void;
+        isiLog(data: any, mode?: string, label?: string, error?: Error): void;
+        log(data: any, label?: string): void;
+        tampil(label: string): void;
     }
-    export var log: Logger;
-    export {};
+    var log: Logger;
 }
 declare namespace ha.comp {
     export class MenuPopup {

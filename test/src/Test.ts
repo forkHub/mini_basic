@@ -209,8 +209,9 @@ namespace ha.parse {
                 catch (e) {
                     console.log('file: ' + file);
                     console.error(e);
+                    ha.comp.log.tampil('tj');
                     throw Error();
-                    break;
+                    // break;
                 }
             }
 

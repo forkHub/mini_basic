@@ -196,8 +196,9 @@ var ha;
                     catch (e) {
                         console.log('file: ' + file);
                         console.error(e);
+                        ha.comp.log.tampil('tj');
                         throw Error();
-                        break;
+                        // break;
                     }
                 }
                 console.log('jml err ' + parse.data.errList.length);

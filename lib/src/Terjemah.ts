@@ -15,6 +15,7 @@ namespace ha.parse {
         terjemah(token: IToken): string {
             let hasil: string = '';
 
+            this.log("terjemah:");
             this.log(token);
 
             hasil = this.langsung(token);

@@ -109,7 +109,7 @@ namespace ha.comp {
                         console.error(item.error);
                     }
                     else if (item.mode == 'collapsed') {
-                        console.groupCollapsed();
+                        console.groupCollapsed(item.log);
                     }
                     else if (item.mode == 'group') {
                         console.group(item.log);

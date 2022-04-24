@@ -1901,9 +1901,9 @@ var ha;
                     token: parse_1.data.token
                 };
                 parse_1.grammar.grammar();
-                ha.comp.log.groupCollapsed("terjemah");
+                ha.comp.log.groupCollapsed("terjemah", "tj");
                 parse_1.terj.terjemah(parse_1.data.barisObj.token[0]);
-                ha.comp.log.groupEnd();
+                ha.comp.log.groupEnd("tj");
                 ha.comp.log.groupEnd();
             }
             getToken(idx, token) {
@@ -2426,10 +2426,15 @@ var ha;
         class Terjemah {
             flDim = false;
             flBinopExp = false;
+            constructor() {
+            }
+            log(data) {
+                ha.comp.log.log(data, 'tj');
+            }
             terjemah(token) {
                 let hasil = '';
-                ha.comp.log.log("terjemah");
-                ha.comp.log.log(token);
+                this.log("terjemah:");
+                this.log(token);
                 hasil = this.langsung(token);
                 if (hasil != '')
                     return hasil;
@@ -2439,8 +2444,8 @@ var ha;
                 hasil = this.stmt(token);
                 if (hasil != '')
                     return hasil;
-                ha.comp.log.log(token);
-                ha.comp.log.log('token type ' + token.type);
+                this.log(token);
+                this.log('token type ' + token.type);
                 throw Error();
             }
             exp(token) {
@@ -2458,7 +2463,7 @@ var ha;
                     return parse.terj.terjemah(token.token[0]) + ',' + parse.terj.terjemah(token.token[2]);
                 }
                 else if (token.type == parse.Kons.TY_ARG) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_EXP) {
                     return this.terjemah(token.token[0]);
@@ -2482,15 +2487,13 @@ var ha;
             stmt(token) {
                 if (false) { }
                 else if (token.type == parse.Kons.TY_FOR_DEC) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_FOR_STEP) {
-                    let hasil = '';
-                    return hasil;
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_IF_EXP) {
-                    let hasil = '';
-                    return hasil;
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_PERINTAH) {
                     let hsl = '';
@@ -2526,7 +2529,7 @@ var ha;
                 else if (token.type == parse.Kons.TY_WEND_STMT) {
                 }
                 else if (token.type == parse.Kons.TY_ELSE_THEN) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_FUNC_DEC) {
                     let hsl = '';
@@ -2540,19 +2543,19 @@ var ha;
                     return hsl;
                 }
                 else if (token.type == parse.Kons.TY_RETURN) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_IF_THEN) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_MODIFIER) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_DIM_DEC) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_DIM_ASSINMENT) {
-                    return '';
+                    throw Error('');
                 }
                 else if (token.type == parse.Kons.TY_RETURN_EXP) {
                     return this.terjemah(token.token[0]) + ' ' + this.terjemah(token.token[1]);
@@ -2866,6 +2869,22 @@ var ha;
         class Logger {
             _aktif = true;
             _debugTag = false;
+            daftarTag = [];
+            _defTagLabel = 'def';
+            _defMode = 'log';
+            daftarLog = [];
+            get defMode() {
+                return this._defMode;
+            }
+            set defMode(value) {
+                this._defMode = value;
+            }
+            get defTagLabel() {
+                return this._defTagLabel;
+            }
+            set defTagLabel(value) {
+                this._defTagLabel = value;
+            }
             get debugTag() {
                 return this._debugTag;
             }
@@ -2879,53 +2898,82 @@ var ha;
                 this._aktif = value;
             }
             constructor() {
+                this.daftarTag.push({
+                    label: 'def',
+                    aktif: true
+                });
             }
-            debug(msg, mode = 'log') {
-                if (!this._debugTag)
-                    return;
-                if (mode == "log") {
-                    this.log(msg);
-                }
-                else if (mode == "collapse") {
-                    this.groupCollapsed(msg);
-                }
-                else if (mode == 'group') {
-                    this.group(msg);
-                }
-                else if (mode == "end") {
-                    this.groupEnd();
-                }
+            tambahTag(label) {
+                let tag = this.cariTag(label);
+                if (tag)
+                    return tag;
+                tag = {
+                    label: label,
+                    aktif: false
+                };
+                this.daftarTag.push(tag);
+                return tag;
             }
-            groupCollapsed(msg) {
-                if (!this._aktif)
-                    return;
-                comp.log.groupCollapsed(msg);
-            }
-            group(msg) {
-                if (this._aktif) {
-                    comp.log.group(msg);
-                    msg;
+            cariTag(label) {
+                for (let i = 0; i < this.daftarTag.length; i++) {
+                    if (this.daftarTag[i].label == label)
+                        return this.daftarTag[i];
                 }
+                return null;
+            }
+            groupCollapsed(msg, label = 'def') {
+                this.isiLog(msg, 'collapsed', label);
+            }
+            group(msg, label = 'def') {
+                this.isiLog(msg, 'group', label);
             }
             error(e) {
-                window.console.error(e);
+                this.isiLog('', 'log', 'def', e);
             }
-            warn(msg) {
-                if (!this._aktif)
-                    return;
-                console.warn(msg);
+            warn(msg, label = 'def') {
+                this.isiLog(msg, 'warn', label);
             }
-            groupEnd() {
-                if (this._aktif) {
-                    comp.log.groupEnd();
-                }
+            groupEnd(label = 'def') {
+                this.isiLog('', 'end', label);
             }
-            log(msg) {
-                if (this._aktif) {
-                    comp.log.log(msg);
-                }
+            isiLog(data, mode = 'log', label = 'def', error = Error('')) {
+                let tag = this.tambahTag(label);
+                this.daftarLog.push({
+                    tag: tag,
+                    log: data,
+                    mode: mode,
+                    error: error
+                });
+            }
+            log(data, label = 'def') {
+                this.isiLog(data, 'log', label);
+            }
+            tampil(label) {
+                this.daftarLog.forEach((item) => {
+                    if (item.tag.label == label) {
+                        if (item.mode == 'log') {
+                            console.log(item.log);
+                        }
+                        else if (item.mode == 'warn') {
+                            console.warn(item.log);
+                        }
+                        else if (item.mode == 'error') {
+                            console.error(item.error);
+                        }
+                        else if (item.mode == 'collapsed') {
+                            console.groupCollapsed(item.log);
+                        }
+                        else if (item.mode == 'group') {
+                            console.group(item.log);
+                        }
+                        else {
+                            throw Error('');
+                        }
+                    }
+                });
             }
         }
+        comp.Logger = Logger;
         comp.log = new Logger();
     })(comp = ha.comp || (ha.comp = {}));
 })(ha || (ha = {}));
