@@ -540,7 +540,7 @@ namespace ha.parse {
             return ada;
         }
 
-        //TODO: diganti yang lebih generic, include kata
+        //TODO: diganti yang lebih generic, include kata, refactor ke grammar2
         binop(): boolean {
             let ada: boolean = false;
 

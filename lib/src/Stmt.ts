@@ -16,8 +16,8 @@ namespace ha.parse {
                 let t1Ar: number[] = [
                     Kons.TY_MOD_ISI,
                     Kons.TY_IF_THEN,
-                    Kons.TY_ELSE_THEN,
-                    Kons.TY_ELSEIF_THEN
+                    Kons.TY_ELSE_THEN_STMT,
+                    Kons.TY_ELSEIF_STMT_THEN
                 ]
 
                 //TODO: hapus
@@ -77,12 +77,13 @@ namespace ha.parse {
                 if (t3.valueLowerCase != '=') return false;
 
                 //t4 exp
-                // if (t4.type != Kons.TY_EXP) {
-                //     if (t4.type != Kons.TY_NEW_INST) {
-                //         return false;
-                //     }
-                // }
+                if (t4.type != Kons.TY_EXP) {
+                    if (t4.type != Kons.TY_KATA) {
+                        return false;
+                    }
+                }
 
+                //scenario belum jelas
                 if (t5) {
                     if (t5.type == Kons.TY_KATA) return false;
                 }
@@ -175,21 +176,17 @@ namespace ha.parse {
         forPendek(): boolean {
             let ada: boolean = false;
 
-            //for var_assign to exp
-            //1   2          3  4  
+            //FOR ANY TO EXP
+            //1   2   3  4  
             function check(t1: IToken, t2: IToken, t3: IToken, t4: IToken): boolean {
-                // ha.comp.log.debug('null check:');
+
                 if (!t1) return false;
                 if (!t2) return false;
                 if (!t3) return false;
                 if (!t4) return false;
 
-                // if (!t5) return false;
-                // if (!t6) return false;
-
                 if ("for" != t1.valueLowerCase) return false;
 
-                // if (Kons.TY_BINOP_EQ != t2.type) return false;
 
                 if ("to" != t3.valueLowerCase) return false;
 
@@ -205,17 +202,6 @@ namespace ha.parse {
                 let token3: IToken = parse.getToken(i + 2, data.barisObj.token);//[i + 2];
                 let token4: IToken = parse.getToken(i + 3, data.barisObj.token);//[i + 3];
 
-                // let token5: Itoken = parse.getToken(i + 4, data.barisObj.token);//[i + 4];
-                // let token6: Itoken = parse.getToken(i + 5, data.barisObj.token);//[i + 5];
-
-                // if (token1.value && token1.value.toLowerCase() == "for") {
-                //     if (token2.type == Kons.TY_KATA) {
-                //         if (token3.value == "=") {
-                //             if (exp.isExp(token4)) {
-                //                 if (token5.value && token5.value.toLowerCase() == "to") {
-                //                     if (exp.isExp(token6)) {
-
-                // ha.comp.log.group('for');
                 if (check(token1, token2, token3, token4)) {
                     let tokenBaru: IToken = {
                         token: [
@@ -224,7 +210,7 @@ namespace ha.parse {
                             token3,
                             token4,
                         ],
-                        type: Kons.TY_FOR_DEC
+                        type: Kons.TY_FOR_STMT
                     };
 
                     ha.comp.log.log('for: ');
@@ -259,7 +245,7 @@ namespace ha.parse {
                 if (!t2) return false;
                 if (!t3) return false;
 
-                if (Kons.TY_FOR_DEC != t1.type) return false;
+                if (Kons.TY_FOR_STMT != t1.type) return false;
 
                 if ("step" != t2.valueLowerCase) return false;
 
@@ -283,7 +269,7 @@ namespace ha.parse {
                             token2,
                             token3,
                         ],
-                        type: Kons.TY_FOR_STEP
+                        type: Kons.TY_FOR_STEP_STMT
                     };
 
                     ha.comp.log.log('for step: ');
@@ -502,49 +488,49 @@ namespace ha.parse {
         }
 
         //TODO: refaktor
-        while2(): boolean {
-            let ada: boolean = false;
+        // while2(): boolean {
+        //     let ada: boolean = false;
 
-            for (let i: number = 0; i < data.barisObj.token.length; i++) {
+        //     for (let i: number = 0; i < data.barisObj.token.length; i++) {
 
-                let token1: IToken = parse.getToken(i + 0, data.barisObj.token);
-                let token2: IToken = parse.getToken(i + 1, data.barisObj.token);
-                let token3: IToken = parse.getToken(i + 2, data.barisObj.token);
+        //         let token1: IToken = parse.getToken(i + 0, data.barisObj.token);
+        //         let token2: IToken = parse.getToken(i + 1, data.barisObj.token);
+        //         let token3: IToken = parse.getToken(i + 2, data.barisObj.token);
 
-                let tokenBaru: IToken;
+        //         let tokenBaru: IToken;
 
-                if (check(token1, token2, token3)) {
-                    tokenBaru = {
-                        type: Kons.TY_WEND_STMT,
-                        token: [token1, token2]
-                    }
+        //         if (check(token1, token2, token3)) {
+        //             tokenBaru = {
+        //                 type: Kons.TY_WHILE_STMT,
+        //                 token: [token1, token2]
+        //             }
 
-                    ha.comp.log.log("while:");
-                    ha.comp.log.log(tokenBaru);
+        //             ha.comp.log.log("while:");
+        //             ha.comp.log.log(tokenBaru);
 
-                    data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
+        //             data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
 
-                    ada = true;
-                    i--;
-                }
-            }
+        //             ada = true;
+        //             i--;
+        //         }
+        //     }
 
-            return ada;
+        //     return ada;
 
-            //while exp [kosong]
-            function check(t1: IToken, t2: IToken, t3: IToken): boolean {
-                if (!t1) return false;
-                if (!t2) return false;
-                if (t3) return false;
-                if (!t1.value) return false;
+        //     //while exp [kosong]
+        //     function check(t1: IToken, t2: IToken, t3: IToken): boolean {
+        //         if (!t1) return false;
+        //         if (!t2) return false;
+        //         if (t3) return false;
+        //         if (!t1.value) return false;
 
-                if (t1.value.toLowerCase() != 'while') return false;
+        //         if (t1.value.toLowerCase() != 'while') return false;
 
-                if (exp.isExp(t2) == false) return false;
+        //         if (exp.isExp(t2) == false) return false;
 
-                return true;
-            }
-        }
+        //         return true;
+        //     }
+        // }
 
     }
 

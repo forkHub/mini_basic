@@ -122,6 +122,8 @@ declare namespace ha.parse {
         static readonly TY_ELSE: number;
         static readonly TY_RETURN: number;
         static readonly TY_NOT: number;
+        static readonly TY_WHILE: number;
+        static readonly TY_WEND: number;
         static readonly TY_ARG: number;
         static readonly TY_ARG2: number;
         static readonly TY_KURUNG_KOSONG: number;
@@ -138,9 +140,9 @@ declare namespace ha.parse {
         static readonly TY_STMT_M: number;
         static readonly TY_PERINTAH: number;
         static readonly TY_LABEL: number;
-        static readonly TY_FOR_DEC: number;
-        static readonly TY_FOR_STEP: number;
-        static readonly TY_WEND_STMT: number;
+        static readonly TY_FOR_STMT: number;
+        static readonly TY_FOR_STEP_STMT: number;
+        static readonly TY_WHILE_STMT: number;
         static readonly TY_FUNC_DEC: number;
         static readonly TY_RETURN_EXP: number;
         static readonly TY_FOR_EACH: number;
@@ -151,10 +153,10 @@ declare namespace ha.parse {
         static readonly TY_DIM_PROP_ASSINMENT: number;
         static readonly TY_IF_EXP: number;
         static readonly TY_IF_THEN: number;
-        static readonly TY_ELSE_DEC: number;
-        static readonly TY_ELSE_THEN: number;
-        static readonly TY_ELSEIF_DEC: number;
-        static readonly TY_ELSEIF_THEN: number;
+        static readonly TY_ELSE_STMT: number;
+        static readonly TY_ELSE_THEN_STMT: number;
+        static readonly TY_ELSEIF_STMT: number;
+        static readonly TY_ELSEIF_STMT_THEN: number;
         static readonly TY_MOD_DEC: number;
         static readonly TY_MOD_ISI: number;
         static readonly TY_CASE: number;
@@ -178,6 +180,7 @@ declare namespace ha.parse {
 }
 declare namespace ha.parse {
     class Grammar2 {
+        private bl;
         private _aturanExpAr;
         get aturanExpAr(): IAturan[];
         private _aturanStmtAr;
@@ -283,7 +286,6 @@ declare namespace ha.parse {
         modifier(): boolean;
         modIsi(): boolean;
         returnExp(): boolean;
-        while2(): boolean;
     }
     export var stmt: Stmt;
     export {};
@@ -302,6 +304,7 @@ declare namespace ha.parse {
         exp(token: IToken): string;
         stmt(token: IToken): string;
         langsung(token: IToken): string;
+        gakDikenal(token: IToken): string;
         kurungKotak(token: IToken): string;
         kurung(token: IToken): string;
         fungsi(token: IToken): string;

@@ -77,8 +77,6 @@ namespace ha.parse {
         getString(): boolean {
             let char1: string;
 
-            // ha.comp.log.log('get string');
-
             char1 = data.dataStr.charAt(0);
 
             if (char1 == "\"") {
@@ -88,11 +86,6 @@ namespace ha.parse {
                     throw Error();
                 }
                 else {
-                    // ha.comp.log.log('data.token: ');
-                    // ha.comp.log.log(data.token);
-                    // ha.comp.log.log('idx ' + idx);
-                    // ha.comp.log.log('datastr ' + data.dataStr);
-                    // ha.comp.log.log('hasil ' + data.dataStr.slice(0, idx + 1));
 
                     data.token.push({
                         value: data.dataStr.slice(0, idx + 1),
@@ -100,8 +93,6 @@ namespace ha.parse {
                     })
 
                     data.dataStr = data.dataStr.slice(idx + 1);
-
-                    // ha.comp.log.log('sisa: ' + data.dataStr);
 
                     return true;
                 }
@@ -127,23 +118,6 @@ namespace ha.parse {
 
             return false;
         }
-
-        // getOp2(): boolean {
-        //     for (let i: number = 0; i < data.op2.length; i++) {
-        //         let kata: string = data.op2[i];
-
-        //         if (data.dataStr.slice(0, kata.length).toLowerCase() == kata) {
-        //             data.token.push({
-        //                 value: kata,
-        //                 type: Kons.TY_OP2
-        //             });
-        //             data.dataStr = data.dataStr.slice(kata.length);
-        //             return true;
-        //         }
-        //     }
-
-        //     return false;
-        // }
 
         getNumber(): boolean {
             let id: RegExp = /^[0-9]*\.?[0-9]+/;
@@ -197,9 +171,6 @@ namespace ha.parse {
 
                     let lc: string = kata.toLowerCase();
 
-                    // if ("end type" == lc) {
-                    //     token.type = Kons.TY_ENDTYPE;
-                    // }
                     if (false) { }
                     else if ("end select" == lc) {
                         token.type = Kons.TY_END_SELECT
@@ -328,9 +299,6 @@ namespace ha.parse {
                 else if ("select" == lc) {
                     token.type = Kons.TY_SELECT
                 }
-                else if ("end select" == lc) {
-                    token.type = Kons.TY_END_SELECT
-                }
                 else if ("dim" == lc) {
                     token.type = Kons.TY_DIM
                 }
@@ -357,6 +325,12 @@ namespace ha.parse {
                 }
                 else if ("else" == lc) {
                     token.type = Kons.TY_ELSE
+                }
+                else if ("while" == lc) {
+                    token.type = Kons.TY_WHILE
+                }
+                else if ("wend" == lc) {
+                    token.type = Kons.TY_WEND
                 }
 
                 //operator

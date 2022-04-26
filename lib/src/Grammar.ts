@@ -68,7 +68,7 @@ namespace ha.parse {
                 else if (ifStmt.elseIfThen()) { }
 
                 else if (stmt.funcDec()) { }
-                else if (stmt.while2()) { }
+                // else if (stmt.while2()) { }
                 else if (stmt.dimDec()) { }
                 else if (stmt.dimAssign()) { }
                 else if (caseStmt.caseDec()) { }

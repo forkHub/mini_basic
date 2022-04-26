@@ -27,6 +27,9 @@ namespace ha.parse {
             hasil = this.stmt(token);
             if (hasil != '') return hasil;
 
+            hasil = this.gakDikenal(token);
+            if (hasil != '') return hasil;
+
             this.log(token);
             this.log('token type ' + token.type);
             throw Error();
@@ -47,7 +50,8 @@ namespace ha.parse {
                 return terj.terjemah(token.token[0]) + ',' + terj.terjemah(token.token[2]);
             }
             else if (token.type == Kons.TY_ARG) {
-                throw Error('');
+                //arg2 , exp
+                return terj.terjemah(token.token[0]) + ',' + terj.terjemah(token.token[2]);
             }
             else if (token.type == Kons.TY_EXP) {
                 return this.terjemah(token.token[0]);
@@ -59,7 +63,7 @@ namespace ha.parse {
                 return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
             }
             else if (token.type == Kons.TY_KURUNG_KOSONG) {
-                return this.terjemah(token.token[0]) + this.terjemah(token.token[2]);
+                return this.terjemah(token.token[0]) + this.terjemah(token.token[1]);
             }
             else if (token.type == Kons.TY_KURUNG_SINGLE) {
                 return this.terjemah(token.token[0]) + this.terjemah(token.token[1]) + this.terjemah(token.token[2]);
@@ -72,56 +76,56 @@ namespace ha.parse {
         stmt(token: IToken): string {
 
             if (false) { }
-            else if (token.type == Kons.TY_FOR_DEC) {
-                throw Error('');
+            else if (token.type == Kons.TY_FOR_STMT) {
+                //FOR ANY TO EXP
+                //0   1   2  3
+                return this.terjemah(token.token[0]) + ' ' + this.terjemah(token.token[1]) + ' ' + this.terjemah(token.token[2]) + ' ' + this.terjemah(token.token[3]);
             }
-            else if (token.type == Kons.TY_FOR_STEP) {
-                throw Error('');
+            else if (token.type == Kons.TY_FOR_STEP_STMT) {
+                //FOR_STMT STEP EXP
+                //0        1    2
+                return this.terjemah(token.token[0]) + ' ' + this.terjemah(token.token[1]) + ' ' + this.terjemah(token.token[2])
             }
             else if (token.type == Kons.TY_IF_EXP) {
-                throw Error('');
+                //IF EXP
+                let hasil: string = '';
+                this.flBinopExp = true;
+                hasil = this.terjemah(token.token[0]) + ' ' + this.terjemah(token.token[1]);
+                this.flBinopExp = false;
+                return hasil;
+            }
+            else if (token.type == Kons.TY_IF_THEN) {
+                //IF_EXP THEN
+                return this.terjemah(token.token[0]) + "{"
+            }
+            else if (token.type == Kons.TY_ELSE_STMT) {
+                //else exp
+                return "else { " + this.terjemah(token.token[1]);
+            }
+            else if (token.type == Kons.TY_ELSE_THEN_STMT) {
+                //else then
+                return this.terjemah(token.token[0]);
             }
             else if (token.type == Kons.TY_PERINTAH) {
                 let hsl: string = '';
 
-                if (token.token.length == 2) {
-                    //if global
-                    if (token.token[0].value && token.token[0].value.toLowerCase() == 'global') {
-                        return 'window.' + this.terjemah(token.token[1]) + ';';
-                    }
-                    else {
-                        hsl = this.terjemah(token.token[0]) + "(" + this.terjemah(token.token[1]) + ")";
-                    }
-                }
-                else if (token.token.length == 1) {
-                    if (token.value && token.value.toLowerCase() == 'wend') {
-                        return "}";
-                    }
-                    else {
-                        hsl = this.terjemah(token.token[0]) + "()";
-                    }
-                }
-                else {
-                    throw Error("");
-                }
+                //diganti ke fungsi
+                //ditambahin await
 
-                if (data.config.awaitFl) {
-                    hsl = hsl.trim();
-                    if (hsl.slice(0, 6) == 'return') {
-
-                    }
-                    else {
-                        hsl = 'await ' + hsl;
-                    }
-                }
+                hsl = "await" + token.token[0].value + "(" + this.terjemah(token.token[1]) + ")";
 
                 return hsl;
             }
-            else if (token.type == Kons.TY_WEND_STMT) {
-                // return this.wend(token);
-            }
-            else if (token.type == Kons.TY_ELSE_THEN) {
-                throw Error('');
+            else if (token.type == Kons.TY_WHILE_STMT) {
+                let hasil: string = '';
+
+                this.flBinopExp = true;
+
+                hasil += "while " + this.terjemah(token.token[1]) + " {";
+
+                this.flBinopExp = false;
+
+                return hasil
             }
             else if (token.type == Kons.TY_FUNC_DEC) {
                 let hsl: string = '';
@@ -140,19 +144,31 @@ namespace ha.parse {
                 return hsl;
             }
             else if (token.type == Kons.TY_RETURN) {
-                throw Error('');
-            }
-            else if (token.type == Kons.TY_IF_THEN) {
-                throw Error('');
+
+                return "return " + this.terjemah(token.token[1]);
             }
             else if (token.type == Kons.TY_MODIFIER) {
-                throw Error('');
+                let mod: string = token.token[0].valueLowerCase;
+
+                if (mod == 'global') {
+                    return "var " + this.terjemah(token.token[1]);
+                }
+                else if (mod == 'local') {
+                    return "let " + this.terjemah(token.token[1]);
+                }
+                else {
+                    throw Error('');
+                }
+
             }
             else if (token.type == Kons.TY_DIM_DEC) {
-                throw Error('');
+                return "Dim(" + this.terjemah(token.token[1]) + ")";
             }
             else if (token.type == Kons.TY_DIM_ASSINMENT) {
-                throw Error('');
+                //kata () = exp
+                //0    1  2 3
+
+                return token.token[0].value + this.kurungKotak(token.token[1]) + "=" + this.terjemah(token.token[3]);
             }
             else if (token.type == Kons.TY_RETURN_EXP) {
                 //return exp|kata
@@ -235,12 +251,47 @@ namespace ha.parse {
                 if (token.value == ".") return token.value;
                 return token.value + " ";
             }
+            else if (token.type == Kons.TY_WHILE) {
+                return token.valueLowerCase;
+            }
+            else if (token.type == Kons.TY_WEND) {
+                return token.valueLowerCase
+            }
 
             return '';
         }
 
+        gakDikenal(token: IToken): string {
+            let hasil: string = '';
+            for (let i: number = 0; i < token.token.length; i++) {
+                let token2: IToken = token.token[i];
+                if (token2.value) {
+                    hasil += token2.valueLowerCase
+                }
+                else {
+                    hasil += this.terjemah(token2);
+                }
+            }
+
+            return hasil;
+        }
+
         kurungKotak(token: IToken): string {
-            return "[" + this.terjemah(token.token[1]) + "]";
+            if (token.type == Kons.TY_KURUNG_KOSONG) {
+                return "[]";
+            }
+            else if (token.type == Kons.TY_KURUNG_SINGLE) {
+                return "[" + this.terjemah(token.token[1]) + "]";
+            }
+            else if (token.type == Kons.TY_KURUNG_ARG2) {
+                return "[" + this.terjemah(token.token[0]) + "][" + this.terjemah(token.token[1]) + "]";
+            }
+            else if (token.type == Kons.TY_KURUNG_ARG) {
+                throw Error('');
+            }
+            else {
+                return "[" + this.terjemah(token.token[1]) + "]";
+            }
         }
 
         kurung(token: IToken): string {

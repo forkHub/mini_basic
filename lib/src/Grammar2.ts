@@ -1,5 +1,6 @@
 namespace ha.parse {
     class Grammar2 {
+        private bl: Builder;
         private _aturanExpAr: IAturan[] = [];
         public get aturanExpAr(): IAturan[] {
             return this._aturanExpAr;
@@ -11,7 +12,7 @@ namespace ha.parse {
         }
 
         constructor() {
-
+            this.bl = new Builder();
         }
 
         aturanExp(): void {
@@ -23,7 +24,7 @@ namespace ha.parse {
                         kondisi: [
                             [Kons.TY_KATA, Kons.TY_EXP, Kons.TY_KATA_DOT],
                             [Kons.TY_OP],
-                            [Kons.TY_KATA, Kons.TY_EXP]
+                            [Kons.TY_KATA, Kons.TY_EXP, Kons.TY_KATA_DOT]
                         ],
                         sbl: [Kons.TY_MODIFIER, Kons.TY_OP, Kons.TY_BACK_SLASH],
                         stl: [Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE]
@@ -73,7 +74,8 @@ namespace ha.parse {
                             Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_ARG, Kons.TY_KURUNG_ARG2, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_KOSONG, Kons.TY_KURUNG_SINGLE
                         ]
                     }
-                }
+                },
+                this.bl.ty(Kons.TY_WHILE_STMT).kond([Kons.TY_WHILE]).kond([Kons.TY_EXP]).build()
 
             ])
         }
@@ -87,7 +89,7 @@ namespace ha.parse {
                         nama: 'perintah ',
                         kondisi: [
                             [Kons.TY_KATA],
-                            [Kons.TY_ARG, Kons.TY_ARG2, Kons.TY_EXP],
+                            [Kons.TY_ARG, Kons.TY_ARG2, Kons.TY_EXP, Kons.TY_KATA],
                         ],
                         sbl: [, Kons.TY_OP,],
                         stl: [Kons.TY_KURUNG_ARG, Kons.TY_ARG2, Kons.TY_KURUNG_BUKA, Kons.TY_KURUNG_SINGLE, Kons.TY_KURUNG_KOSONG]
@@ -149,19 +151,19 @@ namespace ha.parse {
 
                     }
                 },
-                {
-                    type: Kons.TY_ELSE_DEC,
-                    aturan: {
-                        nama: 'else stmt',
-                        kondisi: [
-                            [Kons.TY_ELSE],
-                            [Kons.TY_EXP, Kons.TY_PERINTAH],
-                        ],
-                        sbl: [],
-                        stl: []
+                // {
+                //     type: Kons.TY_ELSE_STMT,
+                //     aturan: {
+                //         nama: 'else stmt',
+                //         kondisi: [
+                //             [Kons.TY_ELSE],
+                //             [Kons.TY_EXP, Kons.TY_PERINTAH],
+                //         ],
+                //         sbl: [],
+                //         stl: []
 
-                    }
-                },
+                //     }
+                // },
             ])
 
             //dim
@@ -344,6 +346,48 @@ namespace ha.parse {
     }
 
     export var gm2: Grammar2 = new Grammar2();
+
+    class Builder {
+        private hasil: IAturan;
+
+        ty(ty: number): Builder {
+            this.hasil = {
+                type: 0,
+                aturan: {
+                    nama: '',
+                    kondisi: [],
+                    sbl: [],
+                    stl: []
+                }
+            };
+
+            this.hasil.type = ty;
+            return this;
+        }
+
+        kond(kond: number[]): Builder {
+            this.hasil.aturan.kondisi.push(kond)
+            return this;
+        }
+
+        sbl(n: number[]): Builder {
+            n.forEach((n1: number) => {
+                this.hasil.aturan.sbl.push(n1);
+            })
+            return this;
+        }
+
+        stl(n: number[]): Builder {
+            n.forEach((n1: number) => {
+                this.hasil.aturan.stl.push(n1);
+            })
+            return this;
+        }
+
+        build(): IAturan {
+            return this.hasil;
+        }
+    }
 }
 
 interface IAturan {

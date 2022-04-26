@@ -79,7 +79,7 @@ namespace ha.parse {
 
             let ada: boolean = false;
 
-            //[IF_DEC] then
+            //[IF_EXP_STMT] then
             function check(t1: IToken, t2: IToken): boolean {
                 if (!t1) return false;
                 if (!t2) return false;
@@ -148,7 +148,7 @@ namespace ha.parse {
 
                 if (check(t1, t2, t3)) {
                     tokenBaru = {
-                        type: Kons.TY_ELSE_THEN,
+                        type: Kons.TY_ELSE_THEN_STMT,
                         token: [t1, t2, t3]
                     }
 
