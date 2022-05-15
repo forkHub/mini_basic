@@ -487,51 +487,6 @@ namespace ha.parse {
             return ada;
         }
 
-        //TODO: refaktor
-        // while2(): boolean {
-        //     let ada: boolean = false;
-
-        //     for (let i: number = 0; i < data.barisObj.token.length; i++) {
-
-        //         let token1: IToken = parse.getToken(i + 0, data.barisObj.token);
-        //         let token2: IToken = parse.getToken(i + 1, data.barisObj.token);
-        //         let token3: IToken = parse.getToken(i + 2, data.barisObj.token);
-
-        //         let tokenBaru: IToken;
-
-        //         if (check(token1, token2, token3)) {
-        //             tokenBaru = {
-        //                 type: Kons.TY_WHILE_STMT,
-        //                 token: [token1, token2]
-        //             }
-
-        //             ha.comp.log.log("while:");
-        //             ha.comp.log.log(tokenBaru);
-
-        //             data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
-
-        //             ada = true;
-        //             i--;
-        //         }
-        //     }
-
-        //     return ada;
-
-        //     //while exp [kosong]
-        //     function check(t1: IToken, t2: IToken, t3: IToken): boolean {
-        //         if (!t1) return false;
-        //         if (!t2) return false;
-        //         if (t3) return false;
-        //         if (!t1.value) return false;
-
-        //         if (t1.value.toLowerCase() != 'while') return false;
-
-        //         if (exp.isExp(t2) == false) return false;
-
-        //         return true;
-        //     }
-        // }
-
     }
 
     export var stmt: Stmt = new Stmt();

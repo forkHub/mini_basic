@@ -140,32 +140,37 @@ var ha;
                 ".\\data\\data\\samples\\RobCummings\\Bumpy\\bumpyfun.bb",
                 ".\\data\\data\\tutorials\\GCUK_Tuts\\camera.bb",
             ];
+            filePg = [
+                ".\\data\\pg\\Collision.pg",
+                ".\\data\\pg\\Doodle.pg",
+                ".\\data\\pg\\Drag.pg",
+                ".\\data\\pg\\Rot.pg",
+                ".\\data\\pg\\Snow.pg",
+                ".\\data\\pg\\Tile.pg",
+            ];
             constructor() {
                 this.debug();
-                while (parse.data.ignore.length > 0) {
-                    parse.data.ignore.pop();
-                }
-                let ar = parse.data.ignore.concat(Ignore);
-                ar.forEach((item) => {
-                    parse.data.ignore.push(item);
-                });
+                this.mapIgnore();
                 console.log("data ignore " + parse.data.ignore.length);
                 ha.comp.log.aktif = false;
             }
             async init() {
                 parse.data.jmlIgnore = 0;
-                parse.data.errGakIgnore = true;
+                parse.data.errGakIgnore = false;
                 parse.data.errBaru = [];
-                await this.load2();
+                await this.load2(this.filePg);
             }
             mapIgnore() {
                 let ignore2 = [];
+                //isi ignore 2
+                //filter duplikat
                 for (let i = 0; i < Ignore.length; i++) {
                     let str = Ignore[i];
                     if (ignore2.indexOf(str) < 0) {
                         ignore2.push(str);
                     }
                 }
+                //isi data.ignore
                 while (parse.data.ignore.length > 0) {
                     parse.data.ignore.pop();
                 }
@@ -176,6 +181,7 @@ var ha;
                 console.log(JSON.stringify(parse.data.ignore));
             }
             debug() {
+                this.files;
             }
             async parse(file) {
                 let hsl = await ha.comp.Util.Ajax2('get', file + "?rand=" + Math.floor(Math.random() * 1000), '');
@@ -184,11 +190,10 @@ var ha;
                     await ha.parse.parse.parse(barisAr[i]);
                 }
             }
-            async load2() {
-                let l = this.files.length;
-                // l = 5;
+            async load2(files) {
+                let l = files.length;
                 for (let i = 0; i < l; i++) {
-                    let file = this.files[i];
+                    let file = files[i];
                     console.log("File: " + file);
                     try {
                         await this.parse(file);
@@ -198,7 +203,6 @@ var ha;
                         console.error(e);
                         ha.comp.log.tampil('tj');
                         throw Error();
-                        // break;
                     }
                 }
                 console.log('jml err ' + parse.data.errList.length);

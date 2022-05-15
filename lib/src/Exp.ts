@@ -588,45 +588,6 @@ namespace ha.parse {
             return ada;
         }
 
-        //TODO: di check lagi
-        // not(): boolean {
-        //     let ada: boolean = false;
-
-        //     for (let i: number = 0; i < data.barisObj.token.length; i++) {
-
-        //         let token1: IToken = data.barisObj.token[i];
-        //         let token2: IToken = data.barisObj.token[i + 1];
-        //         let tokenBaru: IToken;
-
-        //         if (check(token1, token2)) {
-        //             tokenBaru = {
-        //                 type: Kons.TY_BINOP,
-        //                 token: [token1, token2]
-        //             }
-
-        //             ha.comp.log.log("binop not:");
-        //             ha.comp.log.log(tokenBaru);
-
-        //             data.barisObj.token = ar.ganti(data.barisObj.token, i, i + 1, tokenBaru);
-
-        //             ada = true;
-        //         }
-        //     }
-
-        //     return ada;
-
-        //     //not exp
-        //     function check(t1: IToken, t2: IToken): boolean {
-        //         if (!t1) return false;
-        //         if (!t2) return false;
-        //         if (t1.type != Kons.TY_OP) return false;
-        //         if (t1.value.toLowerCase() != "not") return false;
-        //         if (!exp.isExp(t2)) return false;
-        //         return true;
-        //     }
-
-        // }
-
         min(): boolean {
 
             let ada: boolean = false;
@@ -700,7 +661,7 @@ namespace ha.parse {
             return ada;
         }
 
-        //TODO: refactor dipindah
+        //TODO: refactor dipindah ke grammar2
         arg2(): boolean {
             //EXP , EXP
             function check(t0: IToken, t1: IToken, t2: IToken, t3: IToken, t4: IToken): boolean {

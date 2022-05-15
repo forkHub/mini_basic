@@ -1,6 +1,6 @@
 namespace ha.parse {
     class Grammar2 {
-        private bl: Builder;
+        private bld: Builder;
         private _aturanExpAr: IAturan[] = [];
         public get aturanExpAr(): IAturan[] {
             return this._aturanExpAr;
@@ -12,7 +12,7 @@ namespace ha.parse {
         }
 
         constructor() {
-            this.bl = new Builder();
+            this.bld = new Builder();
         }
 
         aturanExp(): void {
@@ -75,8 +75,14 @@ namespace ha.parse {
                         ]
                     }
                 },
-                this.bl.ty(Kons.TY_WHILE_STMT).kond([Kons.TY_WHILE]).kond([Kons.TY_EXP]).build()
 
+                this.bld.ty(Kons.TY_WHILE_STMT).kond([Kons.TY_WHILE]).kond([Kons.TY_EXP]).build(),
+
+                //else exp
+                this.bld.ty(Kons.TY_ELSE_STMT).kond([Kons.TY_ELSE]).kond([Kons.TY_EXP]).build(),
+
+                //else if exp
+                this.bld.ty(Kons.TY_ELSEIF_STMT).kond([Kons.TY_ELSE_IF]).kond([Kons.TY_EXP]).build()
             ])
         }
 

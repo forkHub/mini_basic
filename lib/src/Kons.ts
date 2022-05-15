@@ -78,11 +78,11 @@ namespace ha.parse {
         static readonly TY_IF_EXP: number = 600;
         static readonly TY_IF_THEN: number = 650;
 
-        static readonly TY_ELSE_STMT: number = 700; //TODO:
-        static readonly TY_ELSE_THEN_STMT: number = 701;    //TODO:
+        static readonly TY_ELSE_STMT: number = 700;
+        static readonly TY_ELSE_THEN_STMT: number = 701;    //TODO: next
 
-        static readonly TY_ELSEIF_STMT: number = 750;       //TODO:
-        static readonly TY_ELSEIF_STMT_THEN: number = 751;  //TODO:
+        static readonly TY_ELSEIF_STMT: number = 750;
+        static readonly TY_ELSEIF_STMT_THEN: number = 751;  //TODO: next
 
         static readonly TY_MOD_DEC: number = 800;
         static readonly TY_MOD_ISI: number = 802;

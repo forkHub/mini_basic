@@ -138,17 +138,19 @@ namespace ha.parse {
 
         ];
 
+        private filePg: string[] = [
+            ".\\data\\pg\\Collision.pg",
+            ".\\data\\pg\\Doodle.pg",
+            ".\\data\\pg\\Drag.pg",
+            ".\\data\\pg\\Rot.pg",
+            ".\\data\\pg\\Snow.pg",
+            ".\\data\\pg\\Tile.pg",
+        ];
+
         constructor() {
             this.debug();
 
-            while (data.ignore.length > 0) {
-                data.ignore.pop();
-            }
-
-            let ar: string[] = data.ignore.concat(Ignore);
-            ar.forEach((item: string) => {
-                data.ignore.push(item);
-            })
+            this.mapIgnore();
 
             console.log("data ignore " + data.ignore.length);
             ha.comp.log.aktif = false;
@@ -156,15 +158,17 @@ namespace ha.parse {
 
         async init(): Promise<void> {
             data.jmlIgnore = 0;
-            data.errGakIgnore = true;
+            data.errGakIgnore = false;
             data.errBaru = [];
 
-            await this.load2();
+            await this.load2(this.filePg);
         }
 
         mapIgnore(): void {
             let ignore2: string[] = [];
 
+            //isi ignore 2
+            //filter duplikat
             for (let i: number = 0; i < Ignore.length; i++) {
                 let str: string = Ignore[i];
                 if (ignore2.indexOf(str) < 0) {
@@ -172,6 +176,7 @@ namespace ha.parse {
                 }
             }
 
+            //isi data.ignore
             while (data.ignore.length > 0) {
                 data.ignore.pop();
             }
@@ -185,7 +190,7 @@ namespace ha.parse {
         }
 
         debug(): void {
-
+            this.files;
         }
 
         async parse(file: string): Promise<void> {
@@ -197,11 +202,11 @@ namespace ha.parse {
             }
         }
 
-        async load2(): Promise<void> {
-            let l: number = this.files.length;
-            // l = 5;
+        async load2(files: string[]): Promise<void> {
+            let l: number = files.length;
+
             for (let i: number = 0; i < l; i++) {
-                let file: string = this.files[i];
+                let file: string = files[i];
                 console.log("File: " + file);
                 try {
                     await this.parse(file);
@@ -211,7 +216,6 @@ namespace ha.parse {
                     console.error(e);
                     ha.comp.log.tampil('tj');
                     throw Error();
-                    // break;
                 }
             }
 
